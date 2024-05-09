@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+}
+
+body {
+    background-image: url(/assets/Fondoo.jpg);
+    background-repeat: no-repeat;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.d-flex.justify-content-center.align-items-center {
+    margin-top: 20rem;
+
+}
+
+header {
+    color: #000;
+    background-color: #1d1b31;
+
+    text-align: left;
+}
+
+header i {
+    color: #fff;
+
+}
+
+.form-group select {
+    width: 260px;
+}
+
+nav a,
+ul {
+    display: inline-block;
+    text-decoration: none;
+    color: white;
+    padding: 0 35px;
+    font-size: 55px;
+    margin: 0px 15px;
+
+}
+
+nav a:hover {
+
+    color: #fff;
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #1d1b31;
+    text-align: center;
+    color: #fff;
+    padding: 10px 0;
+}

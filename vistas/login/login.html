@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/x-icon" href="/assets/logo-vt.svg" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inicio de sesión</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous" />
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <a href="#">Acerca de</a>
+            <a href="#">Contacto</a>
+        </nav>
+    </header>
+
+    <div class="d-flex justify-content-center align-items-center ">
+        <div class="bg-white p-5 rounded-5 text-secondary shadow" style="width: 25rem">
+            <div class="d-flex justify-content-center">
+                <img src="/assets/logoo.png" alt="login-icon" style="height: 7rem" />
+            </div>
+            <div class="text-center fs-1 fw-bold">Login</div>
+            <div class="input-group mt-4">
+                <div class="input-group-text bg-celeste">
+                    <img src="/assets/perfil.png" alt="Icono del usuario" style="height: 1rem" />
+                </div>
+                <input class="form-control bg-light" type="text" placeholder="Usuario" id="UserName" />
+            </div>
+            <div class="input-group mt-1">
+                <div class="input-group-text bg-celeste">
+                    <img src="/assets/contraseña.png" alt="icono de la contraseña" style="height: 1rem" />
+                </div>
+                <input class="form-control bg-light" type="password" placeholder="contraseña" id="userPassword" />
+            </div>
+            <div class="d-flex justify-content-around mt-1">
+                <div class="pt-1">
+                    <a href="#" class="text-decoration-none text-primary fw-semibold fst-italic"
+                        style="font-size: 0.9rem">¿Olvidó la contraseña?</a>
+                </div>
+            </div>
+            <div class="btn btn-primary text-white w-100 mt-4 fw-semibold shadow-sm" id="btn-info">Iniciar sesión</div>
+        </div>
+        
+    <footer class="footer">
+        <p>© 2024 Página Administrativa. Todos los derechos reservados.</p>
+    </footer>
+    </div>
+
+
+    <script src="script.js" type="module"></script>
+</body>
+
+</html>
