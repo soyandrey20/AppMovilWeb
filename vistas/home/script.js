@@ -22,9 +22,11 @@ sidebarBtn.addEventListener('click', () => {
     sidebar.classList.toggle('close');
 });
 
+window.addEventListener('DOMContentLoaded', cargarPagina);
 
-
-
+async function cargarPagina(){
+    sidebar.classList.toggle('close');
+}
 
 const optusuario = document.getElementById('optusuario');
 const optParaSensor = document.getElementById('optParaSen');
@@ -33,6 +35,8 @@ const optTpPara = document.getElementById('optTpPara');
 const optSensor = document.getElementById('optSensor');
 const optTpSensor = document.getElementById('optTpSensor');
 const logout = document.getElementById('logout');
+const ver = document.getElementById('ver');
+
 
 optusuario.addEventListener('click', () => {
     window.location.href = `/vistas/usuarios/usuarios.html`;
@@ -62,38 +66,31 @@ logout.addEventListener('click', () => {
     window.location.href = `/vistas/login/login.html`;
 });
 
-
-const optusuarioE = document.getElementById('optusuarioE');
-const optParaSensorE = document.getElementById('optParaSenE');
-const optParaE = document.getElementById('optParaE');
-const optTpParaE = document.getElementById('optTpParaE');
-const optSensorE = document.getElementById('optSensorE');
-const optTpSensorE = document.getElementById('optTpSensorE');
-
-
-
-
-// optusuarioE.addEventListener('click', () => {
-//     window.location.href = `/vistas/usuarios/usuarios.html`;
-// });
-
-optParaSensorE.addEventListener('click', () => {
-    window.location.href = `/vistas/edicion/parametro_sensor_crud.html`;
+ver.addEventListener('click', () => {
+    window.location.href = `/vistas/informacion/usuario.html`;
 });
 
-optParaE.addEventListener('click', () => {
-    window.location.href = `/vistas/parametro/parametro.html`;
+
+const optDepartamento = document.getElementById('optDepartamento');
+const optCiudad = document.getElementById('optCiudad');
+const optVereda = document.getElementById('optVereda');
+const optFinca = document.getElementById('optFinca');
+
+
+optDepartamento.addEventListener('click', () => {
+    window.location.href = `/vistas/departamento/departamento.html`;
 });
 
-optTpParaE.addEventListener('click', () => {
-    window.location.href = `/vistas/parametro/tipo_parametro.html`;
+optCiudad.addEventListener('click', () => {
+    window.location.href = `/vistas/ciudad/ciudad.html`;
 });
 
-optSensorE.addEventListener('click', () => {
-    window.location.href = `/vistas/sensor/sensor.html`;
+optVereda.addEventListener('click', () => {
+    window.location.href = `/vistas/vereda/vereda.html`;
 });
 
-optTpSensorE.addEventListener('click', () => {
-    window.location.href = `/vistas/sensor/tipo_sensor.html`;
+optFinca.addEventListener('click', () => {
+    window.location.href = `/vistas/finca/finca.html`;
 });
+
 

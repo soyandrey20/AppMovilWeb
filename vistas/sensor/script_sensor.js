@@ -3,33 +3,8 @@ const API_URL = 'http://192.168.1.6:3000';
 
 
 var listaTpSensores = [];
-var listaSensores = [];
+const listaSensores = [];
 
-let arrow = document.querySelectorAll('.arrow');
-
-for (var i = 0; i < arrow.length; i++) {
-    arrow[i].addEventListener('click', (e) => {
-        let arrowParent = e.target.parentElement.parentElement; //selecting main parent of arrow
-        arrowParent.classList.toggle('showMenu');
-
-    });
-}
-
-let sidebar = document.querySelector('.sidebar');
-
-let sidebarBtn = document.querySelector('.bx-menu');
-
-sidebarBtn.addEventListener('click', () => {
-    sidebar.classList.toggle('close');
-});
-
-
-// Path: home.html
-let logout = document.getElementById('logout');
-logout.addEventListener('click', () => {
-    console.log('logout');
-    window.location.href = 'login.html';
-});
 
 
 async function getSensor() {
@@ -38,8 +13,9 @@ async function getSensor() {
 
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
-            listaSensores = JSON.parse(this.response);
-            console.log(listaSensores);
+            const data = JSON.parse(this.response);
+            listaSensores.push(...data);
+
         } else {
             console.error('Error fetching users:', this.statusText);
         }
@@ -47,6 +23,37 @@ async function getSensor() {
     xhr.send();
 }
 
+async function validarSensor() {
+    const descriptionSensor = document.getElementById('descriptionSensor');
+    const idSelectTipoSensor = document.getElementById('SelectTipoSensor');
+    if (idSelectTipoSensor.value === '0') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Debe seleccionar un tipo de sensor',
+            confirmButtonText: 'Aceptar'
+        });
+        return;
+    } else
+        if (descriptionSensor.value === '') {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Debe ingresar una descripción',
+                confirmButtonText: 'Aceptar'
+            });
+            return;
+        } else if (listaSensores.find(sensor => sensor.informacion === descriptionSensor.value)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ya existe un sensor con ese tipo',
+                confirmButtonText: 'Aceptar'
+            });
+            return;
+        }
+    addSensor();
+}
 
 
 async function getTpsensor() {
@@ -81,18 +88,8 @@ getSensor();
 async function addSensor() {
     const descriptionSensor = document.getElementById('descriptionSensor');
     const idSelectTipoSensor = document.getElementById('SelectTipoSensor');
-    console.log(idSelectTipoSensor.value);
-    if (descriptionSensor.value === '') {
-        alert('Debe ingresar una descripción');
-        return;
-    }
-    for (let i = 0; i < listaTpSensores.length; i++) {
-        if (listaSensores[i].informacion === descriptionSensor.value) {
-            alert('Ya existe un sensor con ese tipo');
-            return;
-        }
 
-    }
+
 
     const xhr = new XMLHttpRequest();
 
@@ -107,13 +104,26 @@ async function addSensor() {
         if (this.readyState === 4 && this.status === 200) {
             const data = JSON.parse(this.response);
             console.log(data);
-            alert('Sensor agregado correctamente');
+            Swal.fire({
+                icon: 'success',
+                title: 'Sensor creado',
+                text: 'Sensor creado correctamente',
+                confirmButtonText: 'Aceptar'
+            });
         } else {
             console.error('Error fetching users:', this.statusText);
+
         }
     };
 }
 
 const btnAddSensor = document.getElementById('addSensor');
 
-btnAddSensor.addEventListener('click', addSensor);
+btnAddSensor.addEventListener('click', validarSensor);
+
+
+const btnSetings = document.getElementById('btnSetings');
+
+btnSetings.addEventListener('click', () => {
+    window.location.href = `/vistas/edicion/sensor/sensor_crud.html`;
+});

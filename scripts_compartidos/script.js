@@ -9,3 +9,4 @@ const home = document.getElementById('home');
 home.addEventListener('click', () => {
     window.location.href = `/vistas/home/home.html`;
 });
+

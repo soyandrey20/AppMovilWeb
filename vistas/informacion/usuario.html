@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Formulario con Bootstrap</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+
+    <link rel="stylesheet" href="/vistas/informacion/styles.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+    <div>
+        <header>
+            <nav>
+                <a href="#" id="home">
+                    <i class='bx bxs-home'></i>
+                </a>
+
+            </nav>
+        </header>
+
+        <div class="d-flex justify-content-center align-items-center ">
+            <div class="bg-white p-5 rounded-5 text-secondary shadow " style="width: 30rem">
+                <div class="container text-center">
+                    <h1>Mi información</h1>
+                    <form>
+                        <div class="form-group">
+                            <label for="email"> </label>
+                            <input type="cedula" class="form-control" id="Cedula" placeholder=" " readonly>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="nombre1"> </label>
+                                    <input type="text" class="form-control" id="nombre1" placeholder=" " readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="nombre2"> </label>
+                                    <input type="text" class="form-control" id="nombre2" placeholder=" " readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="apellido1"> </label>
+                                    <input type="text" class="form-control" id="apellido1" placeholder=" " readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="apellido2"> </label>
+                                    <input type="text" class="form-control" id="apellido2" placeholder=" " readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email"> </label>
+                            <input type="email" class="form-control" id="email" placeholder=" " readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="Permisos"> </label>
+                            <input type="text" class="form-control" id="Permisos" placeholder=" " readonly>
+                        </div>
+                        <div class="form-group ">
+                            <label for="Estado"> </label>
+                            <input type="text" class="form-control" id="Estado" placeholder=" " readonly>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2024 Página Administrativa. Todos los derechos reservados.</p>
+        </footer>
+
+        <script src="/scripts_compartidos/script.js"></script>
+        <script src="script.js"></script>
+    </div>
+</body>
+
+</html>
