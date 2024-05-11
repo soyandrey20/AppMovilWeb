@@ -1,4 +1,9 @@
-const API_URL = 'http://192.168.1.6:3000';
+
+
+
+import { API_URL } from '../config.js';
+
+
 
 const modal = document.getElementById('modal');
 const modal1 = document.getElementById('modal1');

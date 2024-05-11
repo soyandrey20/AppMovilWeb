@@ -1,6 +1,6 @@
 // Objetivo: manejar la lógica de la vista de usuarios
 
-const URL_API = 'http://192.168.1.6:3000';
+import { API_URL } from '../config.js';
 
 const userTable = document.getElementById('userTable');
 const tableData = document.getElementById('tableData');
@@ -23,7 +23,7 @@ let dataD = null;
 
 async function getTipoPersona() {
   const xhr = new XMLHttpRequest();
-  xhr.open('GET', `${URL_API}/Tipo_persona`);
+  xhr.open('GET', `${API_URL}/Tipo_persona`);
 
   const SelectTipoPersona = document.getElementById('SelectTipoPersona');
   xhr.onload = function () {
@@ -50,7 +50,7 @@ getTipoPersona();
 
 async function cargarTabla() {
   try {
-    const response = await fetch(`${URL_API}/persona`);
+    const response = await fetch(`${API_URL}/persona`);
 
     if (!response.ok) {
       throw new Error(`API request failed with status ${response.status}`);
@@ -169,7 +169,7 @@ async function updateData() {
   };
   const xhr = new XMLHttpRequest();
 
-  xhr.open('PUT', `${URL_API}/persona/${Cedula}`);
+  xhr.open('PUT', `${API_URL}/persona/${Cedula}`);
 
   xhr.setRequestHeader('Content-Type', 'application/json');
 
@@ -216,7 +216,7 @@ async function deleteCiudad() {
 
   const xhr = new XMLHttpRequest();
 
-  xhr.open('PUT', `${URL_API}/DeleteUsuarios/${Cedula}`);
+  xhr.open('PUT', `${API_URL}/DeleteUsuarios/${Cedula}`);
 
 
   xhr.setRequestHeader('Content-Type', 'application/json');
@@ -257,7 +257,7 @@ async function activateUser() {
 
   const xhr = new XMLHttpRequest();
 
-  xhr.open('PUT', `${URL_API}/DeleteUsuarios/${Cedula}`);
+  xhr.open('PUT', `${API_URL}/DeleteUsuarios/${Cedula}`);
 
 
   xhr.setRequestHeader('Content-Type', 'application/json');

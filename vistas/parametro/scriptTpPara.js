@@ -1,5 +1,5 @@
 
-const API_URL = 'http://192.168.56.1:3000';
+import {API_URL} from '../config.js';
 
 const tp_parametro = [];
 
@@ -12,14 +12,7 @@ async function getTpParametro() {
         if (this.readyState === 4 && this.status === 200) {
             const data = JSON.parse(this.response);
             tp_parametro.push(...data);
-            for (let i = 0; i < data.length; i++) {
-                const parametro = data[i];
-                const option = document.createElement('option');
-                option.value = parametro.Id;
-                option.innerText = parametro.Descripcion;
-                SelectTipoParametro.appendChild(option);
-
-            }
+       
         } else {
             console.error('Error fetching users:', this.statusText);
         }
