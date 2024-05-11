@@ -65,29 +65,32 @@
             <form class="form-control w-25">
                 <h1 class="text-center">Nuevos datos</h1>
 
-                <div class="form-control border-white">
-                    <label for="">Id :</label>
+                <div class="form-group  mt-4 border-white">
+              
                     <input type="text" class="form-control w-100 " readonly id="Cedula">
                 </div>
-                <div class="form-control border-white">
+                <div class="form-group mt-4">
+                    <select name="TipoSensor" id="SelectTipoSensor" class="form-control bg-light">
+                        <option value="0">--Seleccione un tipo de sensor--</option>
+                    </select>
+                    <small class="form-text text-danger" id="msgNivelIngles"></small>
+                </div>
+                <div class="form-group mt-4 border-white">
                     <label for="">informacion :</label>
                     <input type="text" class="form-control w-100 " id="Cedula">
                 </div>
-                <div class="form-control border-white">
-                    <label for=""> id tp sensor :</label>
-                    <input type="number" class="form-control w-100" readonly id="nombre2">
-                </div>
 
 
 
 
-                <div class="form-control border-white">
-                    <label for="">estado:</label>
+
+                <div class="form-group mt-4 border-white">
+               
                     <input type="text" class="form-control w-100" id="Estado" readonly>
                 </div>
 
 
-                <div class="form-control border-white text-center ">
+                <div class="form-group mt-4 border-white text-center ">
                     <button class=" btn btn-danger close" id="close">cancelar</button>
                     <button class="btn btn-primary" id="confirm"> Confirmar</button>
 

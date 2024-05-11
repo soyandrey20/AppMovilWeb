@@ -112,13 +112,9 @@ btnCancelar.addEventListener('click', () => {
 
 /** ---------------------------------------------------------- llenar datos en el modal */
 const fillData = (data1) => {
-    for (let index of inputs) {
-
-        index.value = data1[count].textContent;
-
-        count++;
-    }
-
+    inputs[0].value = data1[0].textContent;
+    inputs[1].value = data1[2].textContent;
+    inputs[2].value = data1[4].textContent;
 
 
 }
@@ -229,10 +225,10 @@ async function activateUser() {
 
 async function updateData() {
     const id = inputs[0].value;
-    const cedula = inputs[1].value;
-    const nombre = inputs[2].value;
-    const id_vereda = inputs[3].value;
-    const estado = inputs[3].value;
+    const cedula = document.getElementById('SelectCedula').value;
+    const nombre = inputs[1].value;
+    const id_vereda = document.getElementById('SelectVereda').value;
+    const estado = inputs[2].value;
     const data = {
         id,
         cedula,
@@ -273,14 +269,67 @@ async function updateData() {
 }
 
 
+async function getUsuarios() {
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', `${URL_API}/Persona`);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+
+    const SelectCedula = document.getElementById('SelectCedula');
+    xhr.onload = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            const usuarios = JSON.parse(this.responseText);
+
+            for (let i = 0; i < usuarios.length; i++) {
+                const usuario = usuarios[i];
+                const option = document.createElement('option');
+                option.value = usuario.cedula;
+                option.innerText = usuario.Nombre_1 + ' ' + usuario.LastName_1;
+                SelectCedula.appendChild(option);
+            }
+
+        } else {
+            console.error('Error get Usuarios:', this.status);
+        }
+    };
+    xhr.send();
+}
+
+getUsuarios();
 
 
 
+async function getVereda() {
 
 
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', `${URL_API}/Vereda`);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    const tbody = document.getElementById('tbody');
+    const SelectVereda = document.getElementById('SelectVereda');
+    xhr.onload = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            const usuarios = JSON.parse(this.responseText);
+            for (let i = 0; i < usuarios.length; i++) {
+                const usuario = usuarios[i];
+                const option = document.createElement('option');
+                option.value = usuario.id;
+                option.innerText = usuario.nombre;
+                SelectVereda.appendChild(option);
+            }
 
 
+        } else {
+            console.error('Error get Vereda:', this.status);
+        }
+    };
 
+    xhr.send();
+
+}
+
+
+getVereda();
 
 
 

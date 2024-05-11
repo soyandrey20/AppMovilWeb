@@ -111,13 +111,9 @@ btnCancelar.addEventListener('click', () => {
 
 /** ---------------------------------------------------------- llenar datos en el modal */
 const fillData = (data1) => {
-    for (let index of inputs) {
-
-        index.value = data1[count].textContent;
-
-        count++;
-    }
-
+    inputs[0].value = data1[0].textContent;
+    inputs[1].value = data1[1].textContent;
+    inputs[2].value = data1[3].textContent;
 
 
 }
@@ -230,8 +226,8 @@ async function activateUser() {
 async function updateData() {
     const id = inputs[0].value;
     const nombre = inputs[1].value;
-    const id_ciudad = inputs[2].value;
-    const estado = inputs[3].value;
+    const id_ciudad = document.getElementById('SelectCiudad').value;
+    const estado = inputs[2].value;
     const data = {
         id,
         nombre,
@@ -248,7 +244,6 @@ async function updateData() {
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
             const datad = JSON.parse(this.response);
-            console.log(datad);
 
             Swal.fire({
                 title: 'vereda actualizada',
@@ -256,7 +251,8 @@ async function updateData() {
                 icon: 'success',
                 confirmButtonText: 'Aceptar'
             });
-            cargarTabla();
+
+
             modal.classList.toggle('translate');
         } else {
             console.log(this.status);
@@ -272,3 +268,31 @@ async function updateData() {
     xhr.send(JSON.stringify(data));
 
 }
+async function getCiudad() {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', `${URL_API}/Ciudad`);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    const SelectCiudad = document.getElementById('SelectCiudad');
+
+    xhr.onload = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            const ciudades = JSON.parse(this.responseText);
+
+            for (let i = 0; i < ciudades.length; i++) {
+                const ciudad = ciudades[i];
+                const option = document.createElement('option');
+                option.value = ciudad.id;
+                option.innerText = ciudad.nombre;
+                SelectCiudad.appendChild(option);
+            }
+
+        } else {
+            console.error('Error get Ciudad:', this.status);
+        }
+    };
+
+    xhr.send();
+
+}
+
+getCiudad();

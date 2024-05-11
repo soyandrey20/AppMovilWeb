@@ -111,12 +111,10 @@ btnCancelar.addEventListener('click', () => {
 
 /** ---------------------------------------------------------- llenar datos en el modal */
 const fillData = (data1) => {
-    for (let index of inputs) {
-
-        index.value = data1[count].textContent;
-
-        count++;
-    }
+    inputs[0].value = data1[0].textContent;
+    inputs[1].value = data1[2].textContent;
+    inputs[2].value = data1[3].textContent;
+    inputs[3].value = data1[4].textContent;
 
 
 
@@ -230,10 +228,10 @@ async function activateUser() {
 
 async function updateData() {
     const id = inputs[0].value;
-    const id_Tp_Parametro = inputs[1].value;
-    const Rango_inferior = inputs[2].value;
-    const Rango_Superior = inputs[3].value;
-    const estado = inputs[4].value;
+    const id_Tp_Parametro = document.getElementById('SelectTipoParametro').value;
+    const Rango_inferior = inputs[1].value;
+    const Rango_Superior = inputs[2].value;
+    const estado = inputs[3].value;
     const data = {
         id,
         id_Tp_Parametro,
@@ -272,3 +270,29 @@ async function updateData() {
     xhr.send(JSON.stringify(data));
 
 }
+async function getTpParametro() {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', `${URL_API}/Tipo_parametro`);
+
+    const SelectTipoParametro = document.getElementById('SelectTipoParametro');
+    xhr.onload = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            const data = JSON.parse(this.response);
+            console.log(data);
+            for (let i = 0; i < data.length; i++) {
+                const parametro = data[i];
+                const option = document.createElement('option');
+                option.value = parametro.Id;
+                option.innerText = parametro.Descripcion;
+                SelectTipoParametro.appendChild(option);
+
+            }
+        } else {
+            console.error('Error fetching users:', this.statusText);
+        }
+    };
+
+    xhr.send();
+}
+
+getTpParametro();

@@ -109,13 +109,9 @@ btnCancelar.addEventListener('click', () => {
 
 /** ---------------------------------------------------------- llenar datos en el modal */
 const fillData = (data1) => {
-    for (let index of inputs) {
-
-        index.value = data1[count].textContent;
-
-        count++;
-    }
-
+    inputs[0].value = data1[0].textContent;
+    inputs[1].value = data1[1].textContent;
+    inputs[2].value = data1[3].textContent;
 
 
 }
@@ -224,9 +220,9 @@ async function activateUser() {
 async function updateData() {
     const id = inputs[0].value;
     const nombre = inputs[1].value;
-    const id_departamento = inputs[2].value;
+    const id_departamento = document.getElementById('SelectTipoDepartamento').value;
 
-    const estado = inputs[3].value;
+    const estado = inputs[2].value;
     const data = {
         id,
         nombre,
@@ -271,6 +267,34 @@ async function modalDinacontent() {
     });
     document.getElementById('departamento').innerHTML = content;
 }
+
+async function getDepart() {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', `${URL_API}/Departamento`);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    const SelectDepartamento = document.getElementById('SelectTipoDepartamento');
+    xhr.onload = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            const departamentos = JSON.parse(this.responseText);
+
+            for (let i = 0; i < departamentos.length; i++) {
+                const departamento = departamentos[i];
+                const option = document.createElement('option');
+                option.value = departamento.id;
+                option.innerText = departamento.nombre;
+                SelectDepartamento.appendChild(option);
+            }
+
+        } else {
+            console.error('Error get Departamentos:', this.status);
+        }
+    };
+
+    xhr.send();
+
+}
+
+getDepart();
 
 
 

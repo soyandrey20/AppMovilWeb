@@ -36,7 +36,7 @@ async function getUsuario() {
                     Permisos.value = 'Administrador';
 
 
-                    if (user.estado === 1) {
+                    if (user.estado === true) {
                         document.getElementById('Estado').value = 'Activo';
                     } else {
                         document.getElementById('Estado').value = 'Inactivo';

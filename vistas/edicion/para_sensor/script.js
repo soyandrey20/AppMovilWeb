@@ -1,4 +1,4 @@
-const URL_API = 'http://localhost:3000';
+const URL_API = 'http://192.168.56.1:3000';
 
 const userTable = document.getElementById('userTable');
 const tableData = document.getElementById('tableData');
@@ -16,6 +16,67 @@ const btnActivate = document.getElementById('activate')
 const btnCancelar1 = document.getElementById('cancelar1')
 let count = 0;
 let dataD = null;
+
+async function getTipoPersona() {
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', `${URL_API}/Tipo_parametro`);
+
+  const SelectTipoParametro = document.getElementById('SelectTipoParametro');
+  xhr.onload = function () {
+    if (this.readyState === 4 && this.status === 200) {
+      const data = JSON.parse(this.response);
+
+      for (let i = 0; i < data.length; i++) {
+        const parametro = data[i];
+        const option = document.createElement('option');
+        option.value = parametro.Id;
+        option.innerText = parametro.Descripcion;
+        SelectTipoParametro.appendChild(option);
+
+      }
+    } else {
+      console.error('Error fetching users:', this.statusText);
+    }
+  };
+
+  xhr.send();
+}
+
+
+
+async function getSensor() {
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', `${URL_API}/Tipo_sensor`);
+
+  const SelectTipoSensor = document.getElementById('SelectTipoSensor');
+
+  xhr.onload = function () {
+
+
+    if (this.readyState === 4 && this.status === 200) {
+      const data = JSON.parse(this.response);
+
+      for (let i = 0; i < data.length; i++) {
+        const sensor = data[i];
+
+        const option = document.createElement('option');
+        option.value = sensor.Id;
+        option.innerText = sensor.Descripcion;
+        SelectTipoSensor.appendChild(option);
+
+      }
+    } else {
+      console.error('Error fetching users:', this.statusText);
+    }
+  };
+  xhr.send();
+
+}
+
+getTipoPersona();
+getSensor();
+
+
 
 async function cargarTabla() {
   try {
@@ -107,13 +168,10 @@ btnCancelar.addEventListener('click', () => {
 
 /** ---------------------------------------------------------- llenar datos en el modal */
 const fillData = (data1) => {
-  for (let index of inputs) {
+  inputs[0].value = data1[0].textContent;
 
-    index.value = data1[count].textContent;
 
-    count++;
-  }
-
+  inputs[1].value = data1[3].textContent;
 
 
 }
@@ -222,9 +280,9 @@ async function activateUser() {
 
 async function updateData() {
   const id = inputs[0].value;
-  const id_parametro = inputs[1].value;
-  const id_sensor = inputs[2].value;
-  const estado = inputs[3].value;
+  const id_parametro = document.getElementById('SelectTipoParametro').value;
+  const id_sensor = document.getElementById('SelectTipoSensor').value;
+  const estado = inputs[1].value;
   const data = {
     id,
     id_parametro,
@@ -263,3 +321,4 @@ async function updateData() {
   xhr.send(JSON.stringify(data));
 
 }
+

@@ -66,29 +66,31 @@
             <form class="form-control w-25">
                 <h1 class="text-center">Nuevos datos</h1>
 
-                <div class="form-control border-white">
-                    <label for="">Id :</label>
-                    <input type="text" class="form-control w-100 " readonly id="Cedula">
+                <div class="form-group   mt-4">
+
+                    <input type="text" class="form-control " readonly id="Cedula">
                 </div>
-                <div class="form-control border-white">
-                    <label for="">Id parametro :</label>
-                    <input type="text" class="form-control w-100 " readonly id="Cedula">
+                <div class="form-group mt-4">
+                    <select name="TipoParametro" id="SelectTipoParametro" class="form-control  ">
+                        <option value="0">-Seleccione un tipo parametro-</option>
+                    </select>
+                    <small class="form-text text-danger" id="msgNivelIngles"></small>
                 </div>
-                <div class="form-control border-white">
+                <div class="form-group  mt-2">
                     <label for=""> Rango inferior :</label>
-                    <input type="number" class="form-control w-100" id="nombre2">
+                    <input type="number" class="form-control  " id="nombre2">
                 </div>
 
-                <div class="form-control border-white">
+                <div class="form-group mt-2">
                     <label for="">Rango superior</label>
-                    <input type="number" class="form-control w-100" id="nombre1">
+                    <input type="number" class="form-control  " id="nombre1">
                 </div>
 
 
 
-                <div class="form-control border-white">
-                    <label for="">estado:</label>
-                    <input type="text" class="form-control w-100" id="Estado" readonly>
+                <div class="form-group  mt-4">
+
+                    <input type="text" class="form-control " id="Estado" readonly>
                 </div>
 
 

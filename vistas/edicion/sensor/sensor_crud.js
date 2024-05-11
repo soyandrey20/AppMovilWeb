@@ -109,14 +109,9 @@ btnCancelar.addEventListener('click', () => {
 
 /** ---------------------------------------------------------- llenar datos en el modal */
 const fillData = (data1) => {
-    for (let index of inputs) {
-
-        index.value = data1[count].textContent;
-
-        count++;
-    }
-
-
+    inputs[0].value = data1[0].textContent;
+    inputs[1].value = data1[1].textContent;
+    inputs[2].value = data1[3].textContent;
 
 }
 
@@ -229,9 +224,9 @@ async function activateUser() {
 async function updateData() {
     const id = inputs[0].value;
     const informacion = inputs[1].value;
-    const id_tp_sensor = inputs[2].value;
+    const id_tp_sensor = document.getElementById('SelectTipoSensor').value;
 
-    const estado = inputs[3].value;
+    const estado = inputs[2].value;
     const data = {
         id,
         informacion,
@@ -248,9 +243,10 @@ async function updateData() {
         if (this.readyState === 4 && this.status === 200) {
             const datad = JSON.parse(this.response);
             console.log(datad);
-            
+
             Swal.fire({
-                title: 'Sensor actualizado correctamente',
+                title: 'Sensor actualizado  ',
+                text: 'Sensor actualizado correctamente',
                 icon: 'success',
                 confirmButtonText: 'Aceptar'
             });
@@ -270,3 +266,32 @@ async function updateData() {
     xhr.send(JSON.stringify(data));
 
 }
+
+/** ---------------------------------------------------------- llenar select */
+async function getTpsensor() {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', `${URL_API}/Tipo_sensor`);
+
+    const SelectTipoSensor = document.getElementById('SelectTipoSensor');
+    xhr.onload = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            const data = JSON.parse(this.response);
+            listaTpSensores = data;
+            console.log(data);
+            for (let i = 0; i < data.length; i++) {
+                const sensor = data[i];
+                const option = document.createElement('option');
+                option.value = sensor.Id;
+                option.innerText = sensor.Descripcion;
+                SelectTipoSensor.appendChild(option);
+
+            }
+        } else {
+            console.error('Error fetching users:', this.statusText);
+        }
+    };
+
+    xhr.send();
+}
+
+getTpsensor();

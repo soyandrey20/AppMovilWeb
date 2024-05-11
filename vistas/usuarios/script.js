@@ -21,6 +21,33 @@ let dataD = null;
 
 
 
+async function getTipoPersona() {
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', `${URL_API}/Tipo_persona`);
+
+  const SelectTipoPersona = document.getElementById('SelectTipoPersona');
+  xhr.onload = function () {
+    if (this.readyState === 4 && this.status === 200) {
+      const data = JSON.parse(this.response);
+
+      for (let i = 0; i < data.length; i++) {
+        const parametro = data[i];
+        const option = document.createElement('option');
+        option.value = parametro.id;
+        option.innerText = parametro.descripcion;
+        SelectTipoPersona.appendChild(option);
+
+      }
+    } else {
+      console.error('Error fetching users:', this.statusText);
+    }
+  };
+
+  xhr.send();
+}
+
+getTipoPersona();
+
 async function cargarTabla() {
   try {
     const response = await fetch(`${URL_API}/persona`);
@@ -38,6 +65,7 @@ async function cargarTabla() {
 
       tableRow.innerHTML = `
         <td id="Cedula">${user.cedula}</td>
+        <td id="Cedula_tp">${user.id_tipo_persona}</td>
         <td id="nombre1">${user.Nombre_1}</td>
         <td id="nombre2">${user.Nombre_2 || ''}</td>
         <td id="apellido1">${user.LastName_1 || ''}</td>
@@ -108,18 +136,21 @@ btnCancelar1.addEventListener('click', () => {
 
 
 const fillData = (data1) => {
-  for (let index of inputs) {
+  inputs[0].value = data1[0].textContent;
+  inputs[1].value = data1[2].textContent;
+  inputs[2].value = data1[3].textContent;
+  inputs[3].value = data1[4].textContent;
+  inputs[4].value = data1[5].textContent;
+  inputs[5].value = data1[6].textContent;
+  inputs[6].value = data1[7].textContent;
 
-    index.value = data1[count].textContent;
-
-    count++;
-  }
 
 
 
 }
 async function updateData() {
   const Cedula = inputs[0].value;
+  const id_tipo_persona = document.getElementById('SelectTipoPersona').value;
   const Nombre_1 = inputs[1].value;
   const Nombre_2 = inputs[2].value;
   const LastName_1 = inputs[3].value;
@@ -128,6 +159,7 @@ async function updateData() {
   const Estado = inputs[6].value;
   const data = {
     Cedula,
+    id_tipo_persona,
     Nombre_1,
     Nombre_2,
     LastName_1,

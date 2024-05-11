@@ -85,7 +85,7 @@ async function validarDepart() {
                 icon: 'error',
                 confirmButtonText: 'Aceptar'
             });
-            return;
+            return false;
         }
     }
     addDepart();
