@@ -1,4 +1,4 @@
-const URL_API = 'http://localhost:3000';
+import { API_URL } from "../../config";
 
 const userTable = document.getElementById('userTable');
 const tableData = document.getElementById('tableData');
@@ -22,7 +22,7 @@ let dataD = null;
 /** ---------------------------------------------------------- cargar la tabla con sus datos */
 async function cargarTabla() {
     try {
-        const response = await fetch(`${URL_API}/ciudad`);
+        const response = await fetch(`${API_URL}/ciudad`);
 
         if (!response.ok) {
             throw new Error(`API request failed with status ${response.status}`);
@@ -132,7 +132,7 @@ async function deleteCiudad() {
 
     const xhr = new XMLHttpRequest();
 
-    xhr.open('PUT', `${URL_API}/DeleteCiudad/${id}`);
+    xhr.open('PUT', `${API_URL}/DeleteCiudad/${id}`);
 
 
     xhr.setRequestHeader('Content-Type', 'application/json');
@@ -169,7 +169,19 @@ async function deleteCiudad() {
 
 
 btnActivate.addEventListener('click', activateUser);
-btnConfirm.addEventListener('click', updateData);
+btnConfirm.addEventListener('click', validarUpdate);
+
+async function validarUpdate() {
+    if (document.getElementById('SelectTipoDepartamento').value == 0) {
+        Swal.fire({
+            title: 'Error',
+            text: 'Debe seleccionar un departamento valido.',
+            icon: 'error'
+        });
+        return false;
+    }
+    updateData();
+}
 
 async function activateUser() {
 
@@ -184,7 +196,7 @@ async function activateUser() {
 
     const xhr = new XMLHttpRequest();
 
-    xhr.open('PUT', `${URL_API}/DeleteCiudad/${id}`);
+    xhr.open('PUT', `${API_URL}/DeleteCiudad/${id}`);
 
 
     xhr.setRequestHeader('Content-Type', 'application/json');
@@ -231,7 +243,7 @@ async function updateData() {
     };
     const xhr = new XMLHttpRequest();
 
-    xhr.open('PUT', `${URL_API}/ciudad/${Cedula}`);
+    xhr.open('PUT', `${API_URL}/ciudad/${Cedula}`);
 
     xhr.setRequestHeader('Content-Type', 'application/json');
 
@@ -259,7 +271,7 @@ async function updateData() {
 
 }
 async function modalDinacontent() {
-    const response = await fetch(`${URL_API}/departamento`);
+    const response = await fetch(`${API_URL}/departamento`);
     const data = await response.json();
     let content = '';
     data.forEach(element => {
@@ -270,7 +282,7 @@ async function modalDinacontent() {
 
 async function getDepart() {
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', `${URL_API}/Departamento`);
+    xhr.open('GET', `${API_URL}/Departamento`);
     xhr.setRequestHeader('Content-Type', 'application/json');
     const SelectDepartamento = document.getElementById('SelectTipoDepartamento');
     xhr.onload = function () {

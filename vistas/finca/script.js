@@ -1,4 +1,4 @@
-import {API_URL} from '../config.js';
+import { API_URL } from '../config.js';
 
 const fincas = [];
 
@@ -101,7 +101,7 @@ async function addFinca() {
                 icon: 'success',
                 confirmButtonText: 'Aceptar'
             });
-            window.location.href = 'Finca.html';
+            window.location.href = window.location.href;
         } else {
             console.error('Error add Finca:', this.statusText);
             Swal.fire({

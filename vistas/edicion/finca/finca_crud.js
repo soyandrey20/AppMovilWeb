@@ -1,4 +1,4 @@
-const URL_API = 'http://localhost:3000';
+import { API_URL } from '../../config.js';
 
 const userTable = document.getElementById('userTable');
 const tableData = document.getElementById('tableData');
@@ -22,7 +22,7 @@ let dataD = null;
 /** ---------------------------------------------------------- cargar la tabla con sus datos */
 async function cargarTabla() {
     try {
-        const response = await fetch(`${URL_API}/fincas`);
+        const response = await fetch(`${API_URL}/fincas`);
 
         if (!response.ok) {
             throw new Error(`API request failed with status ${response.status}`);
@@ -135,7 +135,7 @@ async function deleteCiudad() {
 
     const xhr = new XMLHttpRequest();
 
-    xhr.open('PUT', `${URL_API}/deleteFincas/${id}`);
+    xhr.open('PUT', `${API_URL}/deleteFincas/${id}`);
 
 
     xhr.setRequestHeader('Content-Type', 'application/json');
@@ -173,7 +173,7 @@ async function deleteCiudad() {
 
 
 btnActivate.addEventListener('click', activateUser);
-btnConfirm.addEventListener('click', updateData);
+btnConfirm.addEventListener('click', validarConfirmacion);
 
 async function activateUser() {
 
@@ -188,7 +188,7 @@ async function activateUser() {
 
     const xhr = new XMLHttpRequest();
 
-    xhr.open('PUT', `${URL_API}/deleteFincas/${id}`);
+    xhr.open('PUT', `${API_URL}/deleteFincas/${id}`);
 
 
     xhr.setRequestHeader('Content-Type', 'application/json');
@@ -238,7 +238,7 @@ async function updateData() {
     };
     const xhr = new XMLHttpRequest();
 
-    xhr.open('PUT', `${URL_API}/Fincas/${id}`);
+    xhr.open('PUT', `${API_URL}/Fincas/${id}`);
 
     xhr.setRequestHeader('Content-Type', 'application/json');
 
@@ -272,7 +272,7 @@ async function updateData() {
 async function getUsuarios() {
 
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', `${URL_API}/Persona`);
+    xhr.open('GET', `${API_URL}/Persona`);
     xhr.setRequestHeader('Content-Type', 'application/json');
 
     const SelectCedula = document.getElementById('SelectCedula');
@@ -303,7 +303,7 @@ async function getVereda() {
 
 
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', `${URL_API}/Vereda`);
+    xhr.open('GET', `${API_URL}/Vereda`);
     xhr.setRequestHeader('Content-Type', 'application/json');
     const tbody = document.getElementById('tbody');
     const SelectVereda = document.getElementById('SelectVereda');
@@ -332,7 +332,29 @@ async function getVereda() {
 getVereda();
 
 
+async function validarConfirmacion() {
+    if (document.getElementById('SelectCedula').value == 0) {
+        Swal.fire({
+            title: 'Error',
+            text: 'Seleccione una persona',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+        });
+        return false;
+    }
+    if (document.getElementById('SelectVereda').value == 0) {
+        Swal.fire({
+            title: 'Error',
+            text: 'Seleccione una vereda',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+        });
+        return false;
+    } else {
+        updateData();
 
+    }
+}
 
 
 

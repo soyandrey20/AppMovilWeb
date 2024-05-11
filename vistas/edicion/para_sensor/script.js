@@ -1,4 +1,4 @@
-const URL_API = 'http://192.168.56.1:3000';
+import { API_URL } from '../../config.js'
 
 const userTable = document.getElementById('userTable');
 const tableData = document.getElementById('tableData');
@@ -19,7 +19,7 @@ let dataD = null;
 
 async function getTipoPersona() {
   const xhr = new XMLHttpRequest();
-  xhr.open('GET', `${URL_API}/Tipo_parametro`);
+  xhr.open('GET', `${API_URL}/Tipo_parametro`);
 
   const SelectTipoParametro = document.getElementById('SelectTipoParametro');
   xhr.onload = function () {
@@ -46,7 +46,7 @@ async function getTipoPersona() {
 
 async function getSensor() {
   const xhr = new XMLHttpRequest();
-  xhr.open('GET', `${URL_API}/Tipo_sensor`);
+  xhr.open('GET', `${API_URL}/Tipo_sensor`);
 
   const SelectTipoSensor = document.getElementById('SelectTipoSensor');
 
@@ -80,7 +80,7 @@ getSensor();
 
 async function cargarTabla() {
   try {
-    const response = await fetch(`${URL_API}/parametro_sensor`);
+    const response = await fetch(`${API_URL}/parametro_sensor`);
 
     if (!response.ok) {
       throw new Error(`API request failed with status ${response.status}`);
@@ -192,7 +192,7 @@ async function deleteCiudad() {
 
   const xhr = new XMLHttpRequest();
 
-  xhr.open('PUT', `${URL_API}/DeleteParametro_sensor/${id}`);
+  xhr.open('PUT', `${API_URL}/DeleteParametro_sensor/${id}`);
 
 
   xhr.setRequestHeader('Content-Type', 'application/json');
@@ -244,7 +244,7 @@ async function activateUser() {
 
   const xhr = new XMLHttpRequest();
 
-  xhr.open('PUT', `${URL_API}/DeleteParametro_sensor/${id}`);
+  xhr.open('PUT', `${API_URL}/DeleteParametro_sensor/${id}`);
 
 
   xhr.setRequestHeader('Content-Type', 'application/json');
@@ -292,7 +292,7 @@ async function updateData() {
 
   const xhr = new XMLHttpRequest();
 
-  xhr.open('PUT', `${URL_API}/parametro_sensor/${id}`);
+  xhr.open('PUT', `${API_URL}/parametro_sensor/${id}`);
 
   xhr.setRequestHeader('Content-Type', 'application/json');
 

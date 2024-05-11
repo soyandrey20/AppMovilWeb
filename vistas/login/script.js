@@ -37,7 +37,12 @@ function getUser() {
                 const user = data[i];
 
                 if (UserName.value === '' || Password.value === '') {
-                    alert('Por favor complete los campos');
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Por favor digitar campos vacios',
+                        icon: 'error',
+                        confirmButtonText: 'Aceptar'
+                    });
                     return;
                 }
 
@@ -88,7 +93,7 @@ btnClose.addEventListener('click', function () {
 btnConfirmar.addEventListener('click', function () {
 
     sendEmail();
-     
+
 });
 
 
@@ -102,8 +107,13 @@ async function sendEmail() {
     };
     console.log('data', data);
     if (id === '') {
-        alert('Por favor ingrese su cedula');
-        return;
+        Swal.fire({
+            title: 'Error',
+            text: 'por favor ingrese la cedula',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+        });
+        return false;
     }
 
     const xhr = new XMLHttpRequest();
@@ -111,8 +121,15 @@ async function sendEmail() {
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
-            alert('Correo enviado');
+
             modal1.classList.toggle('translate');
+
+            Swal.fire({
+                title: 'correo enviado',
+                text: 'Por favor revisar el correo electronico registrado en la base de datos',
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+            });
         } else {
             console.error('Error obtener users:', this.statusText);
         }

@@ -1,4 +1,4 @@
-const URL_API = 'http://192.168.1.6:3000';
+import {API_URL} from '../../config'
 
 const userTable = document.getElementById('userTable');
 const tableData = document.getElementById('tableData');
@@ -22,7 +22,7 @@ let dataD = null;
 
 async function cargarTabla() {
     try {
-        const response = await fetch(`${URL_API}/departamento`);
+        const response = await fetch(`${API_URL}/departamento`);
 
         if (!response.ok) {
             throw new Error(`API request failed with status ${response.status}`);
@@ -137,7 +137,7 @@ async function deleteCiudad() {
 
     const xhr = new XMLHttpRequest();
 
-    xhr.open('PUT', `${URL_API}/deleteDepartamento/${id}`);
+    xhr.open('PUT', `${API_URL}/deleteDepartamento/${id}`);
 
 
     xhr.setRequestHeader('Content-Type', 'application/json');
@@ -189,7 +189,7 @@ async function activateUser() {
 
     const xhr = new XMLHttpRequest();
 
-    xhr.open('PUT', `${URL_API}/deleteDepartamento/${id}`);
+    xhr.open('PUT', `${API_URL}/deleteDepartamento/${id}`);
 
 
     xhr.setRequestHeader('Content-Type', 'application/json');
@@ -238,7 +238,7 @@ async function updateData() {
     };
     const xhr = new XMLHttpRequest();
 
-    xhr.open('PUT', `${URL_API}/departamento/${id}`);
+    xhr.open('PUT', `${API_URL}/departamento/${id}`);
 
     xhr.setRequestHeader('Content-Type', 'application/json');
 

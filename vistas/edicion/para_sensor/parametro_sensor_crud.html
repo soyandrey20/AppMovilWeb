@@ -64,36 +64,36 @@
         <div class="position-absolute w-100 top translate" id="modal">
             <form class="form-control w-25"> <!-- Ajusta el ancho del formulario como desees, por ejemplo, w-50 -->
                 <h1 class="text-center">Nuevos datos</h1>
-        
+
                 <div class="form-group mt-4">
                     <input type="text" class="form-control" readonly id="Cedula">
                 </div>
-                
+
                 <div class="form-group mt-4">
                     <select name="TipoParametro" id="SelectTipoParametro" class="form-control">
                         <option value="0">Seleccione un parametro</option>
                     </select>
                     <small class="form-text text-danger"></small>
                 </div>
-        
+
                 <div class="form-group mt-4">
                     <select name="TipoParametro" id="SelectTipoSensor" class="form-control">
                         <option value="0">Seleccione un sensor</option>
                     </select>
                     <small class="form-text text-danger"></small>
                 </div>
-        
+
                 <div class="form-group mt-4">
-                    <input type="text" class="form-control" id="Estado" readonly> 
+                    <input type="text" class="form-control" id="Estado" readonly>
                 </div>
-        
+
                 <div class="form-group text-center mt-4">
                     <button class="btn btn-danger close" id="close">Cancelar</button>
                     <button class="btn btn-primary" id="confirm">Confirmar</button>
                 </div>
             </form>
         </div>
-        
+
 
         <div class="position-absolute w-100 top translate  " id="modal1">
             <form class="form-control w-25 d-flex flex-column align-items-center">
@@ -125,7 +125,7 @@
                 </div>
             </form>
         </div>
-        <script src="script.js"></script>
+        <script src="script.js" type="module"></script>
         <script src="/scripts_compartidos/script.js"></script>
 </body>
 
