@@ -1,4 +1,4 @@
-import { API_URL } from "../../config";
+import { API_URL } from "../../config.js";
 
 const userTable = document.getElementById('userTable');
 const tableData = document.getElementById('tableData');
@@ -19,6 +19,8 @@ const btnActivate = document.getElementById('activate')
 const btnCancelar1 = document.getElementById('cancelar1')
 let count = 0;
 let dataD = null;
+
+const veredas = [];
 /** ---------------------------------------------------------- cargar la tabla con sus datos */
 async function cargarTabla() {
     try {
@@ -121,47 +123,60 @@ btnEliminar.addEventListener('click', deleteCiudad);
 
 async function deleteCiudad() {
 
-    const id = dataD[0].textContent;
+    let opt = validarCiudadActivo();
+    if (!opt) {
+        Swal.fire({
+            title: 'Error',
+            text: 'No se puede eliminar la ciudad porque tiene veredas asociadas.',
+            icon: 'error'
+        });
 
-    const estado = false;
-    const data = {
-        id,
-        estado
-    };
-
-
-    const xhr = new XMLHttpRequest();
-
-    xhr.open('PUT', `${API_URL}/DeleteCiudad/${id}`);
+         modal1.classList.toggle('translate');
+    } else {
 
 
-    xhr.setRequestHeader('Content-Type', 'application/json');
+        const id = dataD[0].textContent;
 
-    xhr.onload = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            const data = JSON.parse(this.response);
-            console.log(data);
+        const estado = false;
+        const data = {
+            id,
+            estado
+        };
 
-            Swal.fire({
-                title: '¡Éxito!',
-                text: 'Usuario desactivado correctamente.',
-                icon: 'success'
-            });
 
-            cargarTabla();
+        const xhr = new XMLHttpRequest();
 
-            modal1.classList.toggle('translate');
-        } else {
-            console.log(this.status);
-            Swal.fire({
-                title: 'Error',
-                text: 'Ocurrió un error al desactivar el usuario.',
-                icon: 'error'
-            });
-        }
-    };
-    xhr.send(JSON.stringify(data));
+        xhr.open('PUT', `${API_URL}/DeleteCiudad/${id}`);
 
+
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.onload = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                const data = JSON.parse(this.response);
+                console.log(data);
+
+                Swal.fire({
+                    title: '¡Éxito!',
+                    text: 'Usuario desactivado correctamente.',
+                    icon: 'success'
+                });
+
+                cargarTabla();
+
+                modal1.classList.toggle('translate');
+            } else {
+                console.log(this.status);
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Ocurrió un error al desactivar el usuario.',
+                    icon: 'error'
+                });
+            }
+        };
+        xhr.send(JSON.stringify(data));
+
+    }
 }
 
 /** ---------------------------------------------------------- activar usuario */
@@ -309,7 +324,27 @@ async function getDepart() {
 getDepart();
 
 
+function getVeredas() {
+    fetch(`${API_URL}/vereda`)
+        .then(response => response.json())
+        .then(data => {
+            veredas.push(...data);
+        })
+        .catch(error => console.error('Error obteniendo veredas:', error));
+}
 
+getVeredas();
+
+function validarCiudadActivo() {
+    let opt = true;
+    for (let i = 0; i < veredas.length; i++) {
+        if (veredas[i].id == dataD[0].textContent) {
+            opt = false;
+            break;
+        }
+    }
+    return opt;
+}
 
 
 

@@ -5,11 +5,11 @@ const tpPersona = [];
 
 
 async function addTp_persona() {
-    const nombre = document.getElementById('tp_persona').value;
+    const descripcion = document.getElementById('tp_persona').value;
     const estado = true;
 
     const data = {
-        nombre: nombre,
+        descripcion: descripcion,
         estado: estado
     };
 
@@ -81,3 +81,8 @@ function validarTp_persona() {
     }
     addTp_persona();
 }
+
+const btnSetings = document.getElementById('btnSetings');
+btnSetings.addEventListener('click', () => {
+    window.location.href = `/vistas/edicion/tipo_personas/tp_personas_crud.html`;
+});

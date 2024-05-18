@@ -19,7 +19,7 @@ const btnCancelar1 = document.getElementById('cancelar1')
 let count = 0;
 let dataD = null;
 
-
+const fincas = [];
 
 async function getTipoPersona() {
   const xhr = new XMLHttpRequest();
@@ -121,7 +121,7 @@ window.addEventListener('click', async (e) => {
 
 });
 
-btnEliminar.addEventListener('click', deleteCiudad);
+btnEliminar.addEventListener('click', deactivateUser);
 
 btnCancelar.addEventListener('click', () => {
 
@@ -203,45 +203,59 @@ async function updateData() {
 
 
 
-async function deleteCiudad() {
+async function deactivateUser() {
 
-  const cedula = dataD[0].textContent;
+  let opt = validarFincasActivas();
 
-  const Estado = false;
-  const data = {
-    cedula,
-    Estado
-  };
+  if (!opt) {
+    Swal.fire({
+      title: 'Error',
+      text: 'No se puede desactivar el usuario, tiene fincas activas',
+      icon: 'error',
+      confirmButtonText: 'Aceptar'
+    });
+    modal1.classList.toggle('translate');
+  } else {
 
 
-  const xhr = new XMLHttpRequest();
+    const cedula = dataD[0].textContent;
 
-  xhr.open('PUT', `${API_URL}/DeleteUsuarios/${Cedula}`);
+    const Estado = false;
+    const data = {
+      cedula,
+      Estado
+    };
 
 
-  xhr.setRequestHeader('Content-Type', 'application/json');
+    const xhr = new XMLHttpRequest();
 
-  xhr.onload = function () {
-    if (this.readyState === 4 && this.status === 200) {
-      const data = JSON.parse(this.response);
-      console.log(data);
+    xhr.open('PUT', `${API_URL}/DeleteUsuarios/${cedula}`);
 
-      Swal.fire({
-        title: 'Usuario desactivado',
-        text: 'Usuario desactivado correctamente',
-        icon: 'success',
-        confirmButtonText: 'Aceptar'
-      });
-      cargarTabla();
 
-      modal1.classList.toggle('translate');
-    } else {
-      console.log(this.status);
-      console.error('Error fetching users:', this.statusText);
-    }
-  };
-  xhr.send(JSON.stringify(data));
+    xhr.setRequestHeader('Content-Type', 'application/json');
 
+    xhr.onload = function () {
+      if (this.readyState === 4 && this.status === 200) {
+        const data = JSON.parse(this.response);
+        console.log(data);
+
+        Swal.fire({
+          title: 'Usuario desactivado',
+          text: 'Usuario desactivado correctamente',
+          icon: 'success',
+          confirmButtonText: 'Aceptar'
+        });
+        cargarTabla();
+
+        modal1.classList.toggle('translate');
+      } else {
+        console.log(this.status);
+        console.error('Error fetching users:', this.statusText);
+      }
+    };
+    xhr.send(JSON.stringify(data));
+
+  }
 }
 
 async function activateUser() {
@@ -257,7 +271,7 @@ async function activateUser() {
 
   const xhr = new XMLHttpRequest();
 
-  xhr.open('PUT', `${API_URL}/DeleteUsuarios/${Cedula}`);
+  xhr.open('PUT', `${API_URL}/DeleteUsuarios/${cedula}`);
 
 
   xhr.setRequestHeader('Content-Type', 'application/json');
@@ -297,3 +311,29 @@ btnClose.addEventListener('click', () => {
 
 
 btnConfirm.addEventListener('click', updateData);
+
+
+function getFincas() {
+  fetch(`${API_URL}/fincas`)
+    .then(response => response.json())
+    .then(data => {
+      fincas.push(...data);
+    })
+    .catch(error => console.error('Error obteniendo veredas:', error));
+}
+
+getFincas();
+
+
+function validarFincasActivas() {
+  let opt = true;
+
+  for (let i = 0; i < fincas.length; i++) {
+
+    if (fincas[i].id_persona == dataD[0].textContent) {
+      opt = false;
+      break;
+    }
+  }
+  return opt;
+}

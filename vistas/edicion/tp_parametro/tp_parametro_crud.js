@@ -19,6 +19,7 @@ const btnCancelar1 = document.getElementById('cancelar1')
 let count = 0;
 let dataD = null;
 
+const parametros = [];
 
 async function cargarTabla() {
     try {
@@ -124,50 +125,64 @@ btnEliminar.addEventListener('click', deleteCiudad);
 
 async function deleteCiudad() {
 
-    const id = dataD[0].textContent;
+    let opt = validarTpParamaActivo();
 
-    const estado = false;
-    const data = {
-        id,
-        estado
-    };
+    if (!opt) {
+        Swal.fire({
+            title: 'Error',
+            text: 'No se puede desactivar el tipo de parametro ya que esta en uso',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+        });
+        modal1.classList.toggle('translate');
+    } else {
+
+        const id = dataD[0].textContent;
 
 
-    const xhr = new XMLHttpRequest();
+        const estado = false;
+        const data = {
+            id,
+            estado
+        };
 
-    xhr.open('PUT', `${API_URL}/DeleteTipo_parametro/${id}`);
+
+        const xhr = new XMLHttpRequest();
+
+        xhr.open('PUT', `${API_URL}/DeleteTipo_parametro/${id}`);
 
 
-    xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('Content-Type', 'application/json');
 
-    xhr.onload = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            const data = JSON.parse(this.response);
-            console.log(data);
+        xhr.onload = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                const data = JSON.parse(this.response);
+                console.log(data);
 
-            Swal.fire({
-                icon: 'success',
-                title: 'Usuario desactivado',
-                text: 'Usuario desactivado correctamente',
-                confirmButtonText: `Aceptar`,
-            });
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Usuario desactivado',
+                    text: 'Usuario desactivado correctamente',
+                    confirmButtonText: `Aceptar`,
+                });
 
-            cargarTabla();
+                cargarTabla();
 
-            modal1.classList.toggle('translate');
-        } else {
-            console.log(this.status);
-            console.error('Error fetching users:', this.statusText);
-            Swal.fire({
-                title: 'Error',
-                text: 'No se ha podido desactivar el tipo de parametro',
-                icon: 'error',
-                confirmButtonText: 'Aceptar'
-            });
-        }
-    };
-    xhr.send(JSON.stringify(data));
+                modal1.classList.toggle('translate');
+            } else {
+                console.log(this.status);
+                console.error('Error fetching users:', this.statusText);
+                Swal.fire({
+                    title: 'Error',
+                    text: 'No se ha podido desactivar el tipo de parametro',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                });
+            }
+        };
+        xhr.send(JSON.stringify(data));
 
+    }
 }
 
 /** ---------------------------------------------------------- activar usuario */
@@ -268,5 +283,30 @@ async function updateData() {
         }
     };
     xhr.send(JSON.stringify(data));
+
+}
+
+function getParametros() {
+    fetch(`${API_URL}/parametro`)
+        .then(response => response.json())
+        .then(data => {
+            parametros.push(...data);
+        });
+}
+
+getParametros();
+
+
+function validarTpParamaActivo() {
+    let opt = true;
+    for (let i = 0; i < parametros.length; i++) {
+
+        if (parametros[i].id_Tp_Parametro == dataD[0].textContent) {
+
+            opt = false;
+        }
+    }
+
+    return opt;
 
 }

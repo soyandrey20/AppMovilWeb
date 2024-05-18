@@ -4,7 +4,6 @@ const userTable = document.getElementById('userTable');
 const tableData = document.getElementById('tableData');
 
 
-
 const inputs = document.querySelectorAll('input');
 
 const modal = document.getElementById('modal');
@@ -20,11 +19,13 @@ const btnCancelar1 = document.getElementById('cancelar1')
 let count = 0;
 let dataD = null;
 
-const sensores = [];
+
+const personas = [];
+
 
 async function cargarTabla() {
     try {
-        const response = await fetch(`${API_URL}/tipo_sensor`);
+        const response = await fetch(`${API_URL}/Tipo_persona`);
 
         if (!response.ok) {
             throw new Error(`API request failed with status ${response.status}`);
@@ -38,20 +39,20 @@ async function cargarTabla() {
             const tableRow = document.createElement('tr');
 
             tableRow.innerHTML = `
-        <td id="id">${user.Id}</td>
-        <td id="Descripcion" disabled>${user.Descripcion}</td>
-  
+        <td id="id">${user.id}</td>
+        <td id="id_persona" disabled>${user.descripcion}</td>
+    
         <td id="estado" disabled>${user.estado}</td>
   
         <td>
         <a href="#" class="btn-update"><i class='bx bxs-edit-alt'></i></a>
         <a href="#" class="btn-delete"><i class='bx bxs-trash-alt'></i></a> 
         <a href="#" class="btn-activate"><i class='bx bxs-check-circle'></i></a>
-          
         </td>
       `;
 
             tableData.appendChild(tableRow);
+
 
         });
     } catch (error) {
@@ -59,15 +60,12 @@ async function cargarTabla() {
     }
 }
 window.addEventListener('DOMContentLoaded', cargarTabla);
-/**
- * --------------------- V O L V E R ---------------------
- */
 
+/**------------------------------------------------volver atras----------------------------------------- */
 const btnBack = document.getElementById('back');
 btnBack.addEventListener('click', () => {
-    window.location.href = `/vistas/sensor/tipo_sensor.html`;
+    window.location.href = `/vistas/personas/tipo_persona.html`;
 });
-
 
 
 /** ---------------------------------------------------------- abrir modal */
@@ -129,19 +127,17 @@ btnEliminar.addEventListener('click', deleteCiudad);
 
 async function deleteCiudad() {
 
-
-    let opt = validarTpSensorActivo();
-
+    let opt = validarTpPersonaActiva();
     if (!opt) {
-        swal.fire({
-            icon: 'error',
+        Swal.fire({
             title: 'Error',
-            text: 'No se puede eliminar el tipo de sensor, ya que esta en uso',
+            text: 'No se puede desactivar el tipo de persona porque esta siendo usado',
+            icon: 'error',
             confirmButtonText: 'Aceptar'
         });
         modal1.classList.toggle('translate');
-    } else {
-
+    }
+    else {
         const id = dataD[0].textContent;
 
         const estado = false;
@@ -153,7 +149,7 @@ async function deleteCiudad() {
 
         const xhr = new XMLHttpRequest();
 
-        xhr.open('PUT', `${API_URL}/DeleteTipo_sensor/${id}`);
+        xhr.open('PUT', `${API_URL}/deleteTipo_persona/${id}`);
 
 
         xhr.setRequestHeader('Content-Type', 'application/json');
@@ -165,10 +161,11 @@ async function deleteCiudad() {
 
                 Swal.fire({
                     icon: 'success',
-                    title: 'tipo de sensor desactivado    ',
-                    text: 'tipo de sensor desactivado correctamente',
-                    confirmButtonText: 'Aceptar'
+                    title: 'Usuario desactivado',
+                    text: 'Usuario desactivado correctamente',
+                    confirmButtonText: `Aceptar`,
                 });
+
                 cargarTabla();
 
                 modal1.classList.toggle('translate');
@@ -177,7 +174,7 @@ async function deleteCiudad() {
                 console.error('Error fetching users:', this.statusText);
                 Swal.fire({
                     title: 'Error',
-                    text: 'Error al desactivar el tipo de sensor',
+                    text: 'No se ha podido desactivar el tipo de persona',
                     icon: 'error',
                     confirmButtonText: 'Aceptar'
                 });
@@ -208,7 +205,7 @@ async function activateUser() {
 
     const xhr = new XMLHttpRequest();
 
-    xhr.open('PUT', `${API_URL}/DeleteTipo_sensor/${id}`);
+    xhr.open('PUT', `${API_URL}/deleteTipo_persona/${id}`);
 
 
     xhr.setRequestHeader('Content-Type', 'application/json');
@@ -218,9 +215,9 @@ async function activateUser() {
             const data = JSON.parse(this.response);
             console.log(data);
             Swal.fire({
+                title: 'tipo de persona activado  ',
+                text: 'El tipo de persona ha sido activado correctamente',
                 icon: 'success',
-                title: 'tipo de sensor activado',
-                text: 'tipo de sensor activado correctamente',
                 confirmButtonText: 'Aceptar'
             });
             cargarTabla();
@@ -231,7 +228,7 @@ async function activateUser() {
             console.error('Error fetching users:', this.statusText);
             Swal.fire({
                 title: 'Error',
-                text: 'No se ha podido activar el tipo de sensor',
+                text: 'No se ha podido activar el tipo de persona',
                 icon: 'error',
                 confirmButtonText: 'Aceptar'
             });
@@ -246,18 +243,18 @@ async function activateUser() {
 
 async function updateData() {
     const id = inputs[0].value;
-    const Descripcion = inputs[1].value;
+    const descripcion = inputs[1].value;
 
 
     const estado = inputs[2].value;
     const data = {
         id,
-        Descripcion,
+        descripcion,
         estado
     };
     const xhr = new XMLHttpRequest();
 
-    xhr.open('PUT', `${API_URL}/tipo_sensor/${id}`);
+    xhr.open('PUT', `${API_URL}/Tipo_persona/${id}`);
 
     xhr.setRequestHeader('Content-Type', 'application/json');
 
@@ -267,9 +264,9 @@ async function updateData() {
             console.log(datad);
 
             Swal.fire({
+                title: 'tipo de persona actualizado',
+                text: 'El tipo de persona ha sido actualizado correctamente',
                 icon: 'success',
-                title: 'tipo de sensor actualizado',
-                text: 'tipo de sensor actualizado correctamente',
                 confirmButtonText: 'Aceptar'
             });
             cargarTabla();
@@ -278,8 +275,8 @@ async function updateData() {
             console.log(this.status);
             console.error('Error fetching users:', this.statusText);
             Swal.fire({
-                title: 'Error',
-                text: 'No se ha podido actualizar el tipo de sensor',
+                title: 'Error al actualizar tipo de persona',
+                text: 'Ha ocurrido un error al actualizar el tipo de persona',
                 icon: 'error',
                 confirmButtonText: 'Aceptar'
             });
@@ -289,28 +286,25 @@ async function updateData() {
 
 }
 
-function getSensor() {
-    fetch(`${API_URL}/sensor`)
+function getpersonas() {
+    fetch(`${API_URL}/persona`)
         .then(response => response.json())
         .then(data => {
-            sensores.push(...data);
+            personas.push(...data);
         });
 }
 
-getSensor();
+getpersonas();
 
-
-function validarTpSensorActivo() {
+function validarTpPersonaActiva() {
     let opt = true;
-    for (let i = 0; i < sensores.length; i++) {
+    for (let i = 0; i < personas.length; i++) {
 
-        if (sensores[i].id_tp_sensor == dataD[0].textContent) {
+        if (personas[i].id_tipo_persona == dataD[0].textContent) {
 
             opt = false;
         }
     }
 
     return opt;
-
-
 }

@@ -19,6 +19,7 @@ const btnCancelar1 = document.getElementById('cancelar1')
 let count = 0;
 let dataD = null;
 
+const para_sensores = [];
 
 async function cargarTabla() {
     try {
@@ -120,49 +121,61 @@ btnEliminar.addEventListener('click', deleteCiudad);
 
 async function deleteCiudad() {
 
-    const id = dataD[0].textContent;
+    let opt = validarParaSensor();
+    if (!opt) {
+        Swal.fire({
+            title: 'Error',
+            text: 'No se puede eliminar el sensor, tiene parametros asociados',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+        });
+        modal1.classList.toggle('translate');
+    } else {
 
-    const estado = false;
-    const data = {
-        id,
-        estado
-    };
+        const id = dataD[0].textContent;
+
+        const estado = false;
+        const data = {
+            id,
+            estado
+        };
 
 
-    const xhr = new XMLHttpRequest();
+        const xhr = new XMLHttpRequest();
 
-    xhr.open('PUT', `${API_URL}/deleteSensor/${id}`);
+        xhr.open('PUT', `${API_URL}/deleteSensor/${id}`);
 
 
-    xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('Content-Type', 'application/json');
 
-    xhr.onload = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            const data = JSON.parse(this.response);
-            console.log(data);
-            Swal.fire({
-                title: 'Sensor desactivado',
-                text: 'El sensor ha sido desactivado correctamente',
-                icon: 'success',
-                confirmButtonText: 'Aceptar'
-            });
-            cargarTabla();
+        xhr.onload = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                const data = JSON.parse(this.response);
+                console.log(data);
+                Swal.fire({
+                    title: 'Sensor desactivado',
+                    text: 'El sensor ha sido desactivado correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar'
+                });
+                cargarTabla();
 
-            modal1.classList.toggle('translate');
-        } else {
-            console.log(this.status);
-            console.error('Error fetching users:', this.statusText);
-            Swal.fire({
-                title: 'Error al desactivar sensor',
-                text: 'Ha ocurrido un error al desactivar el sensor',
-                icon: 'error',
-                confirmButtonText: 'Aceptar'
-            });
+                modal1.classList.toggle('translate');
+            } else {
+                console.log(this.status);
+                console.error('Error fetching users:', this.statusText);
+                Swal.fire({
+                    title: 'Error al desactivar sensor',
+                    text: 'Ha ocurrido un error al desactivar el sensor',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                });
 
-        }
-    };
-    xhr.send(JSON.stringify(data));
+            }
+        };
+        xhr.send(JSON.stringify(data));
 
+    }
 }
 
 /** ---------------------------------------------------------- activar usuario */
@@ -276,7 +289,7 @@ async function getTpsensor() {
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
             const data = JSON.parse(this.response);
-            listaTpSensores = data;
+
             console.log(data);
             for (let i = 0; i < data.length; i++) {
                 const sensor = data[i];
@@ -295,3 +308,25 @@ async function getTpsensor() {
 }
 
 getTpsensor();
+
+function getParaSensor() {
+    fetch(`${API_URL}/parametro_sensor`)
+        .then(response => response.json())
+        .then(data => {
+            para_sensores.push(...data);
+        });
+}
+getParaSensor();
+
+function validarParaSensor() {
+    let opt = true;
+    for (let i = 0; i < para_sensores.length; i++) {
+
+        if (para_sensores[i].id_sensor == dataD[0].textContent) {
+
+            opt = false;
+        }
+    }
+
+    return opt;
+}

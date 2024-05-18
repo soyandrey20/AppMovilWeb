@@ -19,6 +19,8 @@ const btnCancelar1 = document.getElementById('cancelar1')
 let count = 0;
 let dataD = null;
 
+const personas = [];
+
 /** ---------------------------------------------------------- cargar la tabla con sus datos */
 async function cargarTabla() {
     try {
@@ -356,5 +358,17 @@ async function validarConfirmacion() {
     }
 }
 
+/** ---------------------------------------------------------- */
+function getPersonas() {
+    fetch(`${API_URL}/Persona`)
+        .then(response => response.json())
+        .then(data => {
+            personas.push(...data);
+        })
+        .catch(error => console.error('Error obteniendo personas:', error));
+}
+getPersonas();
+
+ 
 
 

@@ -1,4 +1,4 @@
- import { API_URL } from '../../utils/api.js';
+import { API_URL } from '../config.js';
 
 const parametro = [];
 
@@ -7,19 +7,12 @@ async function getParametro() {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', `${API_URL}/parametro`);
 
-    const SelectParametro = document.getElementById('SelectParametro');
+
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
             const data = JSON.parse(this.response);
             console.log(data);
-            for (let i = 0; i < data.length; i++) {
-                const parametro = data[i];
-                const option = document.createElement('option');
-                option.value = parametro.Id;
-                option.innerText = parametro.Id;
-                SelectParametro.appendChild(option);
-
-            }
+            parametro.push(...data);
         } else {
             console.error('Error fetching users:', this.statusText);
         }
@@ -74,14 +67,14 @@ async function addParametro() {
     xhr.setRequestHeader('Content-Type', 'application/json');
 
     xhr.onload = function () {
-        if (this.readyState === 4 && this.status === 201) {
+
+        if (this.readyState === 4 && this.status === 200) {
             Swal.fire({
                 title: 'Parametro creado',
                 text: 'El parametro ha sido creado correctamente',
                 icon: 'success',
                 confirmButtonText: 'Aceptar'
             });
-            window.location.href = window.location.href;
         } else {
             console.error('Error fetching users:', this.statusText);
             Swal.fire({
@@ -113,7 +106,7 @@ async function validarParametro() {
     const SelectTipoParametro = document.getElementById('SelectTipoParametro').value;
 
     if (RangoSuperior === '' || RangoInferior === '' || SelectTipoParametro === '') {
-       Swal.fire({
+        Swal.fire({
             title: 'Error',
             text: 'Todos los campos son obligatorios',
             icon: 'error',

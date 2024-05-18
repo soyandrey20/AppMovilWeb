@@ -1,4 +1,4 @@
-import {API_URL} from '../../config'
+import { API_URL } from '../../config.js'
 
 const userTable = document.getElementById('userTable');
 const tableData = document.getElementById('tableData');
@@ -19,6 +19,7 @@ const btnCancelar1 = document.getElementById('cancelar1')
 let count = 0;
 let dataD = null;
 
+const ciudades = [];
 
 async function cargarTabla() {
     try {
@@ -122,53 +123,64 @@ const fillData = (data1) => {
 }
 
 /** ---------------------------------------------------------- eliminar usuario */
-btnEliminar.addEventListener('click', deleteCiudad);
+btnEliminar.addEventListener('click', deleteDepartamento);
 
-async function deleteCiudad() {
+async function deleteDepartamento() {
 
-    const id = dataD[0].textContent;
-
-    const estado = false;
-    const data = {
-        id,
-        estado
-    };
-
-
-    const xhr = new XMLHttpRequest();
-
-    xhr.open('PUT', `${API_URL}/deleteDepartamento/${id}`);
+    let opt = validarDepartActivo();
+    if (opt == false) {
+        Swal.fire({
+            title: 'Error',
+            text: 'El departamento no se puede desactivar porque tiene ciudades asociadas',
+            icon: 'error'
+        });
+        modal1.classList.toggle('translate'); 
+    } else {
 
 
-    xhr.setRequestHeader('Content-Type', 'application/json');
+        const id = dataD[0].textContent;
 
-    xhr.onload = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            const data = JSON.parse(this.response);
-            console.log(data);
+        const estado = false;
+        const data = {
+            id,
+            estado
+        };
 
-            Swal.fire({
-                title: '¡Éxito!',
-                text: 'Usuario desactivado correctamente.',
-                icon: 'success'
-            });
-            cargarTabla();
 
-            modal1.classList.toggle('translate');
-        } else {
-            console.log(this.status);
-            console.error('Error fetching users:', this.statusText);
-            Swal.fire({
-                title: 'Error',
-                text: 'Ocurrió un error al desactivar el departamento.',
-                icon: 'error'
-            });
-        }
-    };
-    xhr.send(JSON.stringify(data));
+        const xhr = new XMLHttpRequest();
 
+        xhr.open('PUT', `${API_URL}/deleteDepartamento/${id}`);
+
+
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.onload = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                const data = JSON.parse(this.response);
+                console.log(data);
+
+                Swal.fire({
+                    title: '¡Éxito!',
+                    text: 'Usuario desactivado correctamente.',
+                    icon: 'success'
+                });
+                cargarTabla();
+
+                modal1.classList.toggle('translate');
+            } else {
+                console.log(this.status);
+                console.error('Error fetching users:', this.statusText);
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Ocurrió un error al desactivar el departamento.',
+                    icon: 'error'
+                });
+            }
+        };
+        xhr.send(JSON.stringify(data));
+
+    }
 }
-
 /** ---------------------------------------------------------- activar usuario */
 
 
@@ -268,4 +280,29 @@ async function updateData() {
 
 }
 
+
+// /** ---------------------------------------------------------- Validar campos */
+getCiudad();
+function getCiudad() {
+    fetch(`${API_URL}/ciudad`)
+        .then(response => response.json())
+        .then(data => {
+            ciudades.push(...data);
+        })
+        .catch(error => console.error('Error obteniendo ciudades:', error));
+}
+
+function validarDepartActivo() {
+    let opt = true;
+    for (let i = 0; i < ciudades.length; i++) {
+
+        if (ciudades[i].id_departamento == dataD[0].textContent) {
+    
+            opt = false;
+        }
+    }
+
+    return opt;
+
+}
 

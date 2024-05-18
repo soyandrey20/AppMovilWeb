@@ -453,7 +453,9 @@ body {
 .frontside .card,
 .backside .card {
     min-height: 312px;
+   
 }
+
 
 .backside .card a {
     font-size: 18px;

@@ -46,7 +46,7 @@ async function getTipoPersona() {
 
 async function getSensor() {
   const xhr = new XMLHttpRequest();
-  xhr.open('GET', `${API_URL}/Tipo_sensor`);
+  xhr.open('GET', `${API_URL}/sensor`);
 
   const SelectTipoSensor = document.getElementById('SelectTipoSensor');
 
@@ -61,7 +61,7 @@ async function getSensor() {
 
         const option = document.createElement('option');
         option.value = sensor.Id;
-        option.innerText = sensor.Descripcion;
+        option.innerText = sensor.informacion;
         SelectTipoSensor.appendChild(option);
 
       }

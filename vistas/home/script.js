@@ -34,8 +34,13 @@ const optPara = document.getElementById('optPara');
 const optTpPara = document.getElementById('optTpPara');
 const optSensor = document.getElementById('optSensor');
 const optTpSensor = document.getElementById('optTpSensor');
+const optTpPersona = document.getElementById('optTpPersona');
 const logout = document.getElementById('logout');
 const ver = document.getElementById('ver');
+
+optTpPersona.addEventListener('click', () => {
+    window.location.href = `/vistas/personas/tipo_persona.html`;
+});
 
 
 optusuario.addEventListener('click', () => {

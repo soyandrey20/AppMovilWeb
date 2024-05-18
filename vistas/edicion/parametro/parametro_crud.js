@@ -18,6 +18,8 @@ const btnCancelar1 = document.getElementById('cancelar1')
 let count = 0;
 let dataD = null;
 
+const para_sensores = [];
+
 
 async function cargarTabla() {
     try {
@@ -125,51 +127,65 @@ btnEliminar.addEventListener('click', deleteCiudad);
 
 async function deleteCiudad() {
 
-    const id = dataD[0].textContent;
 
-    const estado = false;
-    const data = {
-        id,
-        estado
-    };
+    let opt = validarParaSensor();
+
+    if (!opt) {
+        Swal.fire({
+            title: 'Error',
+            text: 'No se puede eliminar el parametro porque esta asociado a un sensor',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+        });
+        modal1.classList.toggle('translate');
+    } else {
 
 
-    const xhr = new XMLHttpRequest();
+        const id = dataD[0].textContent;
 
-    xhr.open('PUT', `${API_URL}/DeleteParametro/${id}`);
+        const estado = false;
+        const data = {
+            id,
+            estado
+        };
 
 
-    xhr.setRequestHeader('Content-Type', 'application/json');
+        const xhr = new XMLHttpRequest();
 
-    xhr.onload = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            const data = JSON.parse(this.response);
-            console.log(data);
+        xhr.open('PUT', `${API_URL}/DeleteParametro/${id}`);
 
-            Swal.fire({
-                icon: 'success',
-                title: 'Parametro desactivado correctamente',
-                showConfirmButton: false,
-                timer: 1500
-            });
-            cargarTabla();
 
-            modal1.classList.toggle('translate');
-        } else {
-            console.log(this.status);
-            console.error('Error fetching users:', this.statusText);
-            Swal.fire({
-                title: 'Error',
-                text: 'No se pudo desactivar el parametro',
-                icon: 'error',
-                confirmButtonText: 'Aceptar'
-            });
-        }
-    };
-    xhr.send(JSON.stringify(data));
+        xhr.setRequestHeader('Content-Type', 'application/json');
 
+        xhr.onload = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                const data = JSON.parse(this.response);
+                console.log(data);
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Parametro desactivado correctamente',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                cargarTabla();
+
+                modal1.classList.toggle('translate');
+            } else {
+                console.log(this.status);
+                console.error('Error fetching users:', this.statusText);
+                Swal.fire({
+                    title: 'Error',
+                    text: 'No se pudo desactivar el parametro',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                });
+            }
+        };
+        xhr.send(JSON.stringify(data));
+
+    }
 }
-
 /** ---------------------------------------------------------- activar usuario */
 
 
@@ -296,3 +312,26 @@ async function getTpParametro() {
 }
 
 getTpParametro();
+
+
+function getParaSensor() {
+    fetch(`${API_URL}/parametro_sensor`)
+        .then(response => response.json())
+        .then(data => {
+            para_sensores.push(...data);
+        });
+}
+getParaSensor();
+
+function validarParaSensor() {
+    let opt = true;
+    for (let i = 0; i < para_sensores.length; i++) {
+
+        if (para_sensores[i].id_sensor == dataD[0].textContent) {
+
+            opt = false;
+        }
+    }
+
+    return opt;
+}

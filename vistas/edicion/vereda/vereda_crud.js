@@ -18,6 +18,8 @@ const btnCancelar1 = document.getElementById('cancelar1')
 let count = 0;
 let dataD = null;
 
+const fincas = [];
+
 async function cargarTabla() {
     try {
         const response = await fetch(`${API_URL}/Vereda`);
@@ -123,48 +125,60 @@ btnEliminar.addEventListener('click', deleteCiudad);
 
 async function deleteCiudad() {
 
-    const id = dataD[0].textContent;
+    let opt = validarVeredaActivo();
+    if (!opt) {
+        Swal.fire({
+            title: 'Error',
+            text: 'No se puede eliminar la vereda porque hay una finca activa',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+        });
+        modal1.classList.toggle('translate');
+    } else {
 
-    const estado = false;
-    const data = {
-        id,
-        estado
-    };
+        const id = dataD[0].textContent;
+
+        const estado = false;
+        const data = {
+            id,
+            estado
+        };
 
 
-    const xhr = new XMLHttpRequest();
+        const xhr = new XMLHttpRequest();
 
-    xhr.open('PUT', `${API_URL}/deleteVereda/${id}`);
+        xhr.open('PUT', `${API_URL}/deleteVereda/${id}`);
 
 
-    xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('Content-Type', 'application/json');
 
-    xhr.onload = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            const data = JSON.parse(this.response);
-            console.log(data);
-            Swal.fire({
-                title: 'vereda desactivada',
-                text: 'vereda desactivada correctamente',
-                icon: 'success',
-                confirmButtonText: 'Aceptar'
-            });
-            cargarTabla();
+        xhr.onload = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                const data = JSON.parse(this.response);
+                console.log(data);
+                Swal.fire({
+                    title: 'vereda desactivada',
+                    text: 'vereda desactivada correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar'
+                });
+                cargarTabla();
 
-            modal1.classList.toggle('translate');
-        } else {
-            console.log(this.status);
-            console.error('Error fetching users:', this.statusText);
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Error al desactivar la vereda',
-                confirmButtonText: 'Aceptar'
-            });
-        }
-    };
-    xhr.send(JSON.stringify(data));
+                modal1.classList.toggle('translate');
+            } else {
+                console.log(this.status);
+                console.error('Error fetching users:', this.statusText);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error al desactivar la vereda',
+                    confirmButtonText: 'Aceptar'
+                });
+            }
+        };
+        xhr.send(JSON.stringify(data));
 
+    }
 }
 
 /** ---------------------------------------------------------- activar usuario */
@@ -296,3 +310,24 @@ async function getCiudad() {
 }
 
 getCiudad();
+
+function getFincas() {
+    fetch(`${API_URL}/fincas`)
+        .then(response => response.json())
+        .then(data => {
+            fincas.push(...data);
+        })
+        .catch(error => console.error('Error obteniendo fincas:', error));
+}
+getFincas();
+
+function validarVeredaActivo() {
+    let opt = true;
+    for (let i = 0; i < fincas.length; i++) {
+        if (fincas[i].id == dataD[0].textContent) {
+            opt = false;
+            break;
+        }
+    }
+    return opt;
+}
