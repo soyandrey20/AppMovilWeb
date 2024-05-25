@@ -199,8 +199,8 @@ async function deleteCiudad() {
 
   xhr.onload = function () {
     if (this.readyState === 4 && this.status === 200) {
-      const data = JSON.parse(this.response);
-      console.log(data);
+      
+      
       Swal.fire({
         title: 'Parametro sensor desactivado correctamente',
         icon: 'success',
@@ -251,8 +251,7 @@ async function activateUser() {
 
   xhr.onload = function () {
     if (this.readyState === 4 && this.status === 200) {
-      const data = JSON.parse(this.response);
-      console.log(data);
+
       Swal.fire({
         title: 'Parametro sensor activado correctamente',
         icon: 'success',
@@ -262,8 +261,7 @@ async function activateUser() {
 
       modal2.classList.toggle('translate');
     } else {
-      console.log(this.status);
-      console.error('Error fetching users:', this.statusText);
+
       Swal.fire({
         title: 'Error al activar el parametro sensor',
         icon: 'error',
@@ -296,11 +294,9 @@ async function updateData() {
 
   xhr.setRequestHeader('Content-Type', 'application/json');
 
-  xhr.onload = function () {
+  xhr.onload = async function () {
     if (this.readyState === 4 && this.status === 200) {
-      const datad = JSON.parse(this.response);
-      console.log(datad);
-
+ 
       Swal.fire({
         title: 'Parametro sensor actualizado correctamente',
         icon: 'success',
@@ -309,8 +305,7 @@ async function updateData() {
       cargarTabla();
       modal.classList.toggle('translate');
     } else {
-      console.log(this.status);
-      console.error('Error fetching users:', this.statusText);
+
       Swal.fire({
         title: 'Error al actualizar el parametro sensor',
         icon: 'error',
@@ -319,6 +314,7 @@ async function updateData() {
     }
   };
   xhr.send(JSON.stringify(data));
-
+  
+  
 }
 

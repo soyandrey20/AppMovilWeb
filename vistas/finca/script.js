@@ -22,7 +22,7 @@ async function getFincas() {
 async function getUsuarios() {
 
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', `${API_URL}/Usuarios`);
+    xhr.open('GET', `${API_URL}/persona`);
     xhr.setRequestHeader('Content-Type', 'application/json');
 
     const SelectCedula = document.getElementById('SelectCedula');
@@ -33,8 +33,8 @@ async function getUsuarios() {
             for (let i = 0; i < usuarios.length; i++) {
                 const usuario = usuarios[i];
                 const option = document.createElement('option');
-                option.value = usuario.Cedula;
-                option.innerText = usuario.Cedula;
+                option.value = usuario.cedula;
+                option.innerText = usuario.Nombre_1 + ' ' + usuario.LastName_1;
                 SelectCedula.appendChild(option);
             }
 
