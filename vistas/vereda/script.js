@@ -2,7 +2,11 @@
 import { API_URL } from '../config.js';
 
 const veredas = [];
+const back = document.getElementById('back');
 
+back.addEventListener('click', () => {
+    window.location.href = '/vistas/edicion/vereda/vereda_crud.html';
+});
 
 async function getCiudad() {
     const xhr = new XMLHttpRequest();
@@ -51,8 +55,8 @@ async function addVereda() {
 
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 201) {
-           window.location.href = window.location.href;
-           Swal.fire({
+            window.location.href = window.location.href;
+            Swal.fire({
                 title: 'Vereda creada',
                 text: 'La vereda ha sido creada correctamente',
                 icon: 'success',

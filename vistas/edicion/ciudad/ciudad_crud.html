@@ -24,9 +24,7 @@
                     <i class='bx bx-arrow-back'></i>
                 </a>
 
-                <a href="#" id="home">
-                    <i class='bx bxs-home'></i>
-                </a>
+              
 
             </nav>
         </header>
@@ -38,7 +36,7 @@
                         <thead class="table-dark">
                             <tr class="text-center ">
 
-                                <th id="Id">Id</th>
+                                <th id="Id">Identificacion</th>
                                 <th id="Nombre">Nombre</th>
                                 <th id="id_departamento">id departamento</th>
                                 <th id="estado">estado</th>
@@ -50,7 +48,7 @@
 
                         </tbody>
                     </table>
-
+                    <small id="msg"></small>
                 </div>
             </div>
 
@@ -61,73 +59,7 @@
             <p>© 2024 Página Administrativa. Todos los derechos reservados.</p>
         </footer>
 
-        <div class="position-absolute w-100 top translate" id="modal">
-            <form class="form-control w-25">
-                <h1 class="text-center">Nuevos datos</h1>
 
-                <div class="form-group mt-4 border-white">
-
-                    <input type="text" class="form-control w-100 " readonly id="Cedula">
-                </div>
-
-                <div class="form-group mt-4">
-                    <select name="departamento" id="SelectTipoDepartamento" class="form-control bg-light">
-                        <option value="0">Seleccione un departamento </option>
-                    </select>
-                    <small class="form-text text-danger" id="msgNivelIngles"></small>
-                </div>
-
-                <div class="form-group mt-4 border-white">
-                    <label for="">nombre</label>
-                    <input type="text" class="form-control w-100" id="nombre1">
-                </div>
-
-
-
-                <div class="form-group mt-4 border-white">
-
-                    <input type="text" class="form-control w-100" id="Estado" readonly>
-                </div>
-
-
-                <div class="form-group mt-4 border-white text-center ">
-                    <button class=" btn btn-danger close" id="close">cancelar</button>
-                    <button class="btn btn-primary" id="confirm"> Confirmar</button>
-                </div>
-            </form>
-
-        </div>
-
-        <div class="position-absolute w-100 top translate  " id="modal1">
-            <form class="form-control w-25 d-flex flex-column align-items-center">
-                <h1 class="text-center">Confirmar eliminar</h1>
-
-                <div class="form-control border-white text-center">
-                    <label for="">¿Está seguro de eliminar?</label>
-                </div>
-
-                <div class="form-control border-white text-center">
-                    <button class="btn btn-danger" id="cancelar">cancelar</button>
-                    <button class="btn btn-primary" id="eliminar">Eliminar</button>
-
-                </div>
-            </form>
-        </div>
-        <div class="position-absolute w-100 top translate  " id="modal2">
-            <form class="form-control w-25 d-flex flex-column align-items-center">
-                <h1 class="text-center">Confirmar activaciion</h1>
-
-                <div class="form-control border-white text-center">
-                    <label for="">¿Está seguro de activar?</label>
-                </div>
-
-                <div class="form-control border-white text-center">
-                    <button class="btn btn-danger" id="cancelar1">cancelar</button>
-                    <button class="btn btn-primary" id="activate">Activar</button>
-
-                </div>
-            </form>
-        </div>
 
 
         <script src="ciudad_crud.js" type="module"></script>

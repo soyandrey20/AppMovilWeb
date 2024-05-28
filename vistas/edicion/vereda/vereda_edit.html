@@ -25,58 +25,71 @@
             <a href="#" id="back">
                 <i class='bx bx-left-arrow-alt'></i>
             </a>
-            
+        
         </nav>
     </header>
+
     <div>
 
-        <div class=" d-flex justify-content-center align-items-center">
+        <div class=" d-flex justify-content-center align-items-center ">
             <div class="bg-white p-5 rounded-5 text-secondary shadow" style="width: 25rem">
 
-                <div class="text-center fs-1 fw-bold">Sensor parámetro</div>
+                <div class="text-center fs-2 fw-bold">Vereda</div>
                 <div class="input-group mt-4">
-                    <div class="input-group-text bg-celeste">
-                        <i class='bx bx-list-ul'></i>
+                    <div class="input-group-text bg-info">
+                        <i class='bx bx-water'></i>
                     </div>
-                    <div class="form-group">
-                        <select name="TipoParametro" id="SelectTipoSensor" class="form-control bg-white">
-                            <option value="0">Seleccione un sensor...</option>
-                        </select>
-                        <small class="form-text text-danger"></small>
-                    </div>
+                    <input class="form-control bg-light" type="text" placeholder="id" id="id" disabled />
+
                 </div>
                 <div class="input-group mt-4">
-                    <div class="input-group-text bg-celeste">
+                    <div class="input-group-text bg-info">
                         <i class='bx bx-list-ul'></i>
                     </div>
+
                     <div class="form-group">
-                        <select name="TipoParametro" id="SelectTipoParametro" class="form-control bg-white">
-                            <option value="0">Seleccione un parámetro..</option>
+                        <select name="Ciudad" id="SelectCiudad" class="form-control bg-light">
+                            <option value="0">Seleccione la ciudad...</option>
                         </select>
-                        <small class="form-text text-danger"></small>
+                        <small class="form-text text-danger" id="msgNivelIngles"></small>
                     </div>
                 </div>
 
+
+                <div class="input-group mt-4">
+                    <div class="input-group-text bg-info">
+                        <i class='bx bx-water'></i>
+                    </div>
+                    <input class="form-control bg-light" type="text" placeholder="Nombre" id="Nombre" />
+
+                </div>
+                <div class="input-group mt-4">
+                    <div class="input-group-text bg-info">
+                        <i class='bx bx-water'></i>
+                    </div>
+                    <input class="form-control bg-light" type="text" placeholder="Estado" id="Estado" disabled />
+
+                </div>
                 <div class="d-flex justify-content-around mt-1">
 
 
                 </div>
-                <div class="btn btn-primary text-white w-100 mt-4 fw-semibold shadow-sm" id="addParaSensor">
-                    Agregar
+                <div class="btn btn-info text-white w-100 mt-4 fw-semibold shadow-sm" id="btnActualizar">
+                    Confirmar
                 </div>
 
 
             </div>
 
         </div>
-
     </div>
     <footer class="footer">
         <p>© 2024 Página Administrativa. Todos los derechos reservados.</p>
     </footer>
 
-    <script src="script.js" type="module"></script>
+    <script src="vereda_edit.js" type="module"></script>
     <script src="/scripts_compartidos/script.js"></script>
+
 </body>
 
 

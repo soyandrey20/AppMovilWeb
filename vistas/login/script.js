@@ -37,12 +37,9 @@ function getUser() {
                 const user = data[i];
 
                 if (UserName.value === '' || Password.value === '') {
-                    Swal.fire({
-                        title: 'Error',
-                        text: 'Por favor digitar campos vacios',
-                        icon: 'error',
-                        confirmButtonText: 'Aceptar'
-                    });
+
+                    window.alert('Por favor digitar campos vacios');
+
                     return;
                 }
 
@@ -107,12 +104,8 @@ async function sendEmail() {
     };
     console.log('data', data);
     if (id === '') {
-        Swal.fire({
-            title: 'Error',
-            text: 'por favor ingrese la cedula',
-            icon: 'error',
-            confirmButtonText: 'Aceptar'
-        });
+        window.alert('Por favor ingrese la cedula');
+
         return false;
     }
 
@@ -122,14 +115,9 @@ async function sendEmail() {
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
 
+            window.alert('Se ha enviado un correo con la contraseña');
             modal1.classList.toggle('translate');
 
-            Swal.fire({
-                title: 'correo enviado',
-                text: 'Por favor revisar el correo electronico registrado en la base de datos',
-                icon: 'success',
-                confirmButtonText: 'Aceptar'
-            });
         } else {
             console.error('Error obtener users:', this.statusText);
         }

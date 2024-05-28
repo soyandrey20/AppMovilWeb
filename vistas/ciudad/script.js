@@ -116,10 +116,10 @@ async function getCiudad() {
 getDepart();
 getCiudad();
 
-const btnSetings = document.getElementById('btnSetings');
+const btnBack = document.getElementById('btnBack');
 
-btnSetings.addEventListener('click', () => {
+btnBack.addEventListener('click', () => {
     window.location.href = '/vistas/edicion/ciudad/ciudad_crud.html';
-});
+}   );
 
 

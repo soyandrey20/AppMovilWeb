@@ -6,16 +6,7 @@ const tableData = document.getElementById('tableData');
 
 const inputs = document.querySelectorAll('input');
 
-const modal = document.getElementById('modal');
-const modal1 = document.getElementById('modal1');
-const modal2 = document.getElementById('modal2');
 
-const btnClose = document.getElementById('close');
-const btnConfirm = document.getElementById('confirm');
-const btnEliminar = document.getElementById('eliminar')
-const btnCancelar = document.getElementById('cancelar')
-const btnActivate = document.getElementById('activate')
-const btnCancelar1 = document.getElementById('cancelar1')
 let count = 0;
 let dataD = null;
 
@@ -41,9 +32,10 @@ async function cargarTabla() {
         <td id="id_parametro" disabled>${user.informacion}</td>
        
         <td id="id_sensor" disabled>${user.id_tp_sensor}</td>
-        <td id="estado" disabled>${user.estado}</td>
+        <td id="estado" disabled>${user.estado == true ? 'Activo' : 'Inactivo'}</td>
   
         <td>
+        <a href="#" class="btn-update"><i class='bx bx-plus-circle' ></i></a>
         <a href="#" class="btn-update"><i class='bx bxs-edit-alt'></i></a>
         <a href="#" class="btn-delete"><i class='bx bxs-trash-alt'></i></a> 
         <a href="#" class="btn-activate"><i class='bx bxs-check-circle'></i></a>
@@ -64,7 +56,7 @@ window.addEventListener('DOMContentLoaded', cargarTabla);
 
 const btnBack = document.getElementById('back');
 btnBack.addEventListener('click', () => {
-    window.location.href = `/vistas/sensor/sensor.html`;
+    window.location.href = `/vistas/home/home.html`;
 });
 
 /** ---------------------------------------------------------- abrir modal */
@@ -72,64 +64,48 @@ btnBack.addEventListener('click', () => {
 
 window.addEventListener('click', async (e) => {
     count = 0;
+    if (e.target.classList.contains('bx-plus-circle')) {
 
-    if (e.target.classList.contains('bxs-edit-alt')) {
+        window.location.href = `/vistas/sensor/sensor.html`;
+    } else if (e.target.classList.contains('bxs-edit-alt')) {
 
         let data1 = (e.target.parentElement.parentElement.parentElement.children);
-        fillData(data1);
-        modal.classList.toggle('translate');
+        localStorage.setItem('id', data1[0].textContent);
+        localStorage.setItem('informacion', data1[1].textContent);
+        localStorage.setItem('id_tp_sensor', data1[2].textContent);
+        localStorage.setItem('estado', data1[3].textContent);
+
+        window.location.href = `/vistas/edicion/sensor/sensor_edit.html`;
+
     } else if (e.target.classList.contains('bxs-trash-alt')) {
-        modal1.classList.toggle('translate');
+
         dataD = (e.target.parentElement.parentElement.parentElement.children);
+        var opt = window.confirm('¿Está seguro de que desea eliminar el sensor?');
+        if (opt) {
+            deleteCiudad();
+        }
 
     } else if (e.target.classList.contains('bxs-check-circle')) {
-        modal2.classList.toggle('translate');
+
         dataD = (e.target.parentElement.parentElement.parentElement.children);
+        var opt = window.confirm('¿Está seguro de que desea activar el sensor?');
+        if (opt) {
+            activateUser();
+        }
+
     }
 });
 
-/** ---------------------------------------------------------- cerrar modal */
 
 
-
-btnClose.addEventListener('click', () => {
-
-    modal.classList.toggle('translate');
-
-
-});
-
-btnCancelar1.addEventListener('click', () => {
-    modal2.classList.toggle('translate');
-});
-
-btnCancelar.addEventListener('click', () => {
-
-    modal1.classList.toggle('translate');
-});
-
-/** ---------------------------------------------------------- llenar datos en el modal */
-const fillData = (data1) => {
-    inputs[0].value = data1[0].textContent;
-    inputs[1].value = data1[1].textContent;
-    inputs[2].value = data1[3].textContent;
-
-}
 
 /** ---------------------------------------------------------- eliminar usuario */
-btnEliminar.addEventListener('click', deleteCiudad);
 
 async function deleteCiudad() {
 
     let opt = validarParaSensor();
     if (!opt) {
-        Swal.fire({
-            title: 'Error',
-            text: 'No se puede eliminar el sensor, tiene parametros asociados',
-            icon: 'error',
-            confirmButtonText: 'Aceptar'
-        });
-        modal1.classList.toggle('translate');
+        window.alert('No se puede eliminar el sensor, ya que está asociado a un parámetro');
     } else {
 
         const id = dataD[0].textContent;
@@ -150,26 +126,11 @@ async function deleteCiudad() {
 
         xhr.onload = function () {
             if (this.readyState === 4 && this.status === 200) {
-                const data = JSON.parse(this.response);
-                console.log(data);
-                Swal.fire({
-                    title: 'Sensor desactivado',
-                    text: 'El sensor ha sido desactivado correctamente',
-                    icon: 'success',
-                    confirmButtonText: 'Aceptar'
-                });
+                window.alert('Sensor desactivado correctamente');
                 cargarTabla();
-
-                modal1.classList.toggle('translate');
             } else {
-                console.log(this.status);
-                console.error('Error fetching users:', this.statusText);
-                Swal.fire({
-                    title: 'Error al desactivar sensor',
-                    text: 'Ha ocurrido un error al desactivar el sensor',
-                    icon: 'error',
-                    confirmButtonText: 'Aceptar'
-                });
+                window.alert('Error al desactivar el sensor');
+                cargarTabla();
 
             }
         };
@@ -181,9 +142,6 @@ async function deleteCiudad() {
 /** ---------------------------------------------------------- activar usuario */
 
 
-
-btnActivate.addEventListener('click', activateUser);
-btnConfirm.addEventListener('click', updateData);
 
 async function activateUser() {
 
@@ -205,26 +163,11 @@ async function activateUser() {
 
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
-            const data = JSON.parse(this.response);
-            console.log(data);
-            swal.fire({
-                title: 'Sensor activado',
-                text: 'El sensor ha sido activado correctamente',
-                icon: 'success',
-                confirmButtonText: 'Aceptar'
-            });
+            window.alert('Sensor activado correctamente');
             cargarTabla();
-
-            modal2.classList.toggle('translate');
         } else {
-            console.log(this.status);
-            console.error('Error fetching users:', this.statusText);
-            swal.fire({
-                title: 'Error al activar sensor',
-                text: 'Ha ocurrido un error al activar el sensor',
-                icon: 'error',
-                confirmButtonText: 'Aceptar'
-            });
+            window.alert('Error al activar el sensor');
+            cargarTabla();
         }
     };
     xhr.send(JSON.stringify(data));
@@ -232,91 +175,6 @@ async function activateUser() {
 }
 
 
-/** ---------------------------------------------------------- actualizar usuario */
-
-async function updateData() {
-    const id = inputs[0].value;
-    const informacion = inputs[1].value;
-    const id_tp_sensor = document.getElementById('SelectTipoSensor').value;
-
-    const estado = inputs[2].value;
-    const data = {
-        id,
-        informacion,
-        id_tp_sensor,
-        estado
-    };
-    const xhr = new XMLHttpRequest();
-
-    xhr.open('PUT', `${API_URL}/sensor/${id}`);
-
-    xhr.setRequestHeader('Content-Type', 'application/json');
-
-    xhr.onload = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            const datad = JSON.parse(this.response);
-            console.log(datad);
-
-            Swal.fire({
-                title: 'Sensor actualizado  ',
-                text: 'Sensor actualizado correctamente',
-                icon: 'success',
-                confirmButtonText: 'Aceptar'
-            });
-            cargarTabla();
-            modal.classList.toggle('translate');
-        } else {
-            console.log(this.status);
-            console.error('Error fetching users:', this.statusText);
-            Swal.fire({
-                title: 'Error al actualizar el sensor',
-                text: 'No se pudo actualizar el sensor',
-                icon: 'error',
-                confirmButtonText: 'Aceptar'
-            });
-        }
-    };
-    xhr.send(JSON.stringify(data));
-
-}
-
-/** ---------------------------------------------------------- llenar select */
-async function getTpsensor() {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', `${API_URL}/Tipo_sensor`);
-
-    const SelectTipoSensor = document.getElementById('SelectTipoSensor');
-    xhr.onload = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            const data = JSON.parse(this.response);
-
-            console.log(data);
-            for (let i = 0; i < data.length; i++) {
-                const sensor = data[i];
-                const option = document.createElement('option');
-                option.value = sensor.Id;
-                option.innerText = sensor.Descripcion;
-                SelectTipoSensor.appendChild(option);
-
-            }
-        } else {
-            console.error('Error fetching users:', this.statusText);
-        }
-    };
-
-    xhr.send();
-}
-
-getTpsensor();
-
-function getParaSensor() {
-    fetch(`${API_URL}/parametro_sensor`)
-        .then(response => response.json())
-        .then(data => {
-            para_sensores.push(...data);
-        });
-}
-getParaSensor();
 
 function validarParaSensor() {
     let opt = true;

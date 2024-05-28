@@ -1,50 +1,46 @@
 
-import {API_URL}  from '../config.js';
+import { API_URL } from '../config.js';
 
 const departa = [];
+const btnBack = document.getElementById('btnBack');
+const addDepartamentoBtn = document.getElementById('addDepartamento');
 
 
 async function addDepart() {
+    var opt = validarDepart();
+
+    if (opt) {
 
 
-    const nombre = document.getElementById('Departamento').value;
-    const estado = true;
+
+        const nombre = document.getElementById('Departamento').value;
+        const estado = true;
 
 
 
-    const data = {
-        nombre: nombre,
-        estado: estado
-    };
+        const data = {
+            nombre: nombre,
+            estado: estado
+        };
 
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', `${API_URL}/Departamento`);
-    xhr.setRequestHeader('Content-Type', 'application/json');
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', `${API_URL}/Departamento`);
+        xhr.setRequestHeader('Content-Type', 'application/json');
 
-    xhr.onload = function () {
-        if (this.readyState === 4 && this.status === 201) {
-            Swal.fire({
-                title: 'Departamento creado',
-                text: 'El Departamento ha sido creado correctamente',
-                icon: 'success',
-                confirmButtonText: 'Aceptar'
-            });
-            window.location.href = window.location.href;
-        } else {
-            console.error('Error add Departamento:', this.statusText);
-            Swal.fire({
-                title: 'Error',
-                text: 'No se ha podido crear el Departamento',
-                icon: 'error',
-                confirmButtonText: 'Aceptar'
-            });
-        }
-    };
+        xhr.onload = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                window.alert('Departamento creado correctamente');
+                window.location.href = '/vistas/edicion/departamento/departamento_crud.html';
+            } else {
+                window.alert('Error al crear el departamento');
+            }
+        };
 
-    xhr.send(JSON.stringify(data));
+        xhr.send(JSON.stringify(data));
+    } else {
+        window.alert('El departamento ya existe');
+    }
 }
-const addDepartamentoBtn = document.getElementById('addDepartamento');
-addDepartamentoBtn.addEventListener('click', validarDepart);
 
 
 
@@ -69,29 +65,31 @@ async function getDepart() {
     xhr.send();
 }
 
-getDepart();
+
 
 
 async function validarDepart() {
     const nombre = document.getElementById('Departamento').value;
-
+    var opt = false;
     for (let i = 0; i < departa.length; i++) {
         const dep = departa[i];
 
         if (dep.nombre === nombre) {
-            Swal.fire({
-                title: 'Error',
-                text: 'El departamento ya existe',
-                icon: 'error',
-                confirmButtonText: 'Aceptar'
-            });
-            return false;
+            opt = false;
+            break;
+        } else {
+            opt = true;
+            break;
         }
     }
-    addDepart();
+    return opt;
 }
 
-const btnSetings = document.getElementById('btnSetings');
-btnSetings.addEventListener('click', () => {
+
+
+addDepartamentoBtn.addEventListener('click', addDepart);
+window.onload = getDepart;
+
+btnBack.addEventListener('click', () => {
     window.location.href = '/vistas/edicion/departamento/departamento_crud.html';
-}); 
+});

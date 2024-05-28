@@ -1,5 +1,5 @@
 
- 
+
 
 
 
@@ -24,7 +24,7 @@ sidebarBtn.addEventListener('click', () => {
 
 window.addEventListener('DOMContentLoaded', cargarPagina);
 
-async function cargarPagina(){
+async function cargarPagina() {
     sidebar.classList.toggle('close');
 }
 
@@ -39,7 +39,7 @@ const logout = document.getElementById('logout');
 const ver = document.getElementById('ver');
 
 optTpPersona.addEventListener('click', () => {
-    window.location.href = `/vistas/personas/tipo_persona.html`;
+    window.location.href = `/vistas/edicion/tipo_personas/tp_personas_crud.html`;
 });
 
 
@@ -48,23 +48,23 @@ optusuario.addEventListener('click', () => {
 });
 
 optParaSensor.addEventListener('click', () => {
-    window.location.href = `/vistas/para_sensor/para_sensor.html`;
+    window.location.href = `/vistas/edicion/para_sensor/parametro_sensor_crud.html`;
 });
 
 optPara.addEventListener('click', () => {
-    window.location.href = `/vistas/parametro/parametro.html`;
+    window.location.href = `/vistas/edicion/parametro/parametro_crud.html`;
 });
 
 optTpPara.addEventListener('click', () => {
-    window.location.href = `/vistas/parametro/tipo_parametro.html`;
+   window.location.href = `/vistas/edicion/tp_parametro/tp_parametro_crud.html`;
 });
 
 optSensor.addEventListener('click', () => {
-    window.location.href = `/vistas/sensor/sensor.html`;
+    window.location.href = `/vistas/edicion/sensor/sensor_crud.html`;
 });
 
 optTpSensor.addEventListener('click', () => {
-    window.location.href = `/vistas/sensor/tipo_sensor.html`;
+    window.location.href = `/vistas/edicion/tp_sensor/tp_sensor_crud.html`;
 });
 
 logout.addEventListener('click', () => {
@@ -83,19 +83,19 @@ const optFinca = document.getElementById('optFinca');
 
 
 optDepartamento.addEventListener('click', () => {
-    window.location.href = `/vistas/departamento/departamento.html`;
+    window.location.href = `/vistas/edicion/departamento/departamento_crud.html`;
 });
 
 optCiudad.addEventListener('click', () => {
-    window.location.href = `/vistas/ciudad/ciudad.html`;
+    window.location.href = `/vistas/edicion/ciudad/ciudad_crud.html`;
 });
 
 optVereda.addEventListener('click', () => {
-    window.location.href = `/vistas/vereda/vereda.html`;
+    window.location.href = `/vistas/edicion/vereda/vereda_crud.html`;
 });
 
 optFinca.addEventListener('click', () => {
-    window.location.href = `/vistas/finca/finca.html`;
+    window.location.href = `/vistas/edicion/finca/finca_crud.html`;
 });
 
 

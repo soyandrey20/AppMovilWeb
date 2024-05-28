@@ -5,6 +5,10 @@ import { API_URL } from '../config.js';
 
 const parametro_sensor = [];
 
+const back = document.getElementById('back');
+back.addEventListener('click', () => {
+    window.location.href = '/vistas/edicion/para_sensor/parametro_sensor_crud.html';
+});
 
 
 async function getParametro() {

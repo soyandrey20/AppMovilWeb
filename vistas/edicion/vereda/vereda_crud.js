@@ -40,9 +40,10 @@ async function cargarTabla() {
         <td id="id_parametro" disabled>${user.nombre}</td>
         <td id="id_parametro" disabled>${user.id_ciudad}</td>
  
-        <td id="estado" disabled>${user.estado}</td>
+        <td id="estado" disabled>${user.estado == true ? 'Activo' : 'Inactivo'}</td>
   
         <td>
+        <a href="#" class="btn-update"><i class='bx bxs-plus-circle'></i></a>
         <a href="#" class="btn-update"><i class='bx bxs-edit-alt'></i></a>
         <a href="#" class="btn-delete"><i class='bx bxs-trash-alt'></i></a> 
         <a href="#" class="btn-activate"><i class='bx bxs-check-circle'></i></a>
@@ -64,7 +65,7 @@ window.addEventListener('DOMContentLoaded', cargarTabla);
 /**-------------------------------------------------- volver-------------------------------- */
 const btnBack = document.getElementById('back');
 btnBack.addEventListener('click', () => {
-    window.location.href = `/vistas/vereda/vereda.html`;
+    window.location.href = `/vistas/home/home.html`;
 });
 
 
@@ -75,50 +76,35 @@ btnBack.addEventListener('click', () => {
 
 window.addEventListener('click', async (e) => {
     count = 0;
-
-    if (e.target.classList.contains('bxs-edit-alt')) {
+    if (e.target.classList.contains('bxs-plus-circle')) {
+        window.location.href = `/vistas/vereda/vereda.html`;
+    } else if (e.target.classList.contains('bxs-edit-alt')) {
 
         let data1 = (e.target.parentElement.parentElement.parentElement.children);
-        fillData(data1);
-        modal.classList.toggle('translate');
+        localStorage.setItem('id', data1[0].textContent);
+        localStorage.setItem('nombre', data1[1].textContent);
+        localStorage.setItem('id_ciudad', data1[2].textContent);
+        localStorage.setItem('estado', data1[3].textContent);
+        window.location.href = `/vistas/edicion/vereda/vereda_edit.html`;
     } else if (e.target.classList.contains('bxs-trash-alt')) {
-        modal1.classList.toggle('translate');
-        dataD = (e.target.parentElement.parentElement.parentElement.children);
 
-    } else if (e.target.classList.contains('bxs-check-circle')) {
-        modal2.classList.toggle('translate');
         dataD = (e.target.parentElement.parentElement.parentElement.children);
+        var opt = window.confirm('¿Está seguro que desea eliminar la vereda?');
+        if (opt) {
+            deleteCiudad();
+        }
+    } else if (e.target.classList.contains('bxs-check-circle')) {
+        dataD = (e.target.parentElement.parentElement.parentElement.children);
+        var opt = window.confirm('¿Está seguro que desea activar la vereda?');
+        if (opt) {
+            activateUser();
+        }
     }
 });
 
-/** ---------------------------------------------------------- cerrar modal */
 
-
-
-btnClose.addEventListener('click', () => {
-
-    modal.classList.toggle('translate');
-
-
-});
-
-btnCancelar1.addEventListener('click', () => {
-    modal2.classList.toggle('translate');
-});
-
-btnCancelar.addEventListener('click', () => {
-
-    modal1.classList.toggle('translate');
-});
 
 /** ---------------------------------------------------------- llenar datos en el modal */
-const fillData = (data1) => {
-    inputs[0].value = data1[0].textContent;
-    inputs[1].value = data1[1].textContent;
-    inputs[2].value = data1[3].textContent;
-
-
-}
 
 /** ---------------------------------------------------------- eliminar usuario */
 btnEliminar.addEventListener('click', deleteCiudad);
@@ -127,13 +113,7 @@ async function deleteCiudad() {
 
     let opt = validarVeredaActivo();
     if (!opt) {
-        Swal.fire({
-            title: 'Error',
-            text: 'No se puede eliminar la vereda porque hay una finca activa',
-            icon: 'error',
-            confirmButtonText: 'Aceptar'
-        });
-        modal1.classList.toggle('translate');
+        window.alert('No se puede eliminar la vereda, ya que esta asociada a una finca');
     } else {
 
         const id = dataD[0].textContent;
@@ -154,26 +134,12 @@ async function deleteCiudad() {
 
         xhr.onload = function () {
             if (this.readyState === 4 && this.status === 200) {
-                const data = JSON.parse(this.response);
-                console.log(data);
-                Swal.fire({
-                    title: 'vereda desactivada',
-                    text: 'vereda desactivada correctamente',
-                    icon: 'success',
-                    confirmButtonText: 'Aceptar'
-                });
+                window.alert('vereda eliminada correctamente');
                 cargarTabla();
 
-                modal1.classList.toggle('translate');
+
             } else {
-                console.log(this.status);
-                console.error('Error fetching users:', this.statusText);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Error al desactivar la vereda',
-                    confirmButtonText: 'Aceptar'
-                });
+                window.alert('Error al eliminar la vereda');
             }
         };
         xhr.send(JSON.stringify(data));
@@ -185,8 +151,7 @@ async function deleteCiudad() {
 
 
 
-btnActivate.addEventListener('click', activateUser);
-btnConfirm.addEventListener('click', updateData);
+
 
 async function activateUser() {
 
@@ -208,26 +173,10 @@ async function activateUser() {
 
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
-            const data = JSON.parse(this.response);
-            console.log(data);
-            Swal.fire({
-                title: 'vereda activada',
-                text: 'vereda activada correctamente',
-                icon: 'success',
-                confirmButtonText: 'Aceptar'
-            });
+            window.alert('vereda activada correctamente');
             cargarTabla();
-
-            modal2.classList.toggle('translate');
         } else {
-            console.log(this.status);
-            console.error('Error fetching users:', this.statusText);
-            Swal.fire({
-                title: 'Error',
-                text: 'Error al activar la vereda',
-                icon: 'error',
-                confirmButtonText: 'Aceptar'
-            });
+            window.alert('Error al activar la vereda');
         }
     };
     xhr.send(JSON.stringify(data));
@@ -237,89 +186,7 @@ async function activateUser() {
 
 /** ---------------------------------------------------------- actualizar usuario */
 
-async function updateData() {
-    const id = inputs[0].value;
-    const nombre = inputs[1].value;
-    const id_ciudad = document.getElementById('SelectCiudad').value;
-    const estado = inputs[2].value;
-    const data = {
-        id,
-        nombre,
-        id_ciudad,
-        estado
-    };
 
-    const xhr = new XMLHttpRequest();
-
-    xhr.open('PUT', `${API_URL}/Vereda/${id}`);
-
-    xhr.setRequestHeader('Content-Type', 'application/json');
-
-    xhr.onload = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            const datad = JSON.parse(this.response);
-
-            Swal.fire({
-                title: 'vereda actualizada',
-                text: 'vereda actualizada correctamente',
-                icon: 'success',
-                confirmButtonText: 'Aceptar'
-            });
-
-
-            modal.classList.toggle('translate');
-        } else {
-            console.log(this.status);
-            console.error('Error fetching users:', this.statusText);
-            Swal.fire({
-                title: 'Error',
-                text: 'Error al actualizar la vereda',
-                icon: 'error',
-                confirmButtonText: 'Aceptar'
-            });
-        }
-    };
-    xhr.send(JSON.stringify(data));
-
-}
-async function getCiudad() {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', `${API_URL}/Ciudad`);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    const SelectCiudad = document.getElementById('SelectCiudad');
-
-    xhr.onload = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            const ciudades = JSON.parse(this.responseText);
-
-            for (let i = 0; i < ciudades.length; i++) {
-                const ciudad = ciudades[i];
-                const option = document.createElement('option');
-                option.value = ciudad.id;
-                option.innerText = ciudad.nombre;
-                SelectCiudad.appendChild(option);
-            }
-
-        } else {
-            console.error('Error get Ciudad:', this.status);
-        }
-    };
-
-    xhr.send();
-
-}
-
-getCiudad();
-
-function getFincas() {
-    fetch(`${API_URL}/fincas`)
-        .then(response => response.json())
-        .then(data => {
-            fincas.push(...data);
-        })
-        .catch(error => console.error('Error obteniendo fincas:', error));
-}
-getFincas();
 
 function validarVeredaActivo() {
     let opt = true;

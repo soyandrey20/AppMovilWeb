@@ -2,6 +2,11 @@ import { API_URL } from '../config.js';
 
 const parametro = [];
 
+const back = document.getElementById('back')
+
+back.addEventListener('click', () => {
+    window.location.href = '/vistas/edicion/parametro/parametro_crud.html';
+});
 
 async function getParametro() {
     const xhr = new XMLHttpRequest();

@@ -4,19 +4,6 @@ const userTable = document.getElementById('userTable');
 const tableData = document.getElementById('tableData');
 
 
-
-const inputs = document.querySelectorAll('input');
-
-const modal = document.getElementById('modal');
-const modal1 = document.getElementById('modal1');
-const modal2 = document.getElementById('modal2');
-
-const btnClose = document.getElementById('close');
-const btnConfirm = document.getElementById('confirm');
-const btnEliminar = document.getElementById('eliminar')
-const btnCancelar = document.getElementById('cancelar')
-const btnActivate = document.getElementById('activate')
-const btnCancelar1 = document.getElementById('cancelar1')
 let count = 0;
 let dataD = null;
 
@@ -44,6 +31,7 @@ async function cargarTabla() {
         <td id="estado" disabled>${user.estado}</td>
   
         <td>
+        <a href="#" class="btn-update"><i class='bx bx-plus-circle' ></i></a>
         <a href="#" class="btn-update"><i class='bx bxs-edit-alt'></i></a>
         <a href="#" class="btn-delete"><i class='bx bxs-trash-alt'></i></a> 
         <a href="#" class="btn-activate"><i class='bx bxs-check-circle'></i></a>
@@ -65,7 +53,7 @@ window.addEventListener('DOMContentLoaded', cargarTabla);
 
 const btnBack = document.getElementById('back');
 btnBack.addEventListener('click', () => {
-    window.location.href = `/vistas/sensor/tipo_sensor.html`;
+    window.location.href = `/vistas/home/home.html`;
 });
 
 
@@ -75,57 +63,36 @@ btnBack.addEventListener('click', () => {
 
 window.addEventListener('click', async (e) => {
     count = 0;
+    if (e.target.classList.contains('bx-plus-circle')) {
+        window.location.href = `/vistas/sensor/tipo_sensor.html`;
 
-    if (e.target.classList.contains('bxs-edit-alt')) {
+
+    } else if (e.target.classList.contains('bxs-edit-alt')) {
 
         let data1 = (e.target.parentElement.parentElement.parentElement.children);
-        fillData(data1);
-        modal.classList.toggle('translate');
+        localStorage.setItem('id', data1[0].textContent);
+        localStorage.setItem('Descripcion', data1[1].textContent);
+        localStorage.setItem('estado', data1[2].textContent);
+
+        window.location.href = `/vistas/edicion/tp_sensor/tp_sensor_edit.html`;
+
+
     } else if (e.target.classList.contains('bxs-trash-alt')) {
-        modal1.classList.toggle('translate');
-        dataD = (e.target.parentElement.parentElement.parentElement.children);
 
+        dataD = (e.target.parentElement.parentElement.parentElement.children);
+        var opt = window.confirm('¿Está seguro que desea eliminar el tipo de sensor?');
+        if (opt) {
+            deleteCiudad();
+        }
     } else if (e.target.classList.contains('bxs-check-circle')) {
-        modal2.classList.toggle('translate');
+
         dataD = (e.target.parentElement.parentElement.parentElement.children);
+        var opt = window.confirm('¿Está seguro que desea activar el tipo de sensor?');
+        if (opt) {
+            activateUser();
+        }
     }
 });
-
-/** ---------------------------------------------------------- cerrar modal */
-
-
-
-btnClose.addEventListener('click', () => {
-
-    modal.classList.toggle('translate');
-
-
-});
-
-btnCancelar1.addEventListener('click', () => {
-    modal2.classList.toggle('translate');
-});
-
-btnCancelar.addEventListener('click', () => {
-
-    modal1.classList.toggle('translate');
-});
-
-/** ---------------------------------------------------------- llenar datos en el modal */
-const fillData = (data1) => {
-    for (let index of inputs) {
-
-        index.value = data1[count].textContent;
-
-        count++;
-    }
-
-
-
-}
-
-/** ---------------------------------------------------------- eliminar usuario */
-btnEliminar.addEventListener('click', deleteCiudad);
 
 async function deleteCiudad() {
 
@@ -133,13 +100,7 @@ async function deleteCiudad() {
     let opt = validarTpSensorActivo();
 
     if (!opt) {
-        swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'No se puede eliminar el tipo de sensor, ya que esta en uso',
-            confirmButtonText: 'Aceptar'
-        });
-        modal1.classList.toggle('translate');
+        window.alert('No se puede eliminar el tipo de sensor ya que esta en uso');
     } else {
 
         const id = dataD[0].textContent;
@@ -160,27 +121,10 @@ async function deleteCiudad() {
 
         xhr.onload = function () {
             if (this.readyState === 4 && this.status === 200) {
-                const data = JSON.parse(this.response);
-                console.log(data);
-
-                Swal.fire({
-                    icon: 'success',
-                    title: 'tipo de sensor desactivado    ',
-                    text: 'tipo de sensor desactivado correctamente',
-                    confirmButtonText: 'Aceptar'
-                });
+                window.alert('tipo de sensor desactivado');
                 cargarTabla();
-
-                modal1.classList.toggle('translate');
             } else {
-                console.log(this.status);
-                console.error('Error fetching users:', this.statusText);
-                Swal.fire({
-                    title: 'Error',
-                    text: 'Error al desactivar el tipo de sensor',
-                    icon: 'error',
-                    confirmButtonText: 'Aceptar'
-                });
+                window.alert('Error al desactivar el tipo de sensor');
             }
         };
         xhr.send(JSON.stringify(data));
@@ -190,10 +134,6 @@ async function deleteCiudad() {
 
 /** ---------------------------------------------------------- activar usuario */
 
-
-
-btnActivate.addEventListener('click', activateUser);
-btnConfirm.addEventListener('click', updateData);
 
 async function activateUser() {
 
@@ -215,26 +155,10 @@ async function activateUser() {
 
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
-            const data = JSON.parse(this.response);
-            console.log(data);
-            Swal.fire({
-                icon: 'success',
-                title: 'tipo de sensor activado',
-                text: 'tipo de sensor activado correctamente',
-                confirmButtonText: 'Aceptar'
-            });
+            window.alert('tipo de sensor activado');
             cargarTabla();
-
-            modal2.classList.toggle('translate');
         } else {
-            console.log(this.status);
-            console.error('Error fetching users:', this.statusText);
-            Swal.fire({
-                title: 'Error',
-                text: 'No se ha podido activar el tipo de sensor',
-                icon: 'error',
-                confirmButtonText: 'Aceptar'
-            });
+            window.alert('Error al activar el tipo de sensor');
         }
     };
     xhr.send(JSON.stringify(data));
@@ -244,60 +168,6 @@ async function activateUser() {
 
 /** ---------------------------------------------------------- actualizar usuario */
 
-async function updateData() {
-    const id = inputs[0].value;
-    const Descripcion = inputs[1].value;
-
-
-    const estado = inputs[2].value;
-    const data = {
-        id,
-        Descripcion,
-        estado
-    };
-    const xhr = new XMLHttpRequest();
-
-    xhr.open('PUT', `${API_URL}/tipo_sensor/${id}`);
-
-    xhr.setRequestHeader('Content-Type', 'application/json');
-
-    xhr.onload = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            const datad = JSON.parse(this.response);
-            console.log(datad);
-
-            Swal.fire({
-                icon: 'success',
-                title: 'tipo de sensor actualizado',
-                text: 'tipo de sensor actualizado correctamente',
-                confirmButtonText: 'Aceptar'
-            });
-            cargarTabla();
-            modal.classList.toggle('translate');
-        } else {
-            console.log(this.status);
-            console.error('Error fetching users:', this.statusText);
-            Swal.fire({
-                title: 'Error',
-                text: 'No se ha podido actualizar el tipo de sensor',
-                icon: 'error',
-                confirmButtonText: 'Aceptar'
-            });
-        }
-    };
-    xhr.send(JSON.stringify(data));
-
-}
-
-function getSensor() {
-    fetch(`${API_URL}/sensor`)
-        .then(response => response.json())
-        .then(data => {
-            sensores.push(...data);
-        });
-}
-
-getSensor();
 
 
 function validarTpSensorActivo() {

@@ -3,7 +3,11 @@ import { API_URL } from '../config.js';
 
 var listaTpSensores = [];
 const listaSensores = [];
+const back = document.getElementById('back');
 
+back.addEventListener('click', () => {
+    window.location.href = '/vistas/edicion/sensor/sensor_crud.html';
+});
 
 
 async function getSensor() {

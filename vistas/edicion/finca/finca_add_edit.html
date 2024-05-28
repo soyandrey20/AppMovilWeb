@@ -16,15 +16,17 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 
 <body>
 
     <header>
         <nav>
-            <a href="#" id="back">
+            <a href="#" id="btnBack">
                 <i class='bx bx-left-arrow-alt'></i>
             </a>
+
         </nav>
     </header>
 
@@ -33,33 +35,59 @@
         <div class=" d-flex justify-content-center align-items-center ">
             <div class="bg-white p-5 rounded-5 text-secondary shadow" style="width: 25rem">
 
-                <div class="text-center fs-2 fw-bold">Vereda</div>
+
+
+                <div class="text-center fs-2 fw-bold">Editar Finca</div>
+                <div class="input-group mt-4">
+                    <div class="input-group-text bg-info">
+                        <i class='bx bxs-user-detail'></i>
+                    </div>
+                    <input class="form-control bg-light" type="text" placeholder="id" id="id" disabled />
+
+                </div>
+
+                <div class="input-group mt-4">
+                    <div class="input-group-text bg-info">
+                        <i class='bx bxs-user-detail'></i>
+                    </div>
+                    <div class="form-group">
+                        <select name="Cedula" id="SelectCedula" class="form-control bg-light">
+                            <option value="0">Seleccione el dueño... </option>
+                        </select>
+
+                    </div>
+                </div>
+
                 <div class="input-group mt-4">
                     <div class="input-group-text bg-info">
                         <i class='bx bx-list-ul'></i>
                     </div>
                     <div class="form-group">
-                        <select name="Ciudad" id="SelectCiudad" class="form-control bg-light">
-                            <option value="0">Seleccione la ciudad...</option>
+                        <select name="Finca" id="SelectVereda" class="form-control bg-light">
+                            <option value="0">Seleccione una vereda... </option>
                         </select>
                         <small class="form-text text-danger" id="msgNivelIngles"></small>
                     </div>
                 </div>
-
-
                 <div class="input-group mt-4">
                     <div class="input-group-text bg-info">
-                        <i class='bx bx-water'></i>
+                        <i class='bx bx-pencil'></i>
                     </div>
-                    <input class="form-control bg-light" type="text" placeholder="Nombre" id="InputVereda" />
+                    <input class="form-control bg-light" type="text" placeholder="Nombre" id="Nombre"   />
+
+                </div>
+                <div class="input-group mt-4">
+                    <div class="input-group-text bg-info">
+                        <i class='bx bx-pencil'></i>
+                    </div>
+                    <input class="form-control bg-light" type="text" placeholder="Estado" id="Estado" disabled />
 
                 </div>
                 <div class="d-flex justify-content-around mt-1">
 
-
                 </div>
-                <div class="btn btn-info text-white w-100 mt-4 fw-semibold shadow-sm" id="addVereda" disabled>
-                    Agregar
+                <div class="btn btn-info text-white w-100 mt-4 fw-semibold shadow-sm" id="btnActualizar">
+                    Confirmar
                 </div>
 
 
@@ -71,7 +99,7 @@
         <p>© 2024 Página Administrativa. Todos los derechos reservados.</p>
     </footer>
 
-    <script src="script.js" type="module"></script>
+    <script src="finca_add_edit.js" type="module"></script>
     <script src="/scripts_compartidos/script.js"></script>
 
 </body>

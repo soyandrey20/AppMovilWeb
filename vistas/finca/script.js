@@ -2,7 +2,7 @@ import { API_URL } from '../config.js';
 
 const fincas = [];
 
-async function getFincas() {
+function getFincas() {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', `${API_URL}/fincas`);
     xhr.setRequestHeader('Content-Type', 'application/json');
@@ -19,7 +19,7 @@ async function getFincas() {
 
 
 
-async function getUsuarios() {
+function getUsuarios() {
 
     const xhr = new XMLHttpRequest();
     xhr.open('GET', `${API_URL}/persona`);
@@ -47,7 +47,7 @@ async function getUsuarios() {
 
 
 
-async function getVereda() {
+function getVereda() {
 
     const xhr = new XMLHttpRequest();
     xhr.open('GET', `${API_URL}/Vereda`);
@@ -77,103 +77,73 @@ async function getVereda() {
 
 
 async function addFinca() {
-    const nombre = document.getElementById('Nombre').value;
-    const cedula = document.getElementById('SelectCedula').value;
-    const vereda = document.getElementById('SelectVereda').value;
-    const estado = true;
+    const opt = validarFinca();
 
-    const data = {
-        nombre: nombre,
-        cedula: cedula,
-        id_vereda: vereda,
-        estado: estado
-    };
-
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', `${API_URL}/Fincas`);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-
-    xhr.onload = function () {
-        if (this.readyState === 4 && this.status === 201) {
-            Swal.fire({
-                title: 'Finca creada',
-                text: 'La finca ha sido creada correctamente',
-                icon: 'success',
-                confirmButtonText: 'Aceptar'
-            });
-            window.location.href = window.location.href;
-        } else {
-            console.error('Error add Finca:', this.statusText);
-            Swal.fire({
-                title: 'Error',
-                text: 'No se ha podido crear la finca',
-                icon: 'error',
-                confirmButtonText: 'Aceptar'
-            });
-        }
-    };
-
-    xhr.send(JSON.stringify(data));
-}
-
-document.getElementById('addFinca').addEventListener('click', validarFinca);
+    if (opt) {
 
 
-async function validarFinca() {
-    const nombre = document.getElementById('Nombre').value;
-    const cedula = document.getElementById('SelectCedula').value;
-    const vereda = document.getElementById('SelectVereda').value;
 
-    if (nombre === '' || cedula === '' || vereda === '') {
-        Swal.fire({
-            title: 'Error',
-            text: 'Todos los campos son obligatorios',
-            icon: 'error',
-            confirmButtonText: 'Aceptar'
-        });
-        return;
-    } else if (nombre.length < 3) {
-        Swal.fire({
-            title: 'Error',
-            text: 'El nombre de la finca debe tener al menos 3 caracteres',
-            icon: 'error',
-            confirmButtonText: 'Aceptar'
-        });
-        return;
+        const nombre = document.getElementById('Nombre').value;
+        const cedula = document.getElementById('SelectCedula').value;
+        const vereda = document.getElementById('SelectVereda').value;
+        const estado = true;
 
-    } else if (cedula === '0' || vereda === '0') {
+        const data = {
+            nombre: nombre,
+            cedula: cedula,
+            id_vereda: vereda,
+            estado: estado
+        };
 
-        Swal.fire({
-            title: 'Error',
-            text: 'Seleccione una opción válida',
-            icon: 'error',
-            confirmButtonText: 'Aceptar'
-        });
-        return;
-    }
-    else {
-        for (let i = 0; i < fincas.length; i++) {
-            const finca = fincas[i];
-            if (finca.nombre_finca === nombre) {
-                Swal.fire({
-                    title: 'Error',
-                    text: 'La finca ya existe',
-                    icon: 'error',
-                    confirmButtonText: 'Aceptar'
-                });
-                return;
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', `${API_URL}/Fincas`);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.onload = function () {
+            if (this.readyState === 4 && this.status === 200) {
+
+                window.alert('Finca creada correctamente');
+                window.location.href = `/vistas/edicion/finca/finca_crud.html`;
+            } else {
+                window.alert('Error al crear la finca');
             }
-        }
+        };
+
+        xhr.send(JSON.stringify(data));
+    } else {
+        window.alert('Error al crear la finca, verifique los datos ingresados');
+
+
+    }
+}
+
+const add = document.getElementById('addFinca');
+add.addEventListener('click', addFinca);
+
+function validarFinca() {
+    var opt = true;
+
+
+    if (document.getElementById('SelectCedula').value == 0) {
+        opt = false;
+    }
+    else if (document.getElementById('SelectVereda').value == 0) {
+        opt = false;
+    } else if (document.getElementById('Nombre').value == '') {
+        opt = false;
     }
 
-    addFinca();
+    return opt;
 }
-getFincas();
-getUsuarios();
-getVereda();
 
-const btnSetings = document.getElementById('btnSetings');
 
-btnSetings.addEventListener('click', () => {
-    window.location.href = '/vistas/edicion/finca/finca_crud.html';
+
+window.onload = getFincas();
+window.onload = getUsuarios();
+window.onload = getVereda();
+
+const back = document.getElementById('back');
+
+back.addEventListener('click', () => {
+    window.location.href = `/vistas/edicion/finca/finca_crud.html`;
 });

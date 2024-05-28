@@ -1,8 +1,12 @@
 
- import { API_URL } from '../config.js';
+import { API_URL } from '../config.js';
 
 const tpPersona = [];
+const back = document.getElementById('back');
 
+back.addEventListener('click', () => {
+    window.location.href = '/vistas/edicion/tipo_personas/tp_personas_crud.html';
+});
 
 async function addTp_persona() {
     const descripcion = document.getElementById('tp_persona').value;

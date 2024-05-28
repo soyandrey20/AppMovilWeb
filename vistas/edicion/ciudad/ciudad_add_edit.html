@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8" />
@@ -28,55 +28,66 @@
             
         </nav>
     </header>
+
     <div>
 
-        <div class=" d-flex justify-content-center align-items-center">
+        <div class=" d-flex justify-content-center align-items-center ">
             <div class="bg-white p-5 rounded-5 text-secondary shadow" style="width: 25rem">
 
-                <div class="text-center fs-1 fw-bold">Sensor parámetro</div>
+                <div class="text-center fs-2 fw-bold">Ciudad</div>
+
                 <div class="input-group mt-4">
-                    <div class="input-group-text bg-celeste">
+                    <div class="input-group-text bg-info">
+                        <i class='bx bx-id-card'></i>
+                    </div>
+                    <input class="form-control bg-light" type="text" placeholder="id" id="id" disabled/>
+
+                </div>
+
+                <div class="input-group mt-4">
+                    <div class="input-group-text bg-info">
                         <i class='bx bx-list-ul'></i>
                     </div>
+
                     <div class="form-group">
-                        <select name="TipoParametro" id="SelectTipoSensor" class="form-control bg-white">
-                            <option value="0">Seleccione un sensor...</option>
+                        <select name="departamento" id="SelectTipoDepartamento" class="form-control bg-light">
+                            <option value="0">Seleccione el departamento...</option>
                         </select>
-                        <small class="form-text text-danger"></small>
                     </div>
                 </div>
+
                 <div class="input-group mt-4">
-                    <div class="input-group-text bg-celeste">
-                        <i class='bx bx-list-ul'></i>
+                    <div class="input-group-text bg-info">
+                        <i class='bx bx-buildings'></i>
                     </div>
-                    <div class="form-group">
-                        <select name="TipoParametro" id="SelectTipoParametro" class="form-control bg-white">
-                            <option value="0">Seleccione un parámetro..</option>
-                        </select>
-                        <small class="form-text text-danger"></small>
-                    </div>
+                    <input class="form-control bg-light" type="text" placeholder="Nombre" id="ciudad" />
+
                 </div>
 
-                <div class="d-flex justify-content-around mt-1">
-
+                <div class="input-group mt-4">
+                    <div class="input-group-text bg-info">
+                        <i class='bx bx-toggle-right'></i>
+                    </div>
+                    <input class="form-control bg-light" type="text" placeholder="Estado" id="Estado" disabled/>
 
                 </div>
-                <div class="btn btn-primary text-white w-100 mt-4 fw-semibold shadow-sm" id="addParaSensor">
-                    Agregar
+
+                <div class="btn btn-info text-white w-100 mt-4 fw-semibold shadow-sm" id="btnActualizar" disabled>
+                    Confirmar
                 </div>
 
 
             </div>
 
         </div>
-
     </div>
     <footer class="footer">
         <p>© 2024 Página Administrativa. Todos los derechos reservados.</p>
     </footer>
 
-    <script src="script.js" type="module"></script>
+    <script src="ciudad_add_edit.js" type="module"></script>
     <script src="/scripts_compartidos/script.js"></script>
+
 </body>
 
 

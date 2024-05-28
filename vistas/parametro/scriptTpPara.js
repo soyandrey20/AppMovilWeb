@@ -1,7 +1,12 @@
 
-import {API_URL} from '../config.js';
+import { API_URL } from '../config.js';
 
 const tp_parametro = [];
+const back = document.getElementById('back');
+
+back.addEventListener('click', () => {
+    window.location.href = '/vistas/edicion/tp_parametro/tp_parametro_crud.html';
+});
 
 async function getTpParametro() {
     const xhr = new XMLHttpRequest();
@@ -12,7 +17,7 @@ async function getTpParametro() {
         if (this.readyState === 4 && this.status === 200) {
             const data = JSON.parse(this.response);
             tp_parametro.push(...data);
-       
+
         } else {
             console.error('Error fetching users:', this.statusText);
         }

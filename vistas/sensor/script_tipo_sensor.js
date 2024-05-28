@@ -3,6 +3,11 @@ import { API_URL } from '../config.js';
 
 const listaTpSensores = [];
 
+const back = document.getElementById('back');
+
+back.addEventListener('click', () => {
+    window.location.href = '/vistas/edicion/tp_sensor/tp_sensor_crud.html';
+});
 
 async function getTpsensor() {
     const xhr = new XMLHttpRequest();
