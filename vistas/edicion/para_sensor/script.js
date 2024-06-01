@@ -1,82 +1,18 @@
 import { API_URL } from "../../config.js";
 
 
-const userTable = document.getElementById('userTable');
+ 
 const tableData = document.getElementById('tableData');
 const inputs = document.querySelectorAll('input');
 
-const modal = document.getElementById('modal');
-const modal1 = document.getElementById('modal1');
-const modal2 = document.getElementById('modal2');
-
-const btnClose = document.getElementById('close');
-const btnConfirm = document.getElementById('confirm');
-const btnEliminar = document.getElementById('eliminar')
-const btnCancelar = document.getElementById('cancelar')
-const btnActivate = document.getElementById('activate')
-const btnCancelar1 = document.getElementById('cancelar1')
+ 
 let count = 0;
 let dataD = null;
 
-async function getTipoPersona() {
-  const xhr = new XMLHttpRequest();
-  xhr.open('GET', `${API_URL}/Tipo_parametro`);
-
-  const SelectTipoParametro = document.getElementById('SelectTipoParametro');
-  xhr.onload = function () {
-    if (this.readyState === 4 && this.status === 200) {
-      const data = JSON.parse(this.response);
-
-      for (let i = 0; i < data.length; i++) {
-        const parametro = data[i];
-        const option = document.createElement('option');
-        option.value = parametro.Id;
-        option.innerText = parametro.Descripcion;
-        SelectTipoParametro.appendChild(option);
-
-      }
-    } else {
-      console.error('Error fetching users:', this.statusText);
-    }
-  };
-
-  xhr.send();
-}
+ 
 
 
-
-async function getSensor() {
-  const xhr = new XMLHttpRequest();
-  xhr.open('GET', `${API_URL}/sensor`);
-
-  const SelectTipoSensor = document.getElementById('SelectTipoSensor');
-
-  xhr.onload = function () {
-
-
-    if (this.readyState === 4 && this.status === 200) {
-      const data = JSON.parse(this.response);
-
-      for (let i = 0; i < data.length; i++) {
-        const sensor = data[i];
-
-        const option = document.createElement('option');
-        option.value = sensor.Id;
-        option.innerText = sensor.informacion;
-        SelectTipoSensor.appendChild(option);
-
-      }
-    } else {
-      console.error('Error fetching users:', this.statusText);
-    }
-  };
-  xhr.send();
-
-}
-
-getTipoPersona();
-getSensor();
-
+ 
 
 
 async function cargarTabla() {
@@ -113,12 +49,31 @@ async function cargarTabla() {
 
 
     });
+
+    $(document).ready(function () {
+
+      $('#userTable').DataTable({
+        "paging": true,
+        "pageLength": 5,
+        "searching": true,
+        "lengthMenu": [5, 10, 15],
+        "language": {
+          "paginate": {
+            "next": "Siguiente", // Cambia el texto del botón "Next"
+            "previous": "Anterior" // Cambia el texto del botón "Previous"
+          },
+          "search": "Buscar", // Cambia el texto de la etiqueta "Search"
+          "lengthMenu": "Mostrar _MENU_ entradas por página",
+          "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas"
+        }
+      });
+    });
   } catch (error) {
     console.error('Error obteniendo usuarios:', error);
   }
 }
 
-window.addEventListener('DOMContentLoaded', cargarTabla);
+window.onload = cargarTabla();
 /**-------------------------------------------------- volver-------------------------------- */
 const btnBack = document.getElementById('back');
 btnBack.addEventListener('click', () => {
@@ -133,7 +88,7 @@ btnBack.addEventListener('click', () => {
 window.addEventListener('click', async (e) => {
   count = 0;
   if (e.target.classList.contains('bxs-plus-circle')) {
-     window.location.href = `/vistas/para_sensor/para_sensor.html`;
+    window.location.href = `/vistas/para_sensor/para_sensor.html`;
 
   } else if (e.target.classList.contains('bxs-edit-alt')) {
 
@@ -161,7 +116,7 @@ window.addEventListener('click', async (e) => {
 
 
 /** ---------------------------------------------------------- eliminar usuario */
-btnEliminar.addEventListener('click', deleteCiudad);
+ 
 
 async function deleteCiudad() {
 
@@ -187,7 +142,7 @@ async function deleteCiudad() {
       window.alert('Parametro sensor eliminado correctamente');
 
 
-      cargarTabla();
+      window.location.reload();
 
 
     } else {
@@ -202,9 +157,7 @@ async function deleteCiudad() {
 /** ---------------------------------------------------------- activar usuario */
 
 
-
-btnActivate.addEventListener('click', activateUser);
-btnConfirm.addEventListener('click', updateData);
+ 
 
 async function activateUser() {
 
@@ -228,8 +181,7 @@ async function activateUser() {
     if (this.readyState === 4 && this.status === 200) {
 
       window.alert('Parametro sensor activado correctamente');
-      cargarTabla();
-
+      window.location.reload();
     } else {
 
       window.alert('Error al activar el parametro sensor');
@@ -239,40 +191,4 @@ async function activateUser() {
 
 }
 
-
-/** ---------------------------------------------------------- actualizar usuario */
-
-async function updateData() {
-  const id = inputs[0].value;
-  const id_parametro = document.getElementById('SelectTipoParametro').value;
-  const id_sensor = document.getElementById('SelectTipoSensor').value;
-  const estado = inputs[1].value;
-  const data = {
-    id,
-    id_parametro,
-    id_sensor,
-    estado
-  };
-
-  const xhr = new XMLHttpRequest();
-
-  xhr.open('PUT', `${API_URL}/parametro_sensor/${id}`);
-
-  xhr.setRequestHeader('Content-Type', 'application/json');
-
-  xhr.onload = async function () {
-    if (this.readyState === 4 && this.status === 200) {
-
-      window.alert('Parametro sensor actualizado correctamente');
-      cargarTabla();
-
-    } else {
-
-      window.alert('Error al actualizar el parametro sensor');
-    }
-  };
-  xhr.send(JSON.stringify(data));
-
-
-}
-
+ 

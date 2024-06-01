@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/x-icon" href="/assets/logo-vt.svg" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bienvenida</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="/styles/styles_compartidos.css">
+
+    <!-- Boxicons CSS -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        .d-flex.justify-content-center.align-items-center {
+            margin-top: 5rem;
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <a href="#" id="btnBack">
+                <i class='bx bx-left-arrow-alt'></i>
+            </a>
+
+        </nav>
+    </header>
+
+    <div>
+
+        <div class=" d-flex justify-content-center align-items-center ">
+            <div class="bg-white p-5 rounded-5 text-secondary shadow" style="width: 50rem">
+
+                <div class="text-center fs-2 fw-bold">Usuarios</div>
+
+
+                <div class="input-group mt-4">
+                    <div class="input-group-text bg-info">
+                        <i class='bx bxs-id-card'></i>
+                    </div>
+                    <input class="form-control bg-light" type="text" placeholder="# Cedula" id="cedula" />
+
+
+                </div>
+                <small class="form-text text-danger" id="msgCedula"></small>
+                <div class="input-group mt-4">
+                    <div class="input-group-text bg-info">
+                        <i class='bx bxs-user-detail'></i>
+                    </div>
+
+                    <select name="Cedula" id="SelectTpPersona" class="form-control bg-light">
+                        <option value="0">Seleccione el Tipo de persona... </option>
+                    </select>
+
+
+                </div>
+                <small class="form-text text-danger" id="msgTpPersona"></small>
+                <div class="input-group mt-4">
+                    <div class="input-group-text bg-info">
+                        <i class='bx bxs-user'></i>
+                    </div>
+                    <input class="form-control bg-light" type="text" placeholder="Primer nombre" id="primerNombre" />
+
+                    <span style="margin: 0 5px;"> </span>
+                    <div class="input-group-text bg-info">
+                        <i class='bx bx-user'></i>
+                    </div>
+
+                    <input class="form-control bg-light" type="text" placeholder="Segundo nombre" id="segundoNombre" />
+                </div>
+                <small class="form-text text-danger" id="msgPrimerNombre"></small>
+
+                <div class="input-group mt-4">
+                    <div class="input-group-text bg-info">
+                        <i class='bx bxs-user'></i>
+                    </div>
+                    <input class="form-control bg-light" type="text" placeholder="Primer apellido"
+                        id="primerApellido" />
+                    <span style="margin: 0 5px;"> </span>
+                    <div class="input-group-text bg-info">
+                        <i class='bx bx-user'></i>
+                    </div>
+                    <input class="form-control bg-light" type="text" placeholder="Segundo apellido"
+                        id="segundoApellido" />
+                </div>
+                <small class="form-text text-danger" id="msgPrimerApellido"></small>
+
+                <div class="input-group mt-4">
+                    <div class="input-group-text bg-info">
+                        <i class='bx bx-envelope'></i>
+                    </div>
+                    <input class="form-control bg-light" type="email" placeholder="Correo" id="email" />
+
+                </div>
+                <small class="form-text text-danger" id="msgEmail"></small>
+
+                <div class="input-group mt-4">
+                    <div class="input-group-text bg-info">
+                        <i class='bx bx-envelope'></i>
+                    </div>
+                    <input class="form-control bg-light" type="email" placeholder="Confirmar correo" id="confEmail" />
+
+                </div>
+                <small class="form-text text-danger" id="msgConfEmail"></small>
+
+                <div class="input-group mt-4">
+                    <div class="input-group-text bg-info">
+                        <i class="bx bxs-key"></i>
+
+                    </div>
+                    <input class="form-control bg-light" type="password" placeholder="Contraseña" id="password" />
+
+                </div>
+                <small class="form-text text-danger" id="msgPassword"></small>
+
+                <div class="input-group mt-4">
+                    <div class="input-group-text bg-info">
+                        <i class="bx bxs-key"></i>
+
+                    </div>
+                    <input class="form-control bg-light" type="password" placeholder="Confirmar Contraseña"
+                        id="confPassword" />
+
+                </div>
+                <small class="form-text text-danger" id="msgConfPassword"></small>
+
+                <div class="btn btn-info text-white w-100 mt-4 fw-semibold shadow-sm" id="addUsuario" disabled>
+                    Agregar
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+    <footer class="footer">
+        <p>© 2024 Página Administrativa. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="registro.js" type="module"></script>
+    <script src="/scripts_compartidos/script.js"></script>
+
+</body>
+
+
+</html>

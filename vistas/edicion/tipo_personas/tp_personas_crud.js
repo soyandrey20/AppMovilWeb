@@ -56,11 +56,29 @@ async function cargarTabla() {
 
 
         });
+        $(document).ready(function () {
+
+            $('#userTable').DataTable({
+                "paging": true,
+                "pageLength": 5,
+                "searching": true,
+                "lengthMenu": [5, 10, 15],
+                "language": {
+                    "paginate": {
+                        "next": "Siguiente", // Cambia el texto del botón "Next"
+                        "previous": "Anterior" // Cambia el texto del botón "Previous"
+                    },
+                    "search": "Buscar", // Cambia el texto de la etiqueta "Search"
+                    "lengthMenu": "Mostrar _MENU_ entradas por página",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas"
+                }
+            });
+        });
     } catch (error) {
         console.error('Error obteniendo usuarios:', error);
     }
 }
-window.addEventListener('DOMContentLoaded', cargarTabla);
+window.onload = cargarTabla();
 
 /**------------------------------------------------volver atras----------------------------------------- */
 const btnBack = document.getElementById('back');
@@ -166,7 +184,7 @@ async function deleteCiudad() {
         xhr.onload = function () {
             if (this.readyState === 4 && this.status === 200) {
                 window.alert('Tipo de persona desactivado correctamente');
-                cargarTabla();
+                window.location.reload();
             } else {
                 window.alert('No se ha podido desactivar el tipo de persona');
             }
@@ -204,10 +222,10 @@ function activateUser() {
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
             window.alert('Tipo de persona activado correctamente');
-            cargarTabla();
+            window.location.reload();
         } else {
             window.alert('No se ha podido activar el tipo de persona');
-            cargarTabla();
+          
         }
     };
     xhr.send(JSON.stringify(data));
@@ -237,8 +255,10 @@ async function updateData() {
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
             window.alert('Tipo de persona actualizado correctamente');
+            window.location.reload();
         } else {
             window.alert('No se ha podido actualizar el tipo de persona');
+            
         }
     };
     xhr.send(JSON.stringify(data));

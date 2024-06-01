@@ -47,12 +47,31 @@ async function cargarTabla() {
 
 
         });
+        $(document).ready(function () {
+
+            $('#userTable').DataTable({
+                "paging": true,
+                "pageLength": 5,
+                "searching": true,
+                "lengthMenu": [5, 10, 15],
+                "language": {
+                    "paginate": {
+                        "next": "Siguiente", // Cambia el texto del botón "Next"
+                        "previous": "Anterior" // Cambia el texto del botón "Previous"
+                    },
+                    "search": "Buscar", // Cambia el texto de la etiqueta "Search"
+                    "lengthMenu": "Mostrar _MENU_ entradas por página",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas"
+                }
+            });
+        });
+
     } catch (error) {
         console.error('Error obteniendo usuarios:', error);
     }
 }
 
-window.addEventListener('DOMContentLoaded', cargarTabla);
+window.onload = cargarTabla();
 
 /** ---------------------------------------------------------- devolverse */
 const btnBack = document.getElementById('back');
@@ -136,8 +155,7 @@ async function deleteCiudad() {
             if (this.readyState === 4 && this.status === 200) {
 
                 window.confirm('Ciudad desactivada correctamente.');
-                cargarTabla();
-
+                 window.location.reload(); 
             } else {
                 window.alert('Ocurrió un error al desactivar la ciudad.')
             }
@@ -173,7 +191,7 @@ function activateUser() {
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
             window.alert('Ciudad activada correctamente.');
-            cargarTabla();
+            window.location.reload();
 
         } else {
             window.alert('Ocurrió un error al activar el Ciudad.');

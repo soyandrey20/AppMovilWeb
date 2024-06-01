@@ -1,8 +1,10 @@
 import { API_URL } from '../config.js';
 
+
+
 const fincas = [];
 
-function getFincas() {
+async function getFincas() {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', `${API_URL}/fincas`);
     xhr.setRequestHeader('Content-Type', 'application/json');
@@ -19,7 +21,7 @@ function getFincas() {
 
 
 
-function getUsuarios() {
+async function getUsuarios() {
 
     const xhr = new XMLHttpRequest();
     xhr.open('GET', `${API_URL}/persona`);
@@ -47,7 +49,7 @@ function getUsuarios() {
 
 
 
-function getVereda() {
+async function getVereda() {
 
     const xhr = new XMLHttpRequest();
     xhr.open('GET', `${API_URL}/Vereda`);
@@ -79,7 +81,7 @@ function getVereda() {
 async function addFinca() {
     const opt = validarFinca();
 
-    if (opt) {
+    if (opt == true) {
 
 
 
@@ -100,6 +102,7 @@ async function addFinca() {
         xhr.setRequestHeader('Content-Type', 'application/json');
 
         xhr.onload = function () {
+
             if (this.readyState === 4 && this.status === 200) {
 
                 window.alert('Finca creada correctamente');
@@ -120,7 +123,7 @@ async function addFinca() {
 const add = document.getElementById('addFinca');
 add.addEventListener('click', addFinca);
 
-function validarFinca() {
+async function validarFinca() {
     var opt = true;
 
 
@@ -129,7 +132,7 @@ function validarFinca() {
     }
     else if (document.getElementById('SelectVereda').value == 0) {
         opt = false;
-    } else if (document.getElementById('Nombre').value == '') {
+    } else if (document.getElementById('Nombre').value.trim() == '') {
         opt = false;
     }
 

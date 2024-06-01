@@ -8,6 +8,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+
+
     <link rel="stylesheet" href="style.css">
 
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
@@ -59,66 +62,18 @@
             <p>© 2024 Página Administrativa. Todos los derechos reservados.</p>
         </footer>
 
-        <div class="position-absolute w-100 top translate" id="modal">
-            <form class="form-control w-25">
-                <h1 class="text-center">Nuevos datos</h1>
 
-                <div class="form-control border-white">
-                    <label for="">Id :</label>
-                    <input type="text" class="form-control w-100 " readonly id="Cedula">
-                </div>
-                <div class="form-control border-white">
-                    <label for="">Descripcion :</label>
-                    <input type="text" class="form-control w-100 " id="Cedula">
-                </div>
-
-                <div class="form-control border-white">
-                    <label for="">estado:</label>
-                    <input type="text" class="form-control w-100" id="Estado" readonly>
-                </div>
+    </div>
+    <script src="tp_parametro_crud.js" type="module"></script>
+    <script src="/scripts_compartidos/script.js"></script>
 
 
-                <div class="form-control border-white text-center ">
-                    <button class="btn btn-danger close" id="close">cancelar</button>
 
-                    <button class="btn btn-primary" id="confirm"> Confirmar</button>
-                </div>
-            </form>
-
-        </div>
-
-        <div class="position-absolute w-100 top translate  " id="modal1">
-            <form class="form-control w-25 d-flex flex-column align-items-center">
-                <h1 class="text-center">Confirmar eliminar</h1>
-
-                <div class="form-control border-white text-center">
-                    <label for="">¿Está seguro de eliminar?</label>
-                </div>
-
-                <div class="form-control border-white text-center">
-                    <button class="btn btn-danger" id="cancelar">cancelar</button>
-                    <button class="btn btn-primary" id="eliminar">Eliminar</button>
-
-                </div>
-            </form>
-        </div>
-        <div class="position-absolute w-100 top translate  " id="modal2">
-            <form class="form-control w-25 d-flex flex-column align-items-center">
-                <h1 class="text-center">Confirmar activaciion</h1>
-
-                <div class="form-control border-white text-center">
-                    <label for="">¿Está seguro de activar?</label>
-                </div>
-
-                <div class="form-control border-white text-center"> <button class="btn btn-danger"
-                        id="cancelar1">cancelar</button>
-                    <button class="btn btn-primary" id="activate">Activar</button>
-
-                </div>
-            </form>
-        </div>
-        <script src="tp_parametro_crud.js" type="module"></script>
-        <script src="/scripts_compartidos/script.js"></script>
+    <!-- jQuery -->
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- DataTables -->
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
 </body>
 
 </html>

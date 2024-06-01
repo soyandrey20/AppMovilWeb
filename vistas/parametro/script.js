@@ -74,20 +74,10 @@ async function addParametro() {
     xhr.onload = function () {
 
         if (this.readyState === 4 && this.status === 200) {
-            Swal.fire({
-                title: 'Parametro creado',
-                text: 'El parametro ha sido creado correctamente',
-                icon: 'success',
-                confirmButtonText: 'Aceptar'
-            });
+            window.alert('Parametro creado correctamente');
+            window.location.href = '/vistas/edicion/parametro/parametro_crud.html';
         } else {
-            console.error('Error fetching users:', this.statusText);
-            Swal.fire({
-                title: 'Error',
-                text: 'No se ha podido crear el parametro',
-                icon: 'error',
-                confirmButtonText: 'Aceptar'
-            });
+            window.alert('Error al crear el parametro');
         }
     };
 
@@ -98,11 +88,6 @@ const addParametroButton = document.getElementById('addParametro');
 addParametroButton.addEventListener('click', validarParametro);
 
 
-const btnSetings = document.getElementById('btnSetings');
-
-btnSetings.addEventListener('click', () => {
-    window.location.href = `/vistas/edicion/parametro/parametro_crud.html`;
-});
 
 
 async function validarParametro() {
@@ -111,36 +96,13 @@ async function validarParametro() {
     const SelectTipoParametro = document.getElementById('SelectTipoParametro').value;
 
     if (RangoSuperior === '' || RangoInferior === '' || SelectTipoParametro === '') {
-        Swal.fire({
-            title: 'Error',
-            text: 'Todos los campos son obligatorios',
-            icon: 'error',
-            confirmButtonText: 'Aceptar'
-        });
+        window.alert('Todos los campos son obligatorios');
         return;
     } else if (RangoSuperior < RangoInferior) {
-        Swal.fire({
-            title: 'Error',
-            text: 'El rango inferior no puede ser mayor al rango superior',
-            icon: 'error',
-            confirmButtonText: 'Aceptar'
-        });
-        return;
-    } else if (RangoInferior > RangoSuperior) {
-        Swal.fire({
-            title: 'Error',
-            text: 'El rango superior no puede ser menor al rango inferior',
-            icon: 'error',
-            confirmButtonText: 'Aceptar'
-        });
+        window.alert('El rango superior no puede ser menor al rango inferior');
         return;
     } else if (parametro.find(parametro => parametro.RangoSuperior === RangoSuperior && parametro.RangoInferior === RangoInferior)) {
-        Swal.fire({
-            title: 'Error',
-            text: 'El parametro ya existe',
-            icon: 'error',
-            confirmButtonText: 'Aceptar'
-        });
+        window.alert('El parametro ya existe');
         return;
     }
 

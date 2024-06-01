@@ -42,11 +42,29 @@ async function cargarTabla() {
             tableData.appendChild(tableRow);
 
         });
+        $(document).ready(function () {
+
+            $('#userTable').DataTable({
+                "paging": true,
+                "pageLength": 5,
+                "searching": true,
+                "lengthMenu": [5, 10, 15],
+                "language": {
+                    "paginate": {
+                        "next": "Siguiente", // Cambia el texto del botón "Next"
+                        "previous": "Anterior" // Cambia el texto del botón "Previous"
+                    },
+                    "search": "Buscar", // Cambia el texto de la etiqueta "Search"
+                    "lengthMenu": "Mostrar _MENU_ entradas por página",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas"
+                }
+            });
+        });
     } catch (error) {
         console.error('Error obteniendo usuarios:', error);
     }
 }
-window.addEventListener('DOMContentLoaded', cargarTabla);
+window.onload = cargarTabla();
 /**
  * --------------------- V O L V E R ---------------------
  */
@@ -122,7 +140,7 @@ async function deleteCiudad() {
         xhr.onload = function () {
             if (this.readyState === 4 && this.status === 200) {
                 window.alert('tipo de sensor desactivado');
-                cargarTabla();
+                window.location.reload();
             } else {
                 window.alert('Error al desactivar el tipo de sensor');
             }
@@ -156,7 +174,7 @@ async function activateUser() {
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
             window.alert('tipo de sensor activado');
-            cargarTabla();
+            window.location.reload();
         } else {
             window.alert('Error al activar el tipo de sensor');
         }

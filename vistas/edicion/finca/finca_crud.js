@@ -33,7 +33,7 @@ async function cargarTabla() {
         <td id="id_persona" disabled>${user.id_persona}</td>
         <td id="nombre" disabled>${user.nombre_finca}</td>
         <td id="direccion" id_vereda>${user.id_vereda}</td>
-        <td id="estado" disabled>${user.estado}</td>
+        <td id="estado" disabled>${user.estado == true ? 'Activo' : 'Inactivo'}</td>
   
         <td>
         <a href="#" class="btn-update"><i class='bx bx-plus-circle' ></i></a>
@@ -48,11 +48,29 @@ async function cargarTabla() {
 
 
         });
+        $(document).ready(function () {
+
+            $('#userTable').DataTable({
+                "paging": true,
+                "pageLength": 5,
+                "searching": true,
+                "lengthMenu": [5, 10, 15],
+                "language": {
+                    "paginate": {
+                        "next": "Siguiente", // Cambia el texto del botón "Next"
+                        "previous": "Anterior" // Cambia el texto del botón "Previous"
+                    },
+                    "search": "Buscar", // Cambia el texto de la etiqueta "Search"
+                    "lengthMenu": "Mostrar _MENU_ entradas por página",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas"
+                }
+            });
+        });
     } catch (error) {
         console.error('Error obteniendo usuarios:', error);
     }
 }
-cargarTabla();
+window.onload = cargarTabla();
 
 /** ---------------------------------------------------------- volver atras */
 
@@ -129,24 +147,14 @@ async function deleteFinca() {
 
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
- 
-            Swal.fire({
-                title: 'finca desactivada correctamente',
-                icon: 'success',
-                confirmButtonText: 'Aceptar'
-            });
+            window.alert('Finca desactivada correctamente');
 
-            cargarTabla();
 
-            modal1.classList.toggle('translate');
+            window.location.reload();
+
         } else {
- 
-            Swal.fire({
-                title: 'Error',
-                text: 'No se pudo desactivar la finca',
-                icon: 'error',
-                confirmButtonText: 'Aceptar'
-            });
+
+            window.alert('Error al desactivar la finca');
         }
     };
     xhr.send(JSON.stringify(data));
@@ -179,22 +187,13 @@ async function activateFinca() {
 
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
- 
-            Swal.fire({
-                title: 'finca activada correctamente',
-                icon: 'success',
-                confirmButtonText: 'Aceptar'
-            });
-            cargarTabla();
- 
+
+            window.alert('Finca activada correctamente');
+            window.location.reload();
+
         } else {
- 
-            Swal.fire({
-                title: 'Error',
-                text: 'No se pudo activar la finca',
-                icon: 'error',
-                confirmButtonText: 'Aceptar'
-            });
+
+            window.alert('Error al activar la finca');
         }
     };
     xhr.send(JSON.stringify(data));
@@ -204,7 +203,7 @@ async function activateFinca() {
 
 /** ---------------------------------------------------------- actualizar usuario */
 
- 
+
 
 
 

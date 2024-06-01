@@ -1,20 +1,8 @@
 import { API_URL } from '../../config.js'
 
-const userTable = document.getElementById('userTable');
+ 
 const tableData = document.getElementById('tableData');
-
-const inputs = document.querySelectorAll('input');
-
-const modal = document.getElementById('modal');
-const modal1 = document.getElementById('modal1');
-const modal2 = document.getElementById('modal2');
-
-const btnClose = document.getElementById('close');
-const btnConfirm = document.getElementById('confirm');
-const btnEliminar = document.getElementById('eliminar')
-const btnCancelar = document.getElementById('cancelar')
-const btnActivate = document.getElementById('activate')
-const btnCancelar1 = document.getElementById('cancelar1')
+ 
 let count = 0;
 let dataD = null;
 
@@ -55,12 +43,31 @@ async function cargarTabla() {
             tableData.appendChild(tableRow);
 
         });
+
+        $(document).ready(function () {
+
+            $('#userTable').DataTable({
+                "paging": true,
+                "pageLength": 5,
+                "searching": true,
+                "lengthMenu": [5, 10, 15],
+                "language": {
+                    "paginate": {
+                        "next": "Siguiente", // Cambia el texto del botón "Next"
+                        "previous": "Anterior" // Cambia el texto del botón "Previous"
+                    },
+                    "search": "Buscar", // Cambia el texto de la etiqueta "Search"
+                    "lengthMenu": "Mostrar _MENU_ entradas por página",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas"
+                }
+            });
+        });
     } catch (error) {
         console.error('Error obteniendo usuarios:', error);
     }
 }
 
-window.addEventListener('DOMContentLoaded', cargarTabla);
+window.onload = cargarTabla();
 
 /**-------------------------------------------------- volver-------------------------------- */
 const btnBack = document.getElementById('back');
@@ -107,7 +114,7 @@ window.addEventListener('click', async (e) => {
 /** ---------------------------------------------------------- llenar datos en el modal */
 
 /** ---------------------------------------------------------- eliminar usuario */
-btnEliminar.addEventListener('click', deleteCiudad);
+ 
 
 async function deleteCiudad() {
 
@@ -135,7 +142,7 @@ async function deleteCiudad() {
         xhr.onload = function () {
             if (this.readyState === 4 && this.status === 200) {
                 window.alert('vereda eliminada correctamente');
-                cargarTabla();
+               window.location.reload();
 
 
             } else {
@@ -174,7 +181,7 @@ async function activateUser() {
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
             window.alert('vereda activada correctamente');
-            cargarTabla();
+            window.location.reload();
         } else {
             window.alert('Error al activar la vereda');
         }

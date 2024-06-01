@@ -32,7 +32,7 @@ async function cargarTabla() {
         <td id="id_parametro" disabled>${user.nombre}</td>
   
  
-        <td id="estado" disabled>${user.estado == true ? 'Activo' :  'Inactivo'}</td>
+        <td id="estado" disabled>${user.estado == true ? 'Activo' : 'Inactivo'}</td>
   
         <td>
         <a href="#" class="btn-update"><i class='bx bx-plus-circle' ></i></a>
@@ -47,11 +47,29 @@ async function cargarTabla() {
 
 
         });
+        $(document).ready(function () {
+
+            $('#userTable').DataTable({
+                "paging": true,
+                "pageLength": 5,
+                "searching": true,
+                "lengthMenu": [5, 10, 15],
+                "language": {
+                    "paginate": {
+                        "next": "Siguiente", // Cambia el texto del botón "Next"
+                        "previous": "Anterior" // Cambia el texto del botón "Previous"
+                    },
+                    "search": "Buscar", // Cambia el texto de la etiqueta "Search"
+                    "lengthMenu": "Mostrar _MENU_ entradas por página",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas"
+                }
+            });
+        });
     } catch (error) {
         console.error('Error obteniendo usuarios:', error);
     }
 }
-window.addEventListener('DOMContentLoaded', cargarTabla);
+window.onload = cargarTabla();
 
 // /** ---------------------------------------------------------- Volver a la ventana de atras */
 
@@ -122,7 +140,7 @@ async function deleteDepartamento() {
         xhr.onload = function () {
             if (this.readyState === 4 && this.status === 200) {
                 window.alert('Departamento desactivado correctamente');
-                cargarTabla();
+                 window.location.reload();
 
             } else {
                 window.alert('Error al desactivar el departamento');
@@ -155,7 +173,7 @@ async function activateUser() {
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
             window.alert('Departamento activado correctamente');
-            cargarTabla();
+            window.location.reload();
 
         } else {
             window.alert('Error al activar el departamento');
