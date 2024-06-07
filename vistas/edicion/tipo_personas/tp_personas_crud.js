@@ -1,21 +1,9 @@
 import { API_URL } from '../../config.js'
 
-const userTable = document.getElementById('userTable');
 const tableData = document.getElementById('tableData');
 
 
-const inputs = document.querySelectorAll('input');
 
-const modal = document.getElementById('modal');
-const modal1 = document.getElementById('modal1');
-const modal2 = document.getElementById('modal2');
-
-const btnClose = document.getElementById('close');
-const btnConfirm = document.getElementById('confirm');
-const btnEliminar = document.getElementById('eliminar')
-const btnCancelar = document.getElementById('cancelar')
-const btnActivate = document.getElementById('activate')
-const btnCancelar1 = document.getElementById('cancelar1')
 let count = 0;
 let dataD = null;
 
@@ -105,19 +93,31 @@ window.addEventListener('click', async (e) => {
     } else if (e.target.classList.contains('bxs-trash-alt')) {
 
         dataD = (e.target.parentElement.parentElement.parentElement.children);
-
-        var opt = window.confirm('¿Está seguro de que desea desactivar el tipo de persona?');
-
-        if (opt) {
-            deleteCiudad();
-        }
+        swal.fire({
+            title: '¿Está seguro de que desea desactivar el tipo de persona?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteCiudad();
+            }
+        });
 
     } else if (e.target.classList.contains('bxs-check-circle')) {
         dataD = (e.target.parentElement.parentElement.parentElement.children);
-        var opt = window.confirm('¿Está seguro de que desea activar el tipo de persona?');
-        if (opt) {
-            activateUser();
-        }
+        swal.fire({
+            title: '¿Está seguro de que desea activar el tipo de persona?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                activateUser();
+            }
+        });
     }
 });
 
@@ -125,21 +125,6 @@ window.addEventListener('click', async (e) => {
 
 
 
-btnClose.addEventListener('click', () => {
-
-    modal.classList.toggle('translate');
-
-
-});
-
-btnCancelar1.addEventListener('click', () => {
-    modal2.classList.toggle('translate');
-});
-
-btnCancelar.addEventListener('click', () => {
-
-    modal1.classList.toggle('translate');
-});
 
 /** ---------------------------------------------------------- llenar datos en el modal */
 const fillData = (data1) => {
@@ -155,14 +140,19 @@ const fillData = (data1) => {
 }
 
 /** ---------------------------------------------------------- eliminar usuario */
-btnEliminar.addEventListener('click', deleteCiudad);
+
 
 async function deleteCiudad() {
 
     let opt = validarTpPersonaActiva();
 
     if (!opt) {
-        window.alert('No se puede desactivar el tipo de persona, ya que hay personas que lo tienen asignado');
+        swal.fire({
+            title: 'No se puede desactivar el tipo de persona',
+            text: 'El tipo de persona está siendo usado por una persona',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+        });
     }
     else {
         const id = dataD[0].textContent;
@@ -183,10 +173,19 @@ async function deleteCiudad() {
 
         xhr.onload = function () {
             if (this.readyState === 4 && this.status === 200) {
-                window.alert('Tipo de persona desactivado correctamente');
-                window.location.reload();
+                swal.fire({
+                    title: 'Tipo de persona desactivado correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar'
+                }).then(() => {
+                    window.location.reload();
+                });
             } else {
-                window.alert('No se ha podido desactivar el tipo de persona');
+                swal.fire({
+                    title: 'No se ha podido desactivar el tipo de persona',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                });
             }
         };
         xhr.send(JSON.stringify(data));
@@ -197,9 +196,6 @@ async function deleteCiudad() {
 /** ---------------------------------------------------------- activar usuario */
 
 
-
-btnActivate.addEventListener('click', activateUser);
-btnConfirm.addEventListener('click', updateData);
 
 function activateUser() {
 
@@ -221,11 +217,21 @@ function activateUser() {
 
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
-            window.alert('Tipo de persona activado correctamente');
-            window.location.reload();
+            swal.fire({
+                title: 'Tipo de persona activado correctamente',
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+            }).then(() => {
+                window.location.reload();
+            });
+
         } else {
-            window.alert('No se ha podido activar el tipo de persona');
-          
+            swal.fire({
+                title: 'No se ha podido activar el tipo de persona',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            });
+
         }
     };
     xhr.send(JSON.stringify(data));
@@ -235,35 +241,6 @@ function activateUser() {
 
 /** ---------------------------------------------------------- actualizar usuario */
 
-async function updateData() {
-    const id = inputs[0].value;
-    const descripcion = inputs[1].value;
-
-
-    const estado = inputs[2].value;
-    const data = {
-        id,
-        descripcion,
-        estado
-    };
-    const xhr = new XMLHttpRequest();
-
-    xhr.open('PUT', `${API_URL}/Tipo_persona/${id}`);
-
-    xhr.setRequestHeader('Content-Type', 'application/json');
-
-    xhr.onload = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            window.alert('Tipo de persona actualizado correctamente');
-            window.location.reload();
-        } else {
-            window.alert('No se ha podido actualizar el tipo de persona');
-            
-        }
-    };
-    xhr.send(JSON.stringify(data));
-
-}
 
 function getpersonas() {
     fetch(`${API_URL}/persona`)

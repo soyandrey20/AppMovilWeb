@@ -1,8 +1,8 @@
 import { API_URL } from '../../config.js'
 
- 
+
 const tableData = document.getElementById('tableData');
- 
+
 let count = 0;
 let dataD = null;
 
@@ -96,16 +96,28 @@ window.addEventListener('click', async (e) => {
     } else if (e.target.classList.contains('bxs-trash-alt')) {
 
         dataD = (e.target.parentElement.parentElement.parentElement.children);
-        var opt = window.confirm('¿Está seguro que desea eliminar la vereda?');
-        if (opt) {
-            deleteCiudad();
-        }
+        swal.fire({
+            title: '¿Está seguro que desea eliminar la vereda?',
+            showDenyButton: true,
+            confirmButtonText: `Eliminar`,
+            denyButtonText: `Cancelar`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteCiudad();
+            }
+        });
     } else if (e.target.classList.contains('bxs-check-circle')) {
         dataD = (e.target.parentElement.parentElement.parentElement.children);
-        var opt = window.confirm('¿Está seguro que desea activar la vereda?');
-        if (opt) {
-            activateUser();
-        }
+        swal.fire({
+            title: '¿Está seguro que desea activar la vereda?',
+            showDenyButton: true,
+            confirmButtonText: `Activar`,
+            denyButtonText: `Cancelar`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                activateUser();
+            }
+        });
     }
 });
 
@@ -114,13 +126,17 @@ window.addEventListener('click', async (e) => {
 /** ---------------------------------------------------------- llenar datos en el modal */
 
 /** ---------------------------------------------------------- eliminar usuario */
- 
+
 
 async function deleteCiudad() {
 
     let opt = validarVeredaActivo();
     if (!opt) {
-        window.alert('No se puede eliminar la vereda, ya que esta asociada a una finca');
+        swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'No se puede eliminar la vereda, ya que tiene fincas asociadas',
+        });
     } else {
 
         const id = dataD[0].textContent;
@@ -141,12 +157,23 @@ async function deleteCiudad() {
 
         xhr.onload = function () {
             if (this.readyState === 4 && this.status === 200) {
-                window.alert('vereda eliminada correctamente');
-               window.location.reload();
+                swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Vereda eliminada correctamente',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    window.location.reload();
+                });
 
 
             } else {
-                window.alert('Error al eliminar la vereda');
+                swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Error al eliminar la vereda',
+                });
             }
         };
         xhr.send(JSON.stringify(data));
@@ -180,10 +207,22 @@ async function activateUser() {
 
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
-            window.alert('vereda activada correctamente');
-            window.location.reload();
+            swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Vereda activada correctamente',
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+
+                window.location.reload();
+            });
         } else {
-            window.alert('Error al activar la vereda');
+            swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Error al activar la vereda',
+            });
         }
     };
     xhr.send(JSON.stringify(data));
@@ -198,6 +237,7 @@ async function activateUser() {
 function validarVeredaActivo() {
     let opt = true;
     for (let i = 0; i < fincas.length; i++) {
+ 
         if (fincas[i].id == dataD[0].textContent) {
             opt = false;
             break;
@@ -205,3 +245,24 @@ function validarVeredaActivo() {
     }
     return opt;
 }
+
+async function getFincas() {
+    try {
+        const response = await fetch(`${API_URL}/Fincas`);
+
+        if (!response.ok) {
+            throw new Error(`API request failed with status ${response.status}`);
+        }
+
+        const users = await response.json();
+
+        users.forEach(user => {
+            fincas.push(user);
+        });
+
+    } catch (error) {
+        console.error('Error obteniendo usuarios:', error);
+    }
+}
+
+window.onload = getFincas();

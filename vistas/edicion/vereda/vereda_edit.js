@@ -74,12 +74,27 @@ async function updateData() {
 
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
-            window.alert('Vereda actualizada correctamente');
+            
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Vereda actualizada correctamente',
+                    showConfirmButton: false,
+                    timer: 2000
+                }).then(() => {
+                    window.location.href = '../vereda/vereda_crud.html';
+                });
+
+            
 
 
-            window.location.href = '../vereda/vereda_crud.html';
+
         } else {
-            window.alert('Error al actualizar la vereda');
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Error al actualizar la vereda',
+            });
         }
     };
     xhr.send(JSON.stringify(data));

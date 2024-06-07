@@ -44,10 +44,19 @@ async function updateData() {
 
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
-            window.alert('Tipo de persona actualizado correctamente');
-            window.location.href = `/vistas/edicion/tipo_personas/tp_personas_crud.html`;
+            swal.fire({
+                title: 'Tipo de persona actualizado correctamente',
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+            }).then(() => {
+                window.location.href = `/vistas/edicion/tipo_personas/tp_personas_crud.html`;
+            });
         } else {
-            window.alert('No se ha podido actualizar el tipo de persona');
+            swal.fire({
+                title: 'No se ha podido actualizar el tipo de persona',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            });
         }
     };
     xhr.send(JSON.stringify(data));

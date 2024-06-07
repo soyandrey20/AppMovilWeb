@@ -39,7 +39,7 @@ async function cargarTabla() {
           
         </td>
       `;
-      tableData.appendChild(tableRow);
+            tableData.appendChild(tableRow);
 
 
         });
@@ -98,17 +98,31 @@ window.addEventListener('click', async (e) => {
     } else if (e.target.classList.contains('bxs-trash-alt')) {
         dataD = (e.target.parentElement.parentElement.parentElement.children);
 
-        var opt = window.confirm('¿Está seguro de que desea eliminar el parametro?');
-        if (opt) {
-            deleteCiudad();
-        }
+        swal.fire({
+            title: '¿Está seguro de que desea eliminar el parametro?',
+            icon: 'warning',
+            confirmButtonText: 'Aceptar',
+            showCancelButton: true,
+            cancelButtonText: 'Cancelar',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteCiudad();
+            }
+        });
 
     } else if (e.target.classList.contains('bxs-check-circle')) {
         dataD = (e.target.parentElement.parentElement.parentElement.children);
-        var opt = window.confirm('¿Está seguro de que desea activar el parametro?');
-        if (opt) {
-            activateUser();
-        }
+        swal.fire({
+            title: '¿Está seguro de que desea activar el parametro?',
+            icon: 'warning',
+            confirmButtonText: 'Aceptar',
+            showCancelButton: true,
+            cancelButtonText: 'Cancelar',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                activateUser();
+            }
+        });
     }
 });
 
@@ -122,7 +136,13 @@ async function deleteCiudad() {
     let opt = validarParaSensor();
 
     if (!opt) {
-        window.alert('No se puede eliminar el parametro, ya que está asociado a un sensor');
+        swal.fire({
+            title: 'No se puede eliminar el parametro',
+            icon: 'error',
+            confirmButtonText: 'Aceptar',
+            showConfirmButton: false,
+            timer: 1500
+        });
     } else {
 
 
@@ -144,10 +164,23 @@ async function deleteCiudad() {
 
         xhr.onload = function () {
             if (this.readyState === 4 && this.status === 200) {
-                window.alert('Parametro desactivado correctamente');
-                window.location.reload();
+                swal.fire({
+                    title: 'Parametro eliminado correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    window.location.reload();
+                });
             } else {
-                window.alert('Error al desactivar el parametro');
+                swal.fire({
+                    title: 'Error al eliminar el parametro',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
             }
         };
         xhr.send(JSON.stringify(data));
@@ -180,10 +213,23 @@ async function activateUser() {
 
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
-            window.alert('Parametro activado correctamente');
-            window.location.reload();
+            swal.fire({
+                title: 'Parametro activado correctamente',
+                icon: 'success',
+                confirmButtonText: 'Aceptar',
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+                window.location.reload();
+            });
         } else {
-            window.alert('Error al activar el parametro');
+            swal.fire({
+                title: 'Error al activar el parametro',
+                icon: 'error',
+                confirmButtonText: 'Aceptar',
+                showConfirmButton: false,
+                timer: 1500
+            });
         }
     };
     xhr.send(JSON.stringify(data));

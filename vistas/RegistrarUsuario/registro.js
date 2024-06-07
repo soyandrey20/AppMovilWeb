@@ -33,28 +33,28 @@ back.addEventListener('click', () => {
 });
 
 async function getTipoPersona() {
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', `${API_URL}/tipo_persona`);
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', `${API_URL}/tipo_persona`);
 
-        xhr.onload = function () {
-            if (this.readyState === 4 && this.status === 200) {
-                const data = JSON.parse(this.response);
+    xhr.onload = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            const data = JSON.parse(this.response);
 
-                for (let i = 0; i < data.length; i++) {
-                    const parametro = data[i];
-                    const option = document.createElement('option');
-                    option.value = parametro.id;
-                    option.innerText = parametro.descripcion;
-                    SelectTpPersona.appendChild(option);
+            for (let i = 0; i < data.length; i++) {
+                const parametro = data[i];
+                const option = document.createElement('option');
+                option.value = parametro.id;
+                option.innerText = parametro.descripcion;
+                SelectTpPersona.appendChild(option);
 
-                }
-            } else {
-                console.error('Error fetching users:', this.statusText);
             }
-        };
+        } else {
+            console.error('Error fetching users:', this.statusText);
+        }
+    };
 
-        xhr.send();
-    }
+    xhr.send();
+}
 
 window.addEventListener('DOMContentLoaded', getTipoPersona);
 
@@ -87,10 +87,22 @@ function registrarUsuario() {
 
             xhr.onload = function () {
                 if (this.readyState === 4 && this.status === 200) {
-                    window.alert('Usuario registrado correctamente');
-                    window.location.href = '/vistas/usuarios/usuarios.html';
+                    swal.fire({
+                        icon: 'success',
+                        title: 'Usuario registrado correctamente',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '/vistas/usuarios/usuarios.html';
+                        }
+                    });
+
+
                 } else {
-                    window.alert('Error al registrar usuario');
+                    swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Error al registrar el usuario',
+                    });
                 }
             };
 
@@ -129,7 +141,11 @@ function validarExistencia() {
 
     for (let i = 0; i < persona.length; i++) {
         if (persona[i].Cedula === cedula.value) {
-            window.alert('La cedula ya existe');
+            swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'La cedula ya existe',
+            });
             return false;
         }
     }

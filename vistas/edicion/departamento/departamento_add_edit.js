@@ -51,10 +51,24 @@ async function updateData() {
 
         xhr.onload = function () {
             if (this.readyState === 4 && this.status === 200) {
-                window.alert('Departamento actualizado correctamente');
-                window.location.href = '/vistas/edicion/departamento/departamento_crud.html';
+                swal.fire({
+                    title: 'Departamento actualizado correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    window.location.href = '/vistas/edicion/departamento/departamento_crud.html';
+                });
+
             } else {
-                window.alert('Error al actualizar el departamento');
+                swal.fire({
+                    title: 'Error al actualizar el departamento',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
             }
         };
         xhr.send(JSON.stringify(data));

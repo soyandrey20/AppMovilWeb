@@ -96,17 +96,31 @@ window.addEventListener('click', async (e) => {
     } else if (e.target.classList.contains('bxs-trash-alt')) {
 
         dataD = (e.target.parentElement.parentElement.parentElement.children);
-        var opt = window.confirm('¿Está seguro que desea desactivar el departamento?');
-        if (opt == true) {
-            deleteDepartamento();
-        }
+        swal.fire({
+            title: '¿Está seguro que desea desactivar el departamento?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteDepartamento();
+            }
+        });
     } else if (e.target.classList.contains('bxs-check-circle')) {
 
         dataD = (e.target.parentElement.parentElement.parentElement.children);
-        var opt = window.confirm('¿Está seguro que desea activar el departamento?');
-        if (opt == true) {
-            activateUser();
-        }
+        swal.fire({
+            title: '¿Está seguro que desea activar el departamento?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                activateUser();
+            }
+        });
     }
 });
 
@@ -117,7 +131,13 @@ async function deleteDepartamento() {
 
     let opt = validarDepartActivo();
     if (opt == false) {
-        window.alert('No se puede desactivar el departamento, ya que tiene ciudades asociadas');
+        swal.fire({
+            title: 'No se puede desactivar el departamento, ya que tiene ciudades asociadas',
+            icon: 'error',
+            confirmButtonText: 'Aceptar',
+            showConfirmButton: false,
+            timer: 1500
+        })
     } else {
 
 
@@ -139,11 +159,25 @@ async function deleteDepartamento() {
 
         xhr.onload = function () {
             if (this.readyState === 4 && this.status === 200) {
-                window.alert('Departamento desactivado correctamente');
-                 window.location.reload();
+                swal.fire({
+                    title: 'Departamento desactivado correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    window.location.reload();
+
+                })
 
             } else {
-                window.alert('Error al desactivar el departamento');
+                swal.fire({
+                    title: 'Error al desactivar el departamento',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
             }
         };
         xhr.send(JSON.stringify(data));
@@ -172,11 +206,24 @@ async function activateUser() {
 
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
-            window.alert('Departamento activado correctamente');
-            window.location.reload();
+            swal.fire({
+                title: 'Departamento activado correctamente',
+                icon: 'success',
+                confirmButtonText: 'Aceptar',
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+                window.location.reload();
 
+            })
         } else {
-            window.alert('Error al activar el departamento');
+            swal.fire({
+                title: 'Error al activar el departamento',
+                icon: 'error',
+                confirmButtonText: 'Aceptar',
+                showConfirmButton: false,
+                timer: 1500
+            })
         }
     };
     xhr.send(JSON.stringify(data));

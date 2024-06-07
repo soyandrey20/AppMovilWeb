@@ -105,12 +105,23 @@ async function updateData() {
 
     xhr.onload = async function () {
         if (this.readyState === 4 && this.status === 200) {
-
-            window.alert('Parametro sensor actualizado correctamente');
-            window.location.href = '/vistas/edicion/para_sensor/parametro_sensor_crud.html';
+            swal.fire({
+                title: 'Parametro sensor actualizado correctamente',
+                icon: 'success',
+                confirmButtonText: 'Aceptar',
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+                window.location.href = '/vistas/edicion/para_sensor/parametro_sensor_crud.html';
+            });
         } else {
-
-            window.alert('Error al actualizar el parametro sensor');
+            swal.fire({
+                title: 'Error al actualizar el parametro sensor',
+                icon: 'error',
+                confirmButtonText: 'Aceptar',
+                showConfirmButton: false,
+                timer: 1500
+            });
         }
     };
     xhr.send(JSON.stringify(data));

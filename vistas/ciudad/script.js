@@ -1,5 +1,5 @@
 
-import {API_URL} from '../config.js';
+import { API_URL } from '../config.js';
 
 const ciudad = [];
 
@@ -36,62 +36,97 @@ async function getDepart() {
 
 async function addCiudad() {
 
-    const idDepartamento = document.getElementById('SelectTipoDepartamento').value;
-    const nombre = document.getElementById('ciudad').value;
-    const estado = true;
+    const valid = validarCiudad();
 
-    const data = {
-        id_departamento: idDepartamento,
-        nombre: nombre,
-        estado: estado
-    };
+    if (!valid) {
+        swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error al crear la ciudad',
+            confirmButtonText: 'Aceptar'
+        });
+    } else {
+        const idDepartamento = document.getElementById('SelectTipoDepartamento').value;
+        const nombre = document.getElementById('ciudad').value;
+        const estado = true;
 
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', `${API_URL}/Ciudad`);
-    xhr.setRequestHeader('Content-Type', 'application/json');
+        const data = {
+            id_departamento: idDepartamento,
+            nombre: nombre,
+            estado: estado
+        };
 
-    xhr.onload = function () {
-        if (this.readyState === 4 && this.status === 201) {
-            Swal.fire({
-                title: 'Ciudad creada',
-                text: 'La ciudad ha sido creada correctamente',
-                icon: 'success',
-                confirmButtonText: 'Aceptar'
-            });
-            window.location.href = 'ciudad.html';
-        } else {
-            console.error('Error add Ciudad:', this.status);
-            Swal.fire({
-                title: 'Error',
-                text: 'No se ha podido crear la ciudad',
-                icon: 'error',
-                confirmButtonText: 'Aceptar'
-            });
-        }
-    };
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', `${API_URL}/Ciudad`);
+        xhr.setRequestHeader('Content-Type', 'application/json');
 
-    xhr.send(JSON.stringify(data));
+        xhr.onload = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                Swal.fire({
+                    title: 'Ciudad creada',
+                    text: 'La ciudad ha sido creada correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar'
+                }).then(() => {
+                    window.location.href = '/vistas/edicion/ciudad/ciudad_crud.html';
+                });
+              
+            } else {
+                console.error('Error add Ciudad:', this.status);
+                Swal.fire({
+                    title: 'Error',
+                    text: 'No se ha podido crear la ciudad',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                });
+            }
+        };
+
+        xhr.send(JSON.stringify(data));
+    }
 }
 
 const addParametroButton = document.getElementById('addCiudad');
-addParametroButton.addEventListener('click', validarCiudad);
+addParametroButton.addEventListener('click', addCiudad);
 
-async function validarCiudad() {
+function validarCiudad() {
+    const existe = true;
     const nombre = document.getElementById('ciudad').value;
 
-    for (let i = 0; i < ciudad.length; i++) {
-        if (ciudad[i].nombre === nombre) {
-            Swal.fire({
-                title: 'Error',
-                text: 'La ciudad ya existe',
-                icon: 'error',
-                confirmButtonText: 'Aceptar'
-            });
-            return;
+    if (nombre === '') {
+        Swal.fire({
+            title: 'Error',
+            text: 'Ingrese un nombre',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+        });
+        existe = false;
+    } else if (document.getElementById('SelectTipoDepartamento').value === '0') {
+
+        Swal.fire({
+            title: 'Error',
+            text: 'Seleccione un departamento',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+        });
+        existe = false;
+    }
+
+    else {
+        for (let i = 0; i < ciudad.length; i++) {
+            if (ciudad[i].nombre === nombre) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'La ciudad ya existe',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                });
+                existe = false;
+            }
         }
     }
 
-    addCiudad();
+    return existe;
 }
 
 
@@ -120,6 +155,6 @@ const btnBack = document.getElementById('btnBack');
 
 btnBack.addEventListener('click', () => {
     window.location.href = '/vistas/edicion/ciudad/ciudad_crud.html';
-}   );
+});
 
 

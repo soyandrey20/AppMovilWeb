@@ -1,18 +1,16 @@
 import { API_URL } from "../../config.js";
 
 
- 
-const tableData = document.getElementById('tableData');
-const inputs = document.querySelectorAll('input');
 
- 
-let count = 0;
+const tableData = document.getElementById('tableData');
+
+
 let dataD = null;
 
- 
 
 
- 
+
+
 
 
 async function cargarTabla() {
@@ -86,7 +84,6 @@ btnBack.addEventListener('click', () => {
 
 
 window.addEventListener('click', async (e) => {
-  count = 0;
   if (e.target.classList.contains('bxs-plus-circle')) {
     window.location.href = `/vistas/para_sensor/para_sensor.html`;
 
@@ -100,23 +97,37 @@ window.addEventListener('click', async (e) => {
     window.location.href = `/vistas/edicion/para_sensor/parametro_sensor_edit.html`;
   } else if (e.target.classList.contains('bxs-trash-alt')) {
     dataD = (e.target.parentElement.parentElement.parentElement.children);
-    var opt = window.confirm('¿Está seguro de eliminar el parametro sensor?');
-    if (opt) {
-      deleteCiudad();
-    }
+    swal.fire({
+      title: '¿Está seguro de eliminar el parametro sensor?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí',
+      cancelButtonText: 'No',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteCiudad();
+      }
+    });
   } else if (e.target.classList.contains('bxs-check-circle')) {
 
     dataD = (e.target.parentElement.parentElement.parentElement.children);
-    var opt = window.confirm('¿Está seguro de activar el parametro sensor?');
-    if (opt) {
-      activateUser();
-    }
+    swal.fire({
+      title: '¿Está seguro de activar el parametro sensor?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí',
+      cancelButtonText: 'No',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        activateUser();
+      }
+    });
   }
 });
 
 
 /** ---------------------------------------------------------- eliminar usuario */
- 
+
 
 async function deleteCiudad() {
 
@@ -139,15 +150,24 @@ async function deleteCiudad() {
   xhr.onload = function () {
     if (this.readyState === 4 && this.status === 200) {
 
-      window.alert('Parametro sensor eliminado correctamente');
-
-
-      window.location.reload();
-
+      swal.fire({
+        title: 'Parametro sensor eliminado correctamente',
+        icon: 'success',
+        confirmButtonText: 'Aceptar',
+        showConfirmButton: false,
+        timer: 1500
+      }).then(() => {
+        window.location.reload();
+      });
 
     } else {
-
-      window.alert('Error al eliminar el parametro sensor');
+      swal.fire({
+        title: 'Error al eliminar el parametro sensor',
+        icon: 'error',
+        confirmButtonText: 'Aceptar',
+        showConfirmButton: false,
+        timer: 1500
+      });
     }
   };
   xhr.send(JSON.stringify(data));
@@ -157,7 +177,7 @@ async function deleteCiudad() {
 /** ---------------------------------------------------------- activar usuario */
 
 
- 
+
 
 async function activateUser() {
 
@@ -180,15 +200,27 @@ async function activateUser() {
   xhr.onload = function () {
     if (this.readyState === 4 && this.status === 200) {
 
-      window.alert('Parametro sensor activado correctamente');
-      window.location.reload();
-    } else {
+      swal.fire({
+        title: 'Parametro sensor activado correctamente',
+        icon: 'success',
+        confirmButtonText: 'Aceptar',
+        showConfirmButton: false,
+        timer: 1500
+      }).then(() => {
+        window.location.reload();
 
-      window.alert('Error al activar el parametro sensor');
+      });
+    } else {
+      swal.fire({
+        title: 'Error al activar el parametro sensor',
+        icon: 'error',
+        confirmButtonText: 'Aceptar',
+        showConfirmButton: false,
+        timer: 1500
+      });
     }
   };
   xhr.send(JSON.stringify(data));
 
 }
 
- 

@@ -5,9 +5,6 @@ import { API_URL } from '../config.js';
 
 
 
-const modal = document.getElementById('modal');
-const modal1 = document.getElementById('modal1');
-
 const btnClose = document.getElementById('close');
 const btnConfirmar = document.getElementById('confirmar');
 const btnContraseña = document.getElementById('contraseñaRees');
@@ -16,6 +13,8 @@ const btnConfirm = document.getElementById('confirm');
 
 
 const Cedula = document.getElementById('Cedula');
+
+const contraseñaRees = document.getElementById('contraseñaRees');
 
 history.pushState(null, "", location.href);
 window.addEventListener("popstate", function (e) {
@@ -38,7 +37,13 @@ function getUser() {
 
                 if (UserName.value === '' || Password.value === '') {
 
-                    window.alert('Por favor digitar campos vacios');
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Por favor digitar campos vacios',
+                    });
+
 
                     return;
                 }
@@ -54,13 +59,18 @@ function getUser() {
                     sessionStorage.setItem('userData', JSON.stringify(userData));
 
                     window.location.href = '/vistas/home/home.html';
+                    
 
-                    return;
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Usuario o contraseña incorrectos',
+                    });
                 }
             }
 
 
-            modal.classList.toggle('translate');
 
 
         } else {
@@ -74,24 +84,8 @@ function getUser() {
 const loginButton = document.getElementById("btn-info");
 loginButton.addEventListener('click', getUser);
 
-btnConfirm.addEventListener('click', function () {
-    modal.classList.toggle('translate');
-});
 
 
-btnContraseña.addEventListener('click', function () {
-    modal1.classList.toggle('translate');
-});
-
-
-btnClose.addEventListener('click', function () {
-    modal1.classList.toggle('translate');
-});
-btnConfirmar.addEventListener('click', function () {
-
-    sendEmail();
-
-});
 
 
 async function sendEmail() {
@@ -116,7 +110,7 @@ async function sendEmail() {
         if (this.readyState === 4 && this.status === 200) {
 
             window.alert('Se ha enviado un correo con la contraseña');
-            modal1.classList.toggle('translate');
+
 
         } else {
             console.error('Error obtener users:', this.statusText);
@@ -124,4 +118,35 @@ async function sendEmail() {
     };
 
     xhr.send(JSON.stringify(data));
+}
+
+contraseñaRees.addEventListener('click', pedirContraseña)
+
+
+function pedirContraseña() {
+    Swal.fire({
+        title: 'Ingrese la cédula del cliente',
+        input: 'text',
+        inputAttributes: {
+            autocapitalize: 'off',
+            pattern: '[0-9]{10}' // Validar que solo se ingresen números y que tenga 10 dígitos
+        },
+        showCancelButton: true,
+        confirmButtonText: 'Reestablecer contraseña',
+        cancelButtonText: 'Cancelar',
+        preConfirm: (cedula) => {
+            if (cedula === '') {
+                Swal.showValidationMessage('Por favor ingrese la cédula');
+
+            }
+        }
+
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const cedula = result.value;
+            Cedula.value = cedula;
+            alert(Cedula.value);
+            sendEmail();
+        }
+    });
 }

@@ -62,8 +62,11 @@ getTpparametro();
 
 
 async function updateData() {
+
+
+
     const id = idX.value;
-    const id_Tp_Parametro = id_tp_parametroo.value == 0? id_tp_parametror : id_tp_parametroo.value;
+    const id_Tp_Parametro = id_tp_parametroo.value == 0 ? id_tp_parametror : id_tp_parametroo.value;
     const Rango_inferior = rango_inferiorr.value;
     const Rango_Superior = rango_superiorr.value;
     const estado = estadoo.value;
@@ -82,11 +85,24 @@ async function updateData() {
 
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
-            window.alert('Parametro actualizado correctamente');
-            window.location.href = '../parametro/parametro_crud.html';
-            
+            swal.fire({
+                title: 'Parametro actualizado correctamente',
+                icon: 'success',
+                confirmButtonText: 'Aceptar',
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+                window.location.href = '../parametro/parametro_crud.html';
+            });
+
         } else {
-            window.alert('Error al actualizar el parametro');
+            swal.fire({
+                title: 'Error al actualizar el parametro',
+                icon: 'error',
+                confirmButtonText: 'Aceptar',
+                showConfirmButton: false,
+                timer: 1500
+            });
         }
     };
     xhr.send(JSON.stringify(data));
@@ -94,3 +110,5 @@ async function updateData() {
 }
 
 btnActualizar.addEventListener('click', updateData);
+
+

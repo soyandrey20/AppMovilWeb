@@ -39,51 +39,73 @@ getCiudad();
 getVereda();
 async function addVereda() {
 
-    const idCiudad = document.getElementById('SelectCiudad').value;
-    const nombre = document.getElementById('InputVereda').value;
-    const estado = true;
+    const valid = validarVereda();
 
-    const data = {
-        id_ciudad: idCiudad,
-        nombre: nombre,
-        estado: estado
-    };
+    if (!valid) {
+        swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error al crear la vereda',
+            confirmButtonText: 'Aceptar'
+        });
 
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', `${API_URL}/Vereda`);
-    xhr.setRequestHeader('Content-Type', 'application/json');
+    } else {
 
-    xhr.onload = function () {
-        if (this.readyState === 4 && this.status === 201) {
-            window.location.href = window.location.href;
-            Swal.fire({
-                title: 'Vereda creada',
-                text: 'La vereda ha sido creada correctamente',
-                icon: 'success',
-                confirmButtonText: 'Aceptar'
-            });
+        const idCiudad = document.getElementById('SelectCiudad').value;
+        const nombre = document.getElementById('InputVereda').value;
+        const estado = true;
 
-        } else {
-            console.error('Error add Vereda:', this.status);
-        }
-    };
+        const data = {
+            id_ciudad: idCiudad,
+            nombre: nombre,
+            estado: estado
+        };
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', `${API_URL}/Vereda`);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.onload = function () {
+            if (this.readyState === 4 && this.status === 200) {
+     
+                Swal.fire({
+                    title: 'Vereda creada',
+                    text: 'La vereda ha sido creada correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar',
+
+                    
+                }).then((  ) => {
+                 
+                        window.location.href =  '/vistas/edicion/vereda/vereda_crud.html';
+                     
+                });
+                     
+
+            } else {
+                console.error('Error add Vereda:', this.status);
+            }
+        };
 
 
-    xhr.send(JSON.stringify(data));
+        xhr.send(JSON.stringify(data));
 
+    }
 }
 
 
 
 
 const addParametroButton = document.getElementById('addVereda');
-addParametroButton.addEventListener('click', validarVereda);
+addParametroButton.addEventListener('click', addVereda);
 
 
-async function validarVereda() {
+function validarVereda() {
+
+    let valid = true;
     const nombre = document.getElementById('InputVereda').value;
     const SelectCiudad = document.getElementById('SelectCiudad');
-    console.log(veredas.length);
+
     for (let i = 0; i < veredas.length; i++) {
         if (SelectCiudad.value === '0') {
             Swal.fire({
@@ -92,7 +114,7 @@ async function validarVereda() {
                 text: 'Seleccione una ciudad',
                 confirmButtonText: 'Aceptar'
             });
-            return;
+            valid = false;
         }
 
         if (veredas[i].nombre === nombre) {
@@ -102,11 +124,12 @@ async function validarVereda() {
                 text: 'La vereda ya existe',
                 confirmButtonText: 'Aceptar'
             });
-            return;
+            valid = false;
         }
     }
+    return valid;
 
-    addVereda();
+
 }
 
 async function getVereda() {
@@ -133,8 +156,5 @@ async function getVereda() {
 
 }
 
-const btnSetings = document.getElementById('btnSetings');
+ 
 
-btnSetings.addEventListener('click', () => {
-    window.location.href = `/vistas/edicion/vereda/vereda_crud.html`;
-});

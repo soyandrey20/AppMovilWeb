@@ -104,19 +104,35 @@ window.addEventListener('click', async (e) => {
     } else if (e.target.classList.contains('bxs-trash-alt')) {
 
         dataD = (e.target.parentElement.parentElement.parentElement.children);
-        var opt = window.confirm('¿Desea desactivar la ciudad?');
-        if (opt) {
-            deleteCiudad();
-        }
+       swal.fire({
+            title: '¿Está seguro de eliminar la ciudad?',
+   
+            icon: 'warning',
+            showCancelButton: true,
+   
+            confirmButtonText: 'Sí, eliminar!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteCiudad();
+            }
+        });
     } else if (e.target.classList.contains('bxs-check-circle')) {
 
 
 
         dataD = (e.target.parentElement.parentElement.parentElement.children);
-        var opt = window.confirm('¿Desea activar la ciudad?');
-        if (opt) {
-            activateUser();
-        }
+        swal.fire({
+            title: '¿Está seguro de activar la ciudad?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, activar!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                activateUser();
+            }
+        });
     }
 });
 
@@ -129,8 +145,14 @@ window.addEventListener('click', async (e) => {
 async function deleteCiudad() {
 
     let opt = validarCiudadActivo();
+ 
     if (!opt) {
-        window.confirm('No se puede eliminar la ciudad porque tiene veredas asociadas.');
+        swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se puede eliminar la ciudad, ya que tiene veredas asociadas',
+            confirmButtonText: 'Aceptar'
+        });
 
     } else {
 
@@ -154,10 +176,21 @@ async function deleteCiudad() {
         xhr.onload = function () {
             if (this.readyState === 4 && this.status === 200) {
 
-                window.confirm('Ciudad desactivada correctamente.');
-                 window.location.reload(); 
+                swal.fire({
+                    icon: 'success',
+                    title: 'Ciudad eliminada correctamente.',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    window.location.reload();
+                });
             } else {
-                window.alert('Ocurrió un error al desactivar la ciudad.')
+                swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Ocurrió un error al eliminar la ciudad.',
+                    confirmButtonText: 'Aceptar'
+                });
             }
         };
         xhr.send(JSON.stringify(data));
@@ -190,11 +223,23 @@ function activateUser() {
 
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
-            window.alert('Ciudad activada correctamente.');
-            window.location.reload();
+                  
+                swal.fire({
+                    icon: 'success',
+                    title: 'Ciudad activada correctamente.',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    window.location.reload();
+                });
 
         } else {
-            window.alert('Ocurrió un error al activar el Ciudad.');
+            swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un error al activar la ciudad.',
+                confirmButtonText: 'Aceptar'
+            });
         }
     };
 
@@ -208,7 +253,7 @@ function getVeredas() {
     fetch(`${API_URL}/vereda`)
         .then(response => response.json())
         .then(data => {
-            veredas.push(...data);
+            veredas.push (...data);
         })
         .catch(error => console.error('Error obteniendo veredas:', error));
 }
@@ -218,7 +263,10 @@ window.addEventListener('DOMContentLoaded', getVeredas);
 function validarCiudadActivo() {
     let opt = true;
     for (let i = 0; i < veredas.length; i++) {
-        if (veredas[i].id == dataD[0].textContent) {
+
+   
+
+        if (veredas[i].id_ciudad == dataD[0].textContent) {
             opt = false;
             break;
         }

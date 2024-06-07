@@ -56,57 +56,93 @@ async function getTpParametro() {
 
 async function addParametro() {
 
-    const idTipoSensor = document.getElementById('SelectTipoParametro').value;
-    const RangoSuperior = document.getElementById('RangoSuperior').value;
-    const RangoInferior = document.getElementById('RangoInferior').value;
-    console.log(idTipoSensor);
+    const valid = validarParametro();
+    if (valid) {
 
-    const data = {
-        id_Tp_Parametro: idTipoSensor,
-        Rango_Superior: RangoSuperior,
-        Rango_inferior: RangoInferior
-    };
+        const idTipoSensor = document.getElementById('SelectTipoParametro').value;
+        const RangoSuperior = document.getElementById('RangoSuperior').value;
+        const RangoInferior = document.getElementById('RangoInferior').value;
 
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', `${API_URL}/parametro`);
-    xhr.setRequestHeader('Content-Type', 'application/json');
+        const data = {
+            id_Tp_Parametro: idTipoSensor,
+            Rango_Superior: RangoSuperior,
+            Rango_inferior: RangoInferior
+        };
 
-    xhr.onload = function () {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', `${API_URL}/parametro`);
+        xhr.setRequestHeader('Content-Type', 'application/json');
 
-        if (this.readyState === 4 && this.status === 200) {
-            window.alert('Parametro creado correctamente');
-            window.location.href = '/vistas/edicion/parametro/parametro_crud.html';
-        } else {
-            window.alert('Error al crear el parametro');
-        }
-    };
+        xhr.onload = function () {
 
-    xhr.send(JSON.stringify(data));
+            if (this.readyState === 4 && this.status === 200) {
+                swal.fire({
+                    title: 'Parametro creado correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    window.location.href = '/vistas/edicion/parametro/parametro_crud.html';
+
+                });
+            } else {
+                swal.fire({
+                    title: 'Error al crear el parametro',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        };
+
+        xhr.send(JSON.stringify(data));
+    }
 }
 
 const addParametroButton = document.getElementById('addParametro');
-addParametroButton.addEventListener('click', validarParametro);
+addParametroButton.addEventListener('click', addParametro);
 
 
 
 
-async function validarParametro() {
+function validarParametro() {
+    const val = true;
     const RangoSuperior = document.getElementById('RangoSuperior').value;
     const RangoInferior = document.getElementById('RangoInferior').value;
     const SelectTipoParametro = document.getElementById('SelectTipoParametro').value;
 
     if (RangoSuperior === '' || RangoInferior === '' || SelectTipoParametro === '') {
-        window.alert('Todos los campos son obligatorios');
-        return;
+        swal.fire({
+            title: 'Todos los campos son obligatorios',
+            icon: 'error',
+            confirmButtonText: 'Aceptar',
+            showConfirmButton: false,
+            timer: 1500
+        });
+        val = false;
     } else if (RangoSuperior < RangoInferior) {
-        window.alert('El rango superior no puede ser menor al rango inferior');
-        return;
+        swal.fire({
+            title: 'El rango superior no puede ser menor al rango inferior',
+            icon: 'error',
+            confirmButtonText: 'Aceptar',
+            showConfirmButton: false,
+            timer: 1500
+        });
+        val = false;
     } else if (parametro.find(parametro => parametro.RangoSuperior === RangoSuperior && parametro.RangoInferior === RangoInferior)) {
-        window.alert('El parametro ya existe');
-        return;
+        swal.fire({
+            title: 'Ya existe un parametro con estos rangos',
+            icon: 'error',
+            confirmButtonText: 'Aceptar',
+            showConfirmButton: false,
+            timer: 1500
+        });
+        val = false;
     }
 
-    addParametro();
+    return val;
 }
 
 getTpParametro();

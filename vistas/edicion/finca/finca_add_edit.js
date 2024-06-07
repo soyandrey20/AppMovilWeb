@@ -91,9 +91,9 @@ function updateData() {
     if (opt) {
 
         const id = idX.value;
-        const cedula = SelectCedulax.value;
+        const cedula = SelectCedulax.value == 0 ? cedulaa : SelectCedulax.value;
         const nombre = nombrex.value;
-        const id_vereda = SelectVeredax.value;
+        const id_vereda = SelectVeredax.value == 0 ? veredaa : SelectVeredax.value;
         const estado = estadox.value;
         const data = {
             id,
@@ -110,18 +110,35 @@ function updateData() {
 
         xhr.onload = function () {
             if (this.readyState === 4 && this.status === 200) {
-
-              window.alert('Finca actualizada correctamente');
-                window.location.href = '/vistas/edicion/finca/finca_crud.html';
+                swal.fire({
+                    title: 'Finca actualizada correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    window.location.href = '/vistas/edicion/finca/finca_crud.html';
+                });
             } else {
-
-                window.alert('No se pudo actualizar la finca, si el problema persiste contacte al administrador del sistema');
+                swal.fire({
+                    title: 'Error al actualizar la finca',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
             }
         };
         xhr.send(JSON.stringify(data));
 
-    }else{
-        window.alert('Por favor complete todos los campos');
+    } else {
+        swal.fire({
+            title: 'Error al actualizar la finca',
+            icon: 'error',
+            confirmButtonText: 'Aceptar',
+            showConfirmButton: false,
+            timer: 1500
+        });
     }
 }
 
@@ -138,17 +155,30 @@ document.addEventListener('DOMContentLoaded', llenarDatos);
 
 
 function validarConfirmacion() {
+    let valid = true;
     console.log(document.getElementById('SelectCedula').value == 0);
     if (document.getElementById('SelectCedula').value == 0) {
- 
-        return false;
+        swal.fire({
+            title: 'Seleccione una cedula',
+            icon: 'error',
+            confirmButtonText: 'Aceptar',
+            showConfirmButton: false,
+            timer: 1500
+        });
+        valid = false;
+
     }
     else if (document.getElementById('SelectVereda').value == 0) {
-   
-        return false;
-    }else {
-        return true;
-    
+
+        swal.fire({
+            title: 'Seleccione una vereda',
+            icon: 'error',
+            confirmButtonText: 'Aceptar',
+            showConfirmButton: false,
+            timer: 1500
+        });
+        valid = false;
     }
+    return valid;
 }
 btnActualizar.addEventListener('click', updateData);

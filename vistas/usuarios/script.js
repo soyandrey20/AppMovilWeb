@@ -97,19 +97,34 @@ window.addEventListener('click', async (e) => {
 
   } else if (e.target.classList.contains('bxs-trash-alt')) {
     dataD = (e.target.parentElement.parentElement.parentElement.children);
-    const opt = window.confirm('¿Está seguro de que desea desactivar el usuario?');
-    if (opt) {
-      deactivateUser();
-    }
+    swal.fire({
+      title: "¿Está seguro de que desea desactivar el usuario?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí",
+      cancelButtonText: "No",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deactivateUser();
+      }
+    });
+
 
   } else if (e.target.classList.contains('bxs-check-circle')) {
 
     dataD = (e.target.parentElement.parentElement.parentElement.children);
 
-    const opt = window.confirm('¿Está seguro de que desea activar el usuario?');
-    if (opt) {
-      activateUser();
-    }
+    swal.fire({
+      title: "¿Está seguro de que desea activar el usuario?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí",
+      cancelButtonText: "No",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        activateUser();
+      }
+    });
   }
 
 
@@ -135,46 +150,7 @@ const fillData = (data1) => {
 
 
 }
-async function updateData() {
 
-
-  const Cedula = inputs[0].value;
-  const id_tipo_persona = document.getElementById('SelectTipoPersona').value;
-  const Nombre_1 = inputs[1].value;
-  const Nombre_2 = inputs[2].value;
-  const LastName_1 = inputs[3].value;
-  const LastName_2 = inputs[4].value;
-  const Email = inputs[5].value;
-  const Estado = inputs[6].value;
-  const data = {
-    Cedula,
-    id_tipo_persona,
-    Nombre_1,
-    Nombre_2,
-    LastName_1,
-    LastName_2,
-    Email,
-    Estado
-  };
-  const xhr = new XMLHttpRequest();
-
-  xhr.open('PUT', `${API_URL}/persona/${Cedula}`);
-
-  xhr.setRequestHeader('Content-Type', 'application/json');
-
-  xhr.onload = function () {
-    window.alert(this.readyState + ' ' + this.status)
-    if (this.readyState === 4 && this.status === 200) {
-      window.alert('Usuario actualizado correctamente');
-
-
-    } else {
-      window.alert('Error al actualizar el usuario');
-    }
-  };
-  xhr.send(JSON.stringify(data));
-
-}
 
 
 
@@ -189,7 +165,11 @@ async function deactivateUser() {
 
   if (!opt) {
 
-    window.alert('No se puede desactivar el usuario, tiene fincas activas');
+    swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'No se puede desactivar un usuario con fincas activas',
+    });
 
   } else {
 
@@ -212,13 +192,22 @@ async function deactivateUser() {
 
     xhr.onload = function () {
       if (this.readyState === 4 && this.status === 200) {
-        const data = JSON.parse(this.response);
-        window.alert('Usuario desactivado correctamente');
 
-        window.location.reload();
+        swal.fire({
+          icon: 'success',
+          title: 'Usuario desactivado correctamente',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload();
+          }
+        });
 
       } else {
-        window.alert('Error al desactivar el usuario');
+        swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Error al desactivar el usuario',
+        });
       }
     };
     xhr.send(JSON.stringify(data));
@@ -248,11 +237,22 @@ async function activateUser() {
     console.log(this.response)
     if (this.readyState === 4 && this.status === 200) {
 
-      window.alert('Usuario activado correctamente');
-      window.location.reload();
+      swal.fire({
+        icon: 'success',
+        title: 'Usuario activado correctamente',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      });
+
 
     } else {
-      window.alert('Error al activar el usuario');
+      swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Error al activar el usuario',
+      });
     }
   };
   xhr.send(JSON.stringify(data));

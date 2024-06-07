@@ -105,18 +105,32 @@ window.addEventListener('click', async (e) => {
     } else if (e.target.classList.contains('bxs-trash-alt')) {
 
         dataD = (e.target.parentElement.parentElement.parentElement.children);
-        const opt = window.confirm('¿Está seguro de que desea desactivar la finca?');
-        if (opt) {
-            deleteFinca();
-        }
+        swal.fire({
+            title: '¿Está seguro de que desea desactivar la finca?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Cancelar',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteFinca();
+            }
+        });
     } else if (e.target.classList.contains('bxs-check-circle')) {
 
         dataD = (e.target.parentElement.parentElement.parentElement.children);
 
-        const opt = window.confirm('¿Está seguro de que desea activar la finca?');
-        if (opt) {
-            activateFinca();
-        }
+        swal.fire({
+            title: '¿Está seguro de que desea activar la finca?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Cancelar',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                activateFinca();
+            }
+        });
     }
 });
 
@@ -147,14 +161,24 @@ async function deleteFinca() {
 
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
-            window.alert('Finca desactivada correctamente');
-
-
-            window.location.reload();
+            swal.fire({
+                title: 'Finca desactivada correctamente',
+                icon: 'success',
+                confirmButtonText: 'Aceptar',
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+                window.location.reload();
+            });
 
         } else {
-
-            window.alert('Error al desactivar la finca');
+            swal.fire({
+                title: 'Error al desactivar la finca',
+                icon: 'error',
+                confirmButtonText: 'Aceptar',
+                showConfirmButton: false,
+                timer: 1500
+            });
         }
     };
     xhr.send(JSON.stringify(data));
@@ -188,12 +212,25 @@ async function activateFinca() {
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
 
-            window.alert('Finca activada correctamente');
-            window.location.reload();
+            swal.fire({
+                title: 'Finca activada correctamente',
+                icon: 'success',
+                confirmButtonText: 'Aceptar',
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+                window.location.reload();
 
+            });
         } else {
 
-            window.alert('Error al activar la finca');
+            swal.fire({
+                title: 'Error al activar la finca',
+                icon: 'error',
+                confirmButtonText: 'Aceptar',
+                showConfirmButton: false,
+                timer: 1500
+            });
         }
     };
     xhr.send(JSON.stringify(data));

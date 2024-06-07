@@ -29,16 +29,33 @@ async function addDepart() {
 
         xhr.onload = function () {
             if (this.readyState === 4 && this.status === 200) {
-                window.alert('Departamento creado correctamente');
-                window.location.href = '/vistas/edicion/departamento/departamento_crud.html';
+                swal.fire({
+                    title: 'Departamento creado',
+                    text: 'El departamento ha sido creado correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar'
+                }).then(() => {
+                    window.location.href = '/vistas/edicion/departamento/departamento_crud.html';
+                });
             } else {
-                window.alert('Error al crear el departamento');
+                console.error('Error add Departamento:', this.statusText);
+                swal.fire({
+                    title: 'Error',
+                    text: 'No se ha podido crear el departamento',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                });
             }
         };
 
         xhr.send(JSON.stringify(data));
     } else {
-        window.alert('El departamento ya existe');
+        swal.fire({
+            title: 'Error',
+            text: 'El departamento ya existe',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+        });
     }
 }
 
@@ -70,15 +87,12 @@ async function getDepart() {
 
 async function validarDepart() {
     const nombre = document.getElementById('Departamento').value;
-    var opt = false;
+    var opt = true;
     for (let i = 0; i < departa.length; i++) {
         const dep = departa[i];
 
         if (dep.nombre === nombre) {
             opt = false;
-            break;
-        } else {
-            opt = true;
             break;
         }
     }

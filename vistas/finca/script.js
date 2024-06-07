@@ -105,10 +105,22 @@ async function addFinca() {
 
             if (this.readyState === 4 && this.status === 200) {
 
-                window.alert('Finca creada correctamente');
-                window.location.href = `/vistas/edicion/finca/finca_crud.html`;
+                swal.fire({
+                    title: 'Finca Creada',
+                    text: 'La finca ha sido creada con éxito',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar'
+                }).then(() => {
+                    window.location.href = `/vistas/edicion/finca/finca_crud.html`;
+                });
             } else {
-                window.alert('Error al crear la finca');
+                console.error('Error add Finca:', this.statusText);
+                swal.fire({
+                    title: 'Error',
+                    text: 'No se ha podido crear la finca',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                });
             }
         };
 

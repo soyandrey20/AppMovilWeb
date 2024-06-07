@@ -82,13 +82,13 @@ async function addParaSensor() {
 
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
-            const data = JSON.parse(this.response);
-            console.log(data);
             Swal.fire({
                 icon: 'success',
                 title: 'parametro_sensor creado',
                 text: 'parametro_sensor creado correctamente',
                 confirmButtonText: 'Aceptar'
+            }).then(() => {
+                window.location.href = '/vistas/edicion/para_sensor/parametro_sensor_crud.html';
             });
         } else {
             console.error('Error fetching users:', this.statusText);
@@ -113,11 +113,7 @@ const addParaSensors = document.getElementById('addParaSensor');
 addParaSensors.addEventListener('click', validarParaSensor);
 
 
-const btnSetings = document.getElementById('btnSetings');
 
-btnSetings.addEventListener('click', () => {
-    window.location.href = `/vistas/edicion/para_sensor/parametro_sensor_crud.html`;
-});
 
 async function getParaSensor() {
     const xhr = new XMLHttpRequest();
