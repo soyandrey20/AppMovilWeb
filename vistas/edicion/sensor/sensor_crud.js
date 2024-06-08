@@ -99,18 +99,30 @@ window.addEventListener('click', async (e) => {
     } else if (e.target.classList.contains('bxs-trash-alt')) {
 
         dataD = (e.target.parentElement.parentElement.parentElement.children);
-        var opt = window.confirm('¿Está seguro de que desea eliminar el sensor?');
-        if (opt) {
-            deleteCiudad();
-        }
+        swal.fire({
+            title: '¿Está seguro de que desea desactivar el sensor?',
+            showCancelButton: true,
+            confirmButtonText: `Aceptar`,
+            cancelButtonText: `Cancelar`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteCiudad();
+            }
+        });
 
     } else if (e.target.classList.contains('bxs-check-circle')) {
 
         dataD = (e.target.parentElement.parentElement.parentElement.children);
-        var opt = window.confirm('¿Está seguro de que desea activar el sensor?');
-        if (opt) {
-            activateUser();
-        }
+        swal.fire({
+            title: '¿Está seguro de que desea activar el sensor?',
+            showCancelButton: true,
+            confirmButtonText: `Aceptar`,
+            cancelButtonText: `Cancelar`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                activateUser();
+            }
+        });
 
     }
 });
@@ -124,7 +136,13 @@ async function deleteCiudad() {
 
     let opt = validarParaSensor();
     if (!opt) {
-        window.alert('No se puede eliminar el sensor, ya que está asociado a un parámetro');
+        swal.fire({
+            title: 'No se puede desactivar el sensor',
+            text: 'El sensor está asociado a un parámetro',
+            icon: 'error',
+            showConfirmButton: false,
+            timer: 2000
+        });
     } else {
 
         const id = dataD[0].textContent;
@@ -145,10 +163,21 @@ async function deleteCiudad() {
 
         xhr.onload = function () {
             if (this.readyState === 4 && this.status === 200) {
-                window.alert('Sensor desactivado correctamente');
-                window.location.reload();
+                swal.fire({
+                    title: 'Sensor desactivado correctamente',
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    window.location.reload();
+                });
             } else {
-                window.alert('Error al desactivar el sensor');
+                swal.fire({
+                    title: 'Error al desactivar el sensor',
+                    icon: 'error',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
 
 
             }
@@ -182,10 +211,21 @@ async function activateUser() {
 
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
-            window.alert('Sensor activado correctamente');
-            window.location.reload();
+            swal.fire({
+                title: 'Sensor activado correctamente',
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+                window.location.reload();
+            });
         } else {
-            window.alert('Error al activar el sensor');
+            swal.fire({
+                title: 'Error al activar el sensor',
+                icon: 'error',
+                showConfirmButton: false,
+                timer: 1500
+            });
 
         }
     };
@@ -202,8 +242,19 @@ function validarParaSensor() {
         if (para_sensores[i].id_sensor == dataD[0].textContent) {
 
             opt = false;
+            break;
         }
     }
 
     return opt;
 }
+
+function getParaSensor() {
+    fetch(`${API_URL}/parametro_sensor`)
+        .then(response => response.json())
+        .then(data => {
+            para_sensores.push(...data);
+        });
+}
+
+getParaSensor();

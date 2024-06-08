@@ -38,10 +38,21 @@ async function updateData() {
 
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
-            window.alert('tipo de parametro actualizado');
-            window.location.href = '/vistas/edicion/tp_parametro/tp_parametro_crud.html';
+            swal.fire({
+                title: 'Tipo de parametro actualizado correctamente',
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+                window.location.href = '/vistas/edicion/tp_parametro/tp_parametro_crud.html';
+            });
         } else {
-            window.alert('Error al actualizar el tipo de parametro');
+            swal.fire({
+                title: 'Error al actualizar el tipo de parametro',
+                icon: 'error',
+                showConfirmButton: false,
+                timer: 1500
+            });
         }
     };
     xhr.send(JSON.stringify(data));

@@ -374,7 +374,7 @@ body {
 
 
 #team .card {
-    border-radius: 5rem;
+    border-radius: 1rem;
     background: #e1f2fb;
 }
 
@@ -385,7 +385,7 @@ body {
     -o-transform: rotateY(0deg);
     -ms-transform: rotateY(0deg);
     transform: rotateY(0deg);
-    border-radius: 5rem;
+    border-radius: 1rem;
 }
 
 .image-flip:hover .frontside,

@@ -26,7 +26,9 @@ async function getSensor() {
     xhr.send();
 }
 
-async function validarSensor() {
+function validarSensor() {
+    let existe = true;
+
     const descriptionSensor = document.getElementById('descriptionSensor');
     const idSelectTipoSensor = document.getElementById('SelectTipoSensor');
     if (idSelectTipoSensor.value === '0') {
@@ -36,26 +38,26 @@ async function validarSensor() {
             text: 'Debe seleccionar un tipo de sensor',
             confirmButtonText: 'Aceptar'
         });
-        return;
-    } else
-        if (descriptionSensor.value === '') {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Debe ingresar una descripción',
-                confirmButtonText: 'Aceptar'
-            });
-            return;
-        } else if (listaSensores.find(sensor => sensor.informacion === descriptionSensor.value)) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Ya existe un sensor con ese tipo',
-                confirmButtonText: 'Aceptar'
-            });
-            return;
-        }
-    addSensor();
+        existe = false;
+    } else if (descriptionSensor.value === '') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Debe ingresar una descripción',
+            confirmButtonText: 'Aceptar'
+        });
+        existe = false;
+    } else if (listaSensores.find(sensor => sensor.informacion === descriptionSensor.value)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Ya existe un sensor con ese tipo',
+            confirmButtonText: 'Aceptar'
+        });
+        existe = false;
+    }
+    return existe;
+
 }
 
 
@@ -89,40 +91,55 @@ getTpsensor();
 getSensor();
 
 async function addSensor() {
-    const descriptionSensor = document.getElementById('descriptionSensor');
-    const idSelectTipoSensor = document.getElementById('SelectTipoSensor');
+
+    let valida = validarSensor();
+
+    if (!valida) {
+        swal.fire({
+            title: 'Error al agregar el sensor',
+            icon: 'error',
+            showConfirmButton: false,
+            timer: 1500
+        });
+    } else {
+
+        const descriptionSensor = document.getElementById('descriptionSensor');
+        const idSelectTipoSensor = document.getElementById('SelectTipoSensor');
 
 
 
-    const xhr = new XMLHttpRequest();
+        const xhr = new XMLHttpRequest();
 
-    xhr.open('post', `${API_URL}/sensor`);
+        xhr.open('post', `${API_URL}/sensor`);
 
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(JSON.stringify({
-        id_tp_sensor: idSelectTipoSensor.value,
-        informacion: descriptionSensor.value
-    }));
-    xhr.onload = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            const data = JSON.parse(this.response);
-            console.log(data);
-            Swal.fire({
-                icon: 'success',
-                title: 'Sensor creado',
-                text: 'Sensor creado correctamente',
-                confirmButtonText: 'Aceptar'
-            });
-        } else {
-            console.error('Error fetching users:', this.statusText);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify({
+            id_tp_sensor: idSelectTipoSensor.value,
+            informacion: descriptionSensor.value
+        }));
+        xhr.onload = function () {
+            if (this.readyState === 4 && this.status === 200) {
 
-        }
-    };
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Sensor creado',
+                    text: 'Sensor creado correctamente',
+                    confirmButtonText: 'Aceptar'
+                }).then(() => {
+                    window.location.href = '/vistas/edicion/sensor/sensor_crud.html';
+                });
+            } else {
+                console.error('Error fetching users:', this.statusText);
+
+            }
+        };
+    }
 }
+
 
 const btnAddSensor = document.getElementById('addSensor');
 
-btnAddSensor.addEventListener('click', validarSensor);
+btnAddSensor.addEventListener('click', addSensor);
 
 
 const btnSetings = document.getElementById('btnSetings');

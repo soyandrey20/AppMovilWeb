@@ -1,6 +1,6 @@
 import { API_URL } from '../../config.js'
 
-const userTable = document.getElementById('userTable');
+
 const tableData = document.getElementById('tableData');
 
 
@@ -28,7 +28,7 @@ async function cargarTabla() {
         <td id="id">${user.Id}</td>
         <td id="Descripcion" disabled>${user.Descripcion}</td>
   
-        <td id="estado" disabled>${user.estado}</td>
+        <td id="estado" disabled>${user.estado == true ? 'Activo' : 'Inactivo'}</td>
   
         <td>
         <a href="#" class="btn-update"><i class='bx bx-plus-circle' ></i></a>
@@ -98,17 +98,29 @@ window.addEventListener('click', async (e) => {
     } else if (e.target.classList.contains('bxs-trash-alt')) {
 
         dataD = (e.target.parentElement.parentElement.parentElement.children);
-        var opt = window.confirm('¿Está seguro que desea eliminar el tipo de sensor?');
-        if (opt) {
-            deleteCiudad();
-        }
+        swal.fire({
+            title: '¿Está seguro de que desea desactivar el tipo de sensor?',
+            showCancelButton: true,
+            confirmButtonText: `Aceptar`,
+            cancelButtonText: `Cancelar`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteCiudad();
+            }
+        });
     } else if (e.target.classList.contains('bxs-check-circle')) {
 
         dataD = (e.target.parentElement.parentElement.parentElement.children);
-        var opt = window.confirm('¿Está seguro que desea activar el tipo de sensor?');
-        if (opt) {
-            activateUser();
-        }
+        swal.fire({
+            title: '¿Está seguro de que desea activar el tipo de sensor?',
+            showCancelButton: true,
+            confirmButtonText: `Aceptar`,
+            cancelButtonText: `Cancelar`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                activateUser();
+            }
+        });
     }
 });
 
@@ -118,7 +130,13 @@ async function deleteCiudad() {
     let opt = validarTpSensorActivo();
 
     if (!opt) {
-        window.alert('No se puede eliminar el tipo de sensor ya que esta en uso');
+        swal.fire({
+            title: 'No se puede desactivar el tipo de sensor',
+            text: 'El tipo de sensor está asignado a un sensor',
+            icon: 'error',
+            showConfirmButton: false,
+            timer: 1500
+        });
     } else {
 
         const id = dataD[0].textContent;
@@ -139,10 +157,21 @@ async function deleteCiudad() {
 
         xhr.onload = function () {
             if (this.readyState === 4 && this.status === 200) {
-                window.alert('tipo de sensor desactivado');
-                window.location.reload();
+                swal.fire({
+                    title: 'Tipo de sensor desactivado correctamente',
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    window.location.reload();
+                });
             } else {
-                window.alert('Error al desactivar el tipo de sensor');
+                swal.fire({
+                    title: 'Error al desactivar el tipo de sensor',
+                    icon: 'error',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
             }
         };
         xhr.send(JSON.stringify(data));
@@ -173,10 +202,21 @@ async function activateUser() {
 
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
-            window.alert('tipo de sensor activado');
-            window.location.reload();
+            swal.fire({
+                title: 'Tipo de sensor activado correctamente',
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+                window.location.reload();
+            });
         } else {
-            window.alert('Error al activar el tipo de sensor');
+            swal.fire({
+                title: 'Error al activar el tipo de sensor',
+                icon: 'error',
+                showConfirmButton: false,
+                timer: 1500
+            });
         }
     };
     xhr.send(JSON.stringify(data));
@@ -191,10 +231,11 @@ async function activateUser() {
 function validarTpSensorActivo() {
     let opt = true;
     for (let i = 0; i < sensores.length; i++) {
-
+        console.log(sensores[i].id_tp_sensor);
         if (sensores[i].id_tp_sensor == dataD[0].textContent) {
 
             opt = false;
+            break;
         }
     }
 
@@ -202,3 +243,18 @@ function validarTpSensorActivo() {
 
 
 }
+
+
+function getSensores() {
+    fetch(`${API_URL}/sensor`)
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(sensor => {
+
+                sensores.push(sensor);
+
+            });
+        });
+}
+
+window.onload = getSensores();

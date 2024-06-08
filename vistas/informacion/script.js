@@ -1,5 +1,5 @@
 
-import {API_URL}  from '../config.js';
+import { API_URL } from '../config.js';
 
 var userData = JSON.parse(sessionStorage.getItem('userData'));
 console.log(userData);
@@ -12,6 +12,11 @@ const LastName_1 = document.getElementById('apellido1');
 const LastName_2 = document.getElementById('apellido2');
 const email = document.getElementById('email');
 const Permisos = document.getElementById('Permisos');
+const back = document.getElementById('back');
+
+back.addEventListener('click', () => {
+    window.location.href = '../home/home.html';
+});
 
 async function getUsuario() {
     const xhr = new XMLHttpRequest();
@@ -23,10 +28,11 @@ async function getUsuario() {
 
         if (this.readyState === 4 && this.status === 200) {
             const data = JSON.parse(this.response);
+            console.log(data);
             for (let i = 0; i < data.length; i++) {
                 const user = data[i];
 
-                if (user.Cedula === userData.cedula) {
+                if (user.cedula == userData.Cedula) {
                     cedula.value = user.cedula;
                     nombre1.value = user.Nombre_1;
                     nombre2.value = user.Nombre_2;
@@ -42,7 +48,7 @@ async function getUsuario() {
                         document.getElementById('Estado').value = 'Inactivo';
                     }
 
-                    return;
+                    break
                 }
             }
         } else {

@@ -67,7 +67,7 @@ async function cargarTabla() {
         console.error('Error obteniendo usuarios:', error);
     }
 }
- window.onload = cargarTabla();
+window.onload = cargarTabla();
 
 /**------------------------------------------------volver atras----------------------------------------- */
 const btnBack = document.getElementById('back');
@@ -97,20 +97,33 @@ window.addEventListener('click', async (e) => {
     } else if (e.target.classList.contains('bxs-trash-alt')) {
 
         dataD = (e.target.parentElement.parentElement.parentElement.children);
-        const opt = window.confirm('¿Está seguro de que desea eliminar el tipo de parametro?');
-        if (opt) {
-            deleteCiudad();
-        }
+        swal.fire({
+            title: '¿Está seguro de que desea eliminar el tipo de parametro?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí',
+            cancelButtonText: 'No'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteCiudad();
+            }
+        });
 
     } else if (e.target.classList.contains('bxs-check-circle')) {
 
         dataD = (e.target.parentElement.parentElement.parentElement.children);
 
-        const opt = window.confirm('¿Está seguro de que desea activar el tipo de parametro?');
-        if (opt) {
-            activateUser();
-        }
-
+        swal.fire({
+            title: '¿Está seguro de que desea activar el tipo de parametro?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí',
+            cancelButtonText: 'No'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                activateUser();
+            }
+        });
     }
 });
 
@@ -137,7 +150,13 @@ async function deleteCiudad() {
     let opt = validarTpParamaActivo();
 
     if (!opt) {
-        window.alert('No se puede eliminar el tipo de parametro ya que esta siendo utilizado en un parametro');
+        swal.fire({
+            title: 'No se puede eliminar el tipo de parametro',
+            text: 'El tipo de parametro está asociado a un parámetro',
+            icon: 'error',
+            showConfirmButton: false,
+            timer: 1500
+        });
     } else {
 
         const id = dataD[0].textContent;
@@ -159,11 +178,21 @@ async function deleteCiudad() {
 
         xhr.onload = function () {
             if (this.readyState === 4 && this.status === 200) {
-                window.alert('Tipo de parametro eliminado correctamente');
-                 window.location.reload();
+                swal.fire({
+                    title: 'Tipo de parametro eliminado correctamente',
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    window.location.reload();
+                });
             } else {
-                window.alert('Error al eliminar el tipo de parametro');
-
+                swal.fire({
+                    title: 'Error al eliminar el tipo de parametro',
+                    icon: 'error',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
             }
         };
         xhr.send(JSON.stringify(data));
@@ -197,10 +226,21 @@ async function activateUser() {
 
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
-            window.alert('Tipo de parametro activado correctamente');
-            window.location.reload();
+            swal.fire({
+                title: 'Tipo de parametro activado correctamente',
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+                window.location.reload();
+            });
         } else {
-            window.alert('Error al activar el tipo de parametro');
+            swal.fire({
+                title: 'Error al activar el tipo de parametro',
+                icon: 'error',
+                showConfirmButton: false,
+                timer: 1500
+            });
         }
     };
     xhr.send(JSON.stringify(data));
@@ -217,9 +257,20 @@ function validarTpParamaActivo() {
         if (parametros[i].id_Tp_Parametro == dataD[0].textContent) {
 
             opt = false;
+            break;
         }
     }
 
     return opt;
 
 }
+
+function getParametros() {
+    fetch(`${API_URL}/parametro`)
+        .then(response => response.json())
+        .then(data => {
+            parametros.push(...data);
+        });
+}
+
+getParametros();

@@ -79,11 +79,21 @@ async function updateData() {
 
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
-
-            window.alert('Sensor actualizado correctamente');
-            window.location.href = '../sensor/sensor_crud.html';
+            swal.fire({
+                title: 'Sensor actualizado correctamente',
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+                window.location.href = '../sensor/sensor_crud.html';
+            });
         } else {
-             window.alert('Error al actualizar el sensor');
+            swal.fire({
+                title: 'Error al actualizar el sensor',
+                icon: 'error',
+                showConfirmButton: false,
+                timer: 1500
+            });
         }
     };
     xhr.send(JSON.stringify(data));

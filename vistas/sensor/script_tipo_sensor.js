@@ -38,6 +38,7 @@ async function getTpsensor() {
 getTpsensor();
 
 async function validarTpSensor() {
+    let existe = true;
     const descriptionSensor = document.getElementById('descriptionSensor');
     for (let i = 0; i < listaTpSensores.length; i++) {
         if (descriptionSensor.value == listaTpSensores[i].Descripcion) {
@@ -47,10 +48,11 @@ async function validarTpSensor() {
                 text: 'El tipo de sensor ya existe',
                 confirmButtonText: 'Aceptar'
             });
-            return;
+            existe = false;
+            break;
         }
     }
-    addParametro();
+    return existe;
 
 
 }
@@ -58,35 +60,50 @@ async function validarTpSensor() {
 
 
 async function addParametro() {
-    const descriptionSensor = document.getElementById('descriptionSensor');
-    const xhr = new XMLHttpRequest();
 
-    xhr.open('post', `${API_URL}/Tipo_sensor`);
+    let existe = await validarTpSensor();
 
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(JSON.stringify({
-        Descripcion: descriptionSensor.value
-    }));
-    xhr.onload = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            const data = JSON.parse(this.response);
-            Swal.fire({
-                icon: 'success',
-                title: 'Tipo de sensor creado',
-                text: 'El tipo de sensor se ha creado correctamente',
-                confirmButtonText: 'Aceptar'
-            });
-            window.location.href = window.location.href;
-        } else {
-            console.error('Error fetching users:', this.statusText);
-        }
-    };
+    if (!existe) {
+        swal.fire({
+            title: 'Error al crear el tipo de sensor',
+            icon: 'error',
+            showConfirmButton: false,
+            timer: 1500
+        });
+    } else {
+
+        const descriptionSensor = document.getElementById('descriptionSensor');
+        const xhr = new XMLHttpRequest();
+
+        xhr.open('post', `${API_URL}/Tipo_sensor`);
+
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify({
+            Descripcion: descriptionSensor.value
+        }));
+        xhr.onload = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                const data = JSON.parse(this.response);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Tipo de sensor creado',
+                    text: 'El tipo de sensor se ha creado correctamente',
+                    confirmButtonText: 'Aceptar'
+                }).then(() => {
+                    window.location.href = '/vistas/edicion/tp_sensor/tp_sensor_crud.html';
+                });
+
+            } else {
+                console.error('Error fetching users:', this.statusText);
+            }
+        };
 
 
+    }
 }
 
 const addSensorButton = document.getElementById('addSensor');
-addSensorButton.addEventListener('click', validarTpSensor);
+addSensorButton.addEventListener('click', addParametro);
 
 const btnSetings = document.getElementById('btnSetings');
 

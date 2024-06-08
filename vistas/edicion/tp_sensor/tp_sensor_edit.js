@@ -45,10 +45,22 @@ async function updateData() {
 
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
-            window.alert('tipo de sensor actualizado');
-            window.location.href = '/vistas/edicion/tp_sensor/tp_sensor_crud.html';
+            swal.fire({
+                title: 'Tipo de sensor actualizado',
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+                window.location.href = '/vistas/edicion/tp_sensor/tp_sensor_crud.html';
+            });
+
         } else {
-            window.alert('Error al actualizar el tipo de sensor');
+            swal.fire({
+                title: 'Error al actualizar el tipo de sensor',
+                icon: 'error',
+                showConfirmButton: false,
+                timer: 1500
+            });
         }
     };
     xhr.send(JSON.stringify(data));
