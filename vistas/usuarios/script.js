@@ -6,12 +6,13 @@ import { API_URL } from '../config.js';
 const tableData = document.getElementById('tableData');
 
 const back = document.getElementById('back');
+const pdfButton = document.getElementById('pdfButton');
 
 const inputs = document.querySelectorAll('input');
 
 let count = 0;
 let dataD = null;
-let tablaCargada = false;
+
 
 const fincas = [];
 
@@ -46,7 +47,7 @@ async function cargarTabla() {
         <td id="Email">${user.email}</td>
         <td id="Estado">${user.estado == true ? 'Activo' : 'Inactivo'}</td>
         <td>
-          <a href="#" class="btn-add"><i class='bx bx-plus-circle' ></i></a>
+          <a href="#" class="btn-add"><i class='bx bxs-plus-circle' ></i></a>
           <a href="#" class="btn-update"><i class='bx bxs-edit-alt'></i></a>
           <a href="#" class="btn-delete"><i class='bx bxs-trash-alt'></i></a> 
           <a href="#" class="btn-activate"><i class='bx bxs-check-circle'></i></a> 
@@ -88,12 +89,26 @@ window.addEventListener('DOMContentLoaded', cargarTabla);
 
 window.addEventListener('click', async (e) => {
   count = 0;
-  if (e.target.classList.contains('bx-plus-circle')) {
+  if (e.target.classList.contains('bxs-plus-circle')) {
     window.location.href = `/vistas/RegistrarUsuario/registro.html`;
   }
   else if (e.target.classList.contains('bxs-edit-alt')) {
 
     let data1 = (e.target.parentElement.parentElement.parentElement.children);
+    localStorage.setItem('cedula', data1[0].textContent);
+    localStorage.setItem('tipo', data1[1].textContent);
+    localStorage.setItem('nombre_1', data1[2].textContent);
+    localStorage.setItem('nombre_2', data1[3].textContent);
+    localStorage.setItem('apellido_1', data1[4].textContent);
+    localStorage.setItem('apellido_2', data1[5].textContent);
+    localStorage.setItem('email', data1[6].textContent);
+    localStorage.setItem('password', data1[7].textContent);
+    localStorage.setItem('Estado', data1[7].textContent);
+
+
+    window.location.href = `/vistas/usuarios/usuarios_edit.html`;
+
+
 
   } else if (e.target.classList.contains('bxs-trash-alt')) {
     dataD = (e.target.parentElement.parentElement.parentElement.children);
@@ -285,3 +300,28 @@ function validarFincasActivas() {
   }
   return opt;
 }
+
+pdfButton.addEventListener('click', () => {
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', `${API_URL}/pdfpersona`);
+  xhr.responseType = 'blob';
+
+  xhr.onload = function () {
+    if (xhr.status === 200 && xhr.readyState === 4) {
+      const blob = xhr.response;
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Listado_usuarios.pdf'; // Nombre del archivo PDF
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+    } else {
+      console.error('Error al obtener el PDF:', xhr.statusText);
+    }
+  };
+  xhr.onerror = function () {
+    console.error('Error al obtener el PDF:', xhr.statusText);
+  };
+  xhr.send();
+});

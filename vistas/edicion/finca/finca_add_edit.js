@@ -87,59 +87,50 @@ function getVereda() {
 getVereda();
 
 function updateData() {
-    const opt = validarConfirmacion();
-    if (opt) {
 
-        const id = idX.value;
-        const cedula = SelectCedulax.value == 0 ? cedulaa : SelectCedulax.value;
-        const nombre = nombrex.value;
-        const id_vereda = SelectVeredax.value == 0 ? veredaa : SelectVeredax.value;
-        const estado = estadox.value;
-        const data = {
-            id,
-            cedula,
-            nombre,
-            id_vereda,
-            estado
-        };
-        const xhr = new XMLHttpRequest();
 
-        xhr.open('PUT', `${API_URL}/Fincas/${id}`);
+    const id = idX.value;
+    const cedula = SelectCedulax.value == 0 ? cedulaa : SelectCedulax.value;
+    const nombre = nombrex.value;
+    const id_vereda = SelectVeredax.value == 0 ? veredaa : SelectVeredax.value;
+    const estado = estadox.value;
+    const data = {
+        id,
+        cedula,
+        nombre,
+        id_vereda,
+        estado
+    };
+    const xhr = new XMLHttpRequest();
 
-        xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.open('PUT', `${API_URL}/Fincas/${id}`);
 
-        xhr.onload = function () {
-            if (this.readyState === 4 && this.status === 200) {
-                swal.fire({
-                    title: 'Finca actualizada correctamente',
-                    icon: 'success',
-                    confirmButtonText: 'Aceptar',
-                    showConfirmButton: false,
-                    timer: 1500
-                }).then(() => {
-                    window.location.href = '/vistas/edicion/finca/finca_crud.html';
-                });
-            } else {
-                swal.fire({
-                    title: 'Error al actualizar la finca',
-                    icon: 'error',
-                    confirmButtonText: 'Aceptar',
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-            }
-        };
-        xhr.send(JSON.stringify(data));
+    xhr.setRequestHeader('Content-Type', 'application/json');
 
-    } else {
-        swal.fire({
-            title: 'Error al actualizar la finca',
-            icon: 'error',
-            confirmButtonText: 'Aceptar',
-            showConfirmButton: false,
-            timer: 1500
-        });
-    }
+    xhr.onload = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            swal.fire({
+                title: 'Finca actualizada correctamente',
+                icon: 'success',
+                confirmButtonText: 'Aceptar',
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+                window.location.href = '/vistas/edicion/finca/finca_crud.html';
+            });
+        } else {
+            swal.fire({
+                title: 'Error al actualizar la finca',
+                icon: 'error',
+                confirmButtonText: 'Aceptar',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+    };
+    xhr.send(JSON.stringify(data));
+
+
 }
 
 
@@ -154,31 +145,5 @@ document.addEventListener('DOMContentLoaded', llenarDatos);
 
 
 
-function validarConfirmacion() {
-    let valid = true;
-    console.log(document.getElementById('SelectCedula').value == 0);
-    if (document.getElementById('SelectCedula').value == 0) {
-        swal.fire({
-            title: 'Seleccione una cedula',
-            icon: 'error',
-            confirmButtonText: 'Aceptar',
-            showConfirmButton: false,
-            timer: 1500
-        });
-        valid = false;
 
-    }
-    else if (document.getElementById('SelectVereda').value == 0) {
-
-        swal.fire({
-            title: 'Seleccione una vereda',
-            icon: 'error',
-            confirmButtonText: 'Aceptar',
-            showConfirmButton: false,
-            timer: 1500
-        });
-        valid = false;
-    }
-    return valid;
-}
 btnActualizar.addEventListener('click', updateData);

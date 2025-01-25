@@ -41,14 +41,14 @@
         <div class=" d-flex justify-content-center align-items-center ">
             <div class="bg-white p-5 rounded-5 text-secondary shadow" style="width: 50rem">
 
-                <div class="text-center fs-2 fw-bold"> Usuario nuevo</div>
+                <div class="text-center fs-2 fw-bold">Editar usuario</div>
 
 
                 <div class="input-group mt-4">
                     <div class="input-group-text bg-info">
                         <i class='bx bxs-id-card'></i>
                     </div>
-                    <input class="form-control bg-light" type="text" placeholder="# Cedula" id="cedula" />
+                    <input class="form-control bg-light" type="text" placeholder=" Cedula" id="cedula" readonly />
 
 
                 </div>
@@ -104,38 +104,23 @@
                 </div>
                 <small class="form-text text-danger" id="msgEmail"></small>
 
-                <div class="input-group mt-4">
-                    <div class="input-group-text bg-info">
-                        <i class='bx bx-envelope'></i>
-                    </div>
-                    <input class="form-control bg-light" type="email" placeholder="Confirmar correo" id="confEmail" />
 
-                </div>
-                <small class="form-text text-danger" id="msgConfEmail"></small>
 
                 <div class="input-group mt-4">
                     <div class="input-group-text bg-info">
                         <i class="bx bxs-key"></i>
 
                     </div>
-                    <input class="form-control bg-light" type="password" placeholder="Contraseña" id="password" />
+                    <input class="form-control bg-light" type="password" placeholder="Contraseña" id="password"
+                        readonly />
 
                 </div>
                 <small class="form-text text-danger" id="msgPassword"></small>
 
-                <div class="input-group mt-4">
-                    <div class="input-group-text bg-info">
-                        <i class="bx bxs-key"></i>
 
-                    </div>
-                    <input class="form-control bg-light" type="password" placeholder="Confirmar Contraseña"
-                        id="confPassword" />
 
-                </div>
-                <small class="form-text text-danger" id="msgConfPassword"></small>
-
-                <div class="btn btn-info text-white w-100 mt-4 fw-semibold shadow-sm" id="addUsuario" disabled>
-                    Agregar
+                <div class="btn btn-info text-white w-100 mt-4 fw-semibold shadow-sm" id="addUsuario">
+                    Confirmar
                 </div>
 
 
@@ -147,7 +132,7 @@
         <p>© 2024 Página Administrativa. Todos los derechos reservados.</p>
     </footer>
 
-    <script src="registro.js" type="module"></script>
+    <script src="script_edit.js" type="module"></script>
     <script src="/scripts_compartidos/script.js"></script>
 
 </body>

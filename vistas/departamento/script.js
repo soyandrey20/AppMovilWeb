@@ -49,14 +49,7 @@ async function addDepart() {
         };
 
         xhr.send(JSON.stringify(data));
-    } else {
-        swal.fire({
-            title: 'Error',
-            text: 'El departamento ya existe',
-            icon: 'error',
-            confirmButtonText: 'Aceptar'
-        });
-    }
+    }  
 }
 
 
@@ -85,17 +78,39 @@ async function getDepart() {
 
 
 
-async function validarDepart() {
+function validarDepart() {
     const nombre = document.getElementById('Departamento').value;
     var opt = true;
-    for (let i = 0; i < departa.length; i++) {
-        const dep = departa[i];
 
-        if (dep.nombre === nombre) {
-            opt = false;
-            break;
+    if (nombre == '') {
+        swal.fire({
+            title: 'Error',
+            text: 'El departamento necesita un nombre',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+        });
+        opt = false;
+
+    } else {
+
+
+
+        for (let i = 0; i < departa.length; i++) {
+            const dep = departa[i];
+
+            if (dep.nombre === nombre) {
+                opt = false;
+                swal.fire({
+                    title: 'Error',
+                    text: 'El departamento ya existe',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                });
+                break;
+            }
         }
     }
+
     return opt;
 }
 

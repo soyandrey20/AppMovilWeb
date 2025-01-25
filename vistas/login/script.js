@@ -3,16 +3,11 @@
 
 import { API_URL } from '../config.js';
 
+let Cedula = '';
 
 
-const btnClose = document.getElementById('close');
-const btnConfirmar = document.getElementById('confirmar');
-const btnContraseña = document.getElementById('contraseñaRees');
 
-const btnConfirm = document.getElementById('confirm');
-
-
-const Cedula = document.getElementById('Cedula');
+const userPassword = document.getElementById('userPassword');
 
 const contraseñaRees = document.getElementById('contraseñaRees');
 
@@ -56,10 +51,13 @@ function getUser() {
 
 
                     };
+
+
                     sessionStorage.setItem('userData', JSON.stringify(userData));
 
-                    window.location.href = '/vistas/home/home.html';
-                    
+                    window.location.href = '../home/home.html';
+
+
 
                 } else {
                     Swal.fire({
@@ -89,7 +87,7 @@ loginButton.addEventListener('click', getUser);
 
 
 async function sendEmail() {
-    const id = document.getElementById('Cedula').value;
+    const id = Cedula;
 
 
 
@@ -109,8 +107,11 @@ async function sendEmail() {
     xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
 
-            window.alert('Se ha enviado un correo con la contraseña');
-
+            Swal.fire({
+                icon: 'success',
+                title: 'Correo enviado',
+                text: 'Se ha enviado un correo con la contraseña',
+            });
 
         } else {
             console.error('Error obtener users:', this.statusText);
@@ -129,7 +130,7 @@ function pedirContraseña() {
         input: 'text',
         inputAttributes: {
             autocapitalize: 'off',
-            pattern: '[0-9]{10}' // Validar que solo se ingresen números y que tenga 10 dígitos
+            pattern: '[0-9]{10}'
         },
         showCancelButton: true,
         confirmButtonText: 'Reestablecer contraseña',
@@ -143,9 +144,8 @@ function pedirContraseña() {
 
     }).then((result) => {
         if (result.isConfirmed) {
-            const cedula = result.value;
-            Cedula.value = cedula;
-            alert(Cedula.value);
+            Cedula = result.value;
+
             sendEmail();
         }
     });

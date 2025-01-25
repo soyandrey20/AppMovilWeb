@@ -126,7 +126,12 @@ async function addFinca() {
 
         xhr.send(JSON.stringify(data));
     } else {
-        window.alert('Error al crear la finca, verifique los datos ingresados');
+        swal.fire({
+            title: 'Error',
+            text: 'Por favor llene todos los campos',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+        });
 
 
     }
